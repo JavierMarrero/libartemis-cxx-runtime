@@ -27,6 +27,9 @@
 #ifndef AXF_H
 #define AXF_H
 
+// C++
+#include <cstddef>
+
 // API
 
 #endif /* AXF_H */
