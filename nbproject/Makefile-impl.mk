@@ -24,7 +24,7 @@ CLEAN_SUBPROJECTS=${CLEAN_SUBPROJECTS_${SUBPROJECTS}}
 
 
 # Project Name
-PROJECTNAME=libccmm
+PROJECTNAME=libartemis-c++-runtime
 
 # Active Configuration
 DEFAULTCONF=Debug
