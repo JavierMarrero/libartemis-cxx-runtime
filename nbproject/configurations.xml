@@ -4,6 +4,7 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
+      <itemPath>includes/Axf.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -47,6 +48,8 @@
           <linkerCopySharedLibs>true</linkerCopySharedLibs>
         </linkerTool>
       </compileType>
+      <item path="includes/Axf.h" ex="false" tool="3" flavor2="0">
+      </item>
     </conf>
     <conf name="Release" type="2">
       <toolsSet>
@@ -76,6 +79,8 @@
           <linkerCopySharedLibs>true</linkerCopySharedLibs>
         </linkerTool>
       </compileType>
+      <item path="includes/Axf.h" ex="false" tool="3" flavor2="0">
+      </item>
     </conf>
   </confs>
 </configurationDescriptor>
