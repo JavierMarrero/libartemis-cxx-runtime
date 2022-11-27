@@ -52,8 +52,10 @@ class Object
 {
 public:
 
-    Object();               /// Constructs a new instance of an <code>Object</code>
-    virtual ~Object();      /// Destructs this object
+    Object();                       /// Constructs a new instance of an <code>Object</code>
+    virtual ~Object();              /// Destructs this object
+
+    virtual int hashCode() const;   /// Returns a unique 32-bit hash identifying this instance
 
 private:
 

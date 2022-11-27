@@ -5,7 +5,7 @@
                    displayName="Header Files"
                    projectFiles="true">
       <itemPath>includes/Axf.h</itemPath>
-      <itemPath>includes/Axf/Object.h</itemPath>
+      <itemPath>includes/Axf/Core/Object.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -55,7 +55,7 @@
       </compileType>
       <item path="includes/Axf.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="includes/Axf/Object.h" ex="false" tool="3" flavor2="0">
+      <item path="includes/Axf/Core/Object.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="sources/Core/Object.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -93,7 +93,7 @@
       </compileType>
       <item path="includes/Axf.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="includes/Axf/Object.h" ex="false" tool="3" flavor2="0">
+      <item path="includes/Axf/Core/Object.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="sources/Core/Object.cpp" ex="false" tool="1" flavor2="0">
       </item>

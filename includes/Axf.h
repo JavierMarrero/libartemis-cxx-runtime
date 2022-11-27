@@ -31,5 +31,6 @@
 #include <cstddef>
 
 // API
+#include <Axf/Core/Object.h>
 
 #endif /* AXF_H */
