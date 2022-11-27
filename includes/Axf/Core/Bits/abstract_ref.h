@@ -18,20 +18,60 @@
  */
 
 /* 
- * File:   Axf.h - Artemis Extended Framework main header file
+ * File:   abstract_ptr.h
  * Author: Javier Marrero
  *
- * Created on November 27, 2022, 1:11 AM
+ * Created on November 27, 2022, 2:37 AM
  */
 
-#ifndef AXF_H
-#define AXF_H
+#ifndef ABSTRACT_PTR_H
+#define ABSTRACT_PTR_H
 
 // C++
 #include <cstddef>
 
-// API
-#include <Axf/Core/Memory.h>
-#include <Axf/Core/Object.h>
+namespace axf
+{
+namespace core
+{
+namespace bits
+{
 
-#endif /* AXF_H */
+/**
+ * This is the abstract base class for all the smart reference types.
+ */
+template <typename T>
+class abstract_ref
+{
+public:
+
+    abstract_ref()
+    {
+        this->m_pointer = NULL;
+    }
+
+    abstract_ref(T* pointer)
+    {
+        this->m_pointer = pointer;
+    }
+
+    virtual ~abstract_ref()
+    {
+        this->m_pointer = NULL;
+    }
+    
+    /**
+     * Clears this reference.
+     */
+    virtual void clear() = 0;
+
+protected:
+
+    T* m_pointer;
+};
+
+}
+}
+}
+
+#endif /* ABSTRACT_PTR_H */

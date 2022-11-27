@@ -18,20 +18,30 @@
  */
 
 /* 
- * File:   Axf.h - Artemis Extended Framework main header file
+ * File:   unique_ptr.h
  * Author: Javier Marrero
  *
- * Created on November 27, 2022, 1:11 AM
+ * Created on November 27, 2022, 2:35 AM
  */
 
-#ifndef AXF_H
-#define AXF_H
+#ifndef UNIQUE_PTR_H
+#define UNIQUE_PTR_H
 
-// C++
-#include <cstddef>
+// Include the abstract reference
+#include "abstract_ref.h"
 
-// API
-#include <Axf/Core/Memory.h>
-#include <Axf/Core/Object.h>
+namespace axf
+{
+namespace core
+{
 
-#endif /* AXF_H */
+template <typename T>
+class unique_ref : public bits::abstract_ref<T>
+{
+    
+};
+
+}
+}
+
+#endif /* UNIQUE_PTR_H */
