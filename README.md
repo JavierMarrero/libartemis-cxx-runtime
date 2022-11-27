@@ -1,12 +1,12 @@
 ![download-counter](https://img.shields.io/github/downloads/JavierMarrero/libartemis-cxx-runtime/total)
 ![contributors-counter](https://img.shields.io/github/contributors/JavierMarrero/libartemis-cxx-runtime?color=green)
 ![license-badge](https://img.shields.io/github/license/JavierMarrero/libartemis-cxx-runtime)
-![forks-badge](https://img.shields.io/github/forks/JavierMarrero/libartemis-cxx-runtime?style=social)
-![stars-badge](https://img.shields.io/github/stars/JavierMarrero/libartemis-cxx-runtime?style=social)
-![mystars-badge](https://img.shields.io/github/stars/JavierMarrero?affiliations=OWNER%2CCOLLABORATOR%2CORGANIZATION_MEMBER&style=social)
 ![code-size](https://img.shields.io/github/languages/code-size/JavierMarrero/libartemis-cxx-runtime)
 ![lines-badge](https://img.shields.io/tokei/lines/github/JavierMarrero/libartemis-cxx-runtime?style=plastic)
 ![lang-badge](https://img.shields.io/github/languages/top/JavierMarrero/libartemis-cxx-runtime)
+![forks-badge](https://img.shields.io/github/forks/JavierMarrero/libartemis-cxx-runtime?style=social)
+![stars-badge](https://img.shields.io/github/stars/JavierMarrero/libartemis-cxx-runtime?style=social)
+![mystars-badge](https://img.shields.io/github/stars/JavierMarrero?affiliations=OWNER%2CCOLLABORATOR%2CORGANIZATION_MEMBER&style=social)
 
 # Artemis :moon:: A C++ Framework for Portable Application's Programming
 
