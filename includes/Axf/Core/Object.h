@@ -32,6 +32,8 @@ namespace axf
 namespace core
 {
 
+#define ARTEMIS_OBJECT(Type, SuperType)
+
 /**
  * The object class is the superclass of all objects in the <i>Artemis</i> framework. It provides some common 
  * functionality that enhances interoperability between types. That being said, there will be cases where objects

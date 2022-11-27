@@ -5,7 +5,10 @@
                    displayName="Header Files"
                    projectFiles="true">
       <itemPath>includes/Axf.h</itemPath>
+      <itemPath>includes/Axf/Core/Memory.h</itemPath>
       <itemPath>includes/Axf/Core/Object.h</itemPath>
+      <itemPath>includes/Axf/Core/Bits/abstract_ptr.h</itemPath>
+      <itemPath>includes/Axf/Core/Bits/unique_ptr.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -55,6 +58,18 @@
       </compileType>
       <item path="includes/Axf.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="includes/Axf/Core/Bits/abstract_ptr.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="includes/Axf/Core/Bits/unique_ptr.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="includes/Axf/Core/Memory.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="includes/Axf/Core/Object.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="sources/Core/Object.cpp" ex="false" tool="1" flavor2="0">
@@ -92,6 +107,18 @@
         </linkerTool>
       </compileType>
       <item path="includes/Axf.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="includes/Axf/Core/Bits/abstract_ptr.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="includes/Axf/Core/Bits/unique_ptr.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="includes/Axf/Core/Memory.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="includes/Axf/Core/Object.h" ex="false" tool="3" flavor2="0">
       </item>
