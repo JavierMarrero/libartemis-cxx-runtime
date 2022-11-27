@@ -46,5 +46,5 @@ The following is a list of Artemis' contributors! :grinning: Feel free to includ
 
 ## License
 
-Artemis is *free software* and it is licensed under the terms of the *GNU Lesser General Public License* or else _any other higher version_. 
+Artemis is **free software** and it is licensed under the terms of the **GNU Lesser General Public License** or else *any other higher version*. 
 
