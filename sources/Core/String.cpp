@@ -18,53 +18,40 @@
  */
 
 /* 
- * File:   Object.cpp
+ * File:   String.cpp
  * Author: Javier Marrero
  * 
- * Created on November 27, 2022, 1:18 AM
+ * Created on November 27, 2022, 6:11 PM
  */
 
-#include <Axf/Core/Object.h>
+#include <Axf/Core/String.h>
 
 using namespace axf;
 using namespace axf::core;
 
-#define FNV_OFFSET_BASIS_32B    2166136261u
-#define FNV_PRIME_32B           16777619u
-
-Object::Object()
+String::String()
+:
+m_buffer(NULL),
+m_capacity(0),
+m_size(0)
 {
 }
 
-Object::~Object()
+String::~String()
+{
+    clear();
+}
+
+String::String(const char* cstr)
 {
 }
 
-bool Object::equals(const
-Object& object) const
+void String::clear()
 {
-    return this == &object;
-}
-
-int Object::hashCode() const
-{
-    int hash = FNV_OFFSET_BASIS_32B;
-    const char* memory = reinterpret_cast<const char*> (this);
-
-    // TODO: replace sizeof with something more descriptive (use rtti)
-    for (unsigned int i = 0; i < sizeof (*this); ++i)
+    if (m_buffer != NULL)
     {
-        char octet = *(memory + i);
-
-        // FNV hashing
-        hash ^= octet;
-        hash *= FNV_PRIME_32B;
+        delete m_buffer;
     }
-
-    return hash;
-}
-
-String Object::toString() const
-{
-    return String("<");
+    m_capacity = 0;
+    m_size = 0;
 }
