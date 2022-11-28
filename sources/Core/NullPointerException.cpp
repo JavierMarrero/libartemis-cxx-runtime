@@ -18,53 +18,23 @@
  */
 
 /* 
- * File:   Object.cpp
+ * File:   NullPointerException.cpp
  * Author: Javier Marrero
  * 
- * Created on November 27, 2022, 1:18 AM
+ * Created on November 27, 2022, 5:05 PM
  */
 
-#include <Axf/Core/Object.h>
+#include <Axf/Core/NullPointerException.h>
 
 using namespace axf;
 using namespace axf::core;
 
-#define FNV_OFFSET_BASIS_32B    2166136261u
-#define FNV_PRIME_32B           16777619u
-
-Object::Object()
+NullPointerException::NullPointerException(const char* message)
+:
+Exception(message)
 {
 }
 
-Object::~Object()
+NullPointerException::~NullPointerException()
 {
-}
-
-bool Object::equals(const
-Object& object) const
-{
-    return this == &object;
-}
-
-int Object::hashCode() const
-{
-    int hash = FNV_OFFSET_BASIS_32B;
-    const char* memory = reinterpret_cast<const char*> (this);
-
-    // TODO: replace sizeof with something more descriptive (use rtti)
-    for (unsigned int i = 0; i < sizeof (*this); ++i)
-    {
-        char octet = *(memory + i);
-
-        // FNV hashing
-        hash ^= octet;
-        hash *= FNV_PRIME_32B;
-    }
-
-    return hash;
-}
-
-String Object::toString() const
-{
-    return String("<");
 }

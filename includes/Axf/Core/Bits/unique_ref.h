@@ -35,11 +35,63 @@ namespace axf
 namespace core
 {
 
-template <typename T>
-class unique_ref : public bits::abstract_ref<T>
+/**
+ * A <b>unique reference</b> is a type of smart pointer that only allows single
+ * ownership of a particular reference. The object owned by a
+ * <code>unique_ref</code> object has a life cycle never exceeding that of
+ * this object's.
+ * <p>
+ * The semantics of this reference is determined by the quality that this
+ * reference owns and manages another object, disposing of it when it goes out
+ * of scope.
+ * <p>
+ * The object is deleted using a deleter functor object when either of the
+ * following happens:
+ * <ul>
+ *  <li>the managing <code>unique_ref</code> is deleted.</li>
+ *  <li>the managing <code>unique_ref</code> is assigned to another reference</li>
+ * </ul>
+ * <p>
+ * The pointer is deleted using a <i>(possibly user-supplied)</i> deleter to
+ * automatically release memory.
+ * <p>
+ * This class is not <b>copy assignable</b> nor <b>copy constructible</b>.
+ *
+ * @author J. Marrero
+ */
+template <typename T, typename deleter_functor = axf::core::bits::default_delete<T> >
+class unique_ref : public bits::abstract_ref<T, deleter_functor>
 {
-    
-};
+public:
+
+    /**
+     * Creates a new instance of a given unique reference pointing to the object
+     * passed as parameter.
+     * 
+     * @param pointer
+     */
+    unique_ref(T* pointer = NULL) : bits::abstract_ref<T>(pointer) { }
+
+    /**
+     * Destroys this object, invoking the destructor of the pointed object.
+     */
+    ~unique_ref()
+    {
+        clear();
+    }
+
+    /**
+     * Deletes the pointed object and clears the pointer. The object is,
+     * without exception, deleted, since this pointer semantics implies the
+     * ownership of a reference.
+     */
+    inline void clear()
+    {
+        this->m_disposer(this->m_pointer);
+        this->m_pointer = NULL;
+    }
+
+} ;
 
 }
 }

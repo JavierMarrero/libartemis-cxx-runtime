@@ -18,53 +18,54 @@
  */
 
 /* 
- * File:   Object.cpp
+ * File:   memory-dtors.h
  * Author: Javier Marrero
- * 
- * Created on November 27, 2022, 1:18 AM
+ *
+ * Created on November 28, 2022, 4:49 PM
  */
 
-#include <Axf/Core/Object.h>
+#ifndef MEMORY_DTORS_H
+#define MEMORY_DTORS_H
 
-using namespace axf;
-using namespace axf::core;
+// C++
+#include <cstdio>
 
-#define FNV_OFFSET_BASIS_32B    2166136261u
-#define FNV_PRIME_32B           16777619u
-
-Object::Object()
+namespace axf
 {
-}
-
-Object::~Object()
+namespace core
 {
-}
-
-bool Object::equals(const
-Object& object) const
+namespace bits
 {
-    return this == &object;
-}
 
-int Object::hashCode() const
+/**
+ * Default delete invocation functor.
+ */
+template <typename T>
+struct default_delete
 {
-    int hash = FNV_OFFSET_BASIS_32B;
-    const char* memory = reinterpret_cast<const char*> (this);
 
-    // TODO: replace sizeof with something more descriptive (use rtti)
-    for (unsigned int i = 0; i < sizeof (*this); ++i)
+    void operator()(T* pointer)
     {
-        char octet = *(memory + i);
-
-        // FNV hashing
-        hash ^= octet;
-        hash *= FNV_PRIME_32B;
+        delete pointer;
     }
+} ;
 
-    return hash;
-}
-
-String Object::toString() const
+/**
+ * Default <code>std::free</code> invocation functor.
+ */
+template <typename T>
+struct default_free
 {
-    return String("<");
+
+    void operator()(T* pointer)
+    {
+        std::free(pointer);
+    }
+} ;
+
 }
+}
+}
+
+#endif /* MEMORY_DTORS_H */
+

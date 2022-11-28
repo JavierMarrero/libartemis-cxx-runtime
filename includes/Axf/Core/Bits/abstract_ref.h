@@ -29,6 +29,14 @@
 
 // C++
 #include <cstddef>
+#include <cstdlib>
+#include <cstdio>
+
+// API
+#include <Axf/Core/NullPointerException.h>
+
+// Private API
+#include "memory-dtors.h"
 
 namespace axf
 {
@@ -38,37 +46,93 @@ namespace bits
 {
 
 /**
- * This is the abstract base class for all the smart reference types.
+ * This is the abstract base class for all the smart reference types. It provides a default data field of a generic type
+ * <code>T*</code> representing the type of the reference. It also provides some common operator overloading and utility
+ * methods.
+ * <p>
+ * 
+ * @author J. Marrero
  */
-template <typename T>
+template <typename T, typename deleter_functor = axf::core::bits::default_delete<T> >
 class abstract_ref
 {
 public:
 
-    abstract_ref()
-    {
-        this->m_pointer = NULL;
-    }
-
-    abstract_ref(T* pointer)
-    {
-        this->m_pointer = pointer;
-    }
-
-    virtual ~abstract_ref()
-    {
-        this->m_pointer = NULL;
-    }
-    
     /**
-     * Clears this reference.
+     * Creates a new abstract reference with a <code>NULL</code> value as pointed object.
+     */
+    abstract_ref() : m_pointer(NULL) { }
+
+    /**
+     * Creates a new abstract reference that points to the provided argument.
+     * 
+     * @param pointer
+     */
+    abstract_ref(T* pointer) : m_pointer(pointer) { }
+
+    /// Default destructor
+
+    virtual ~abstract_ref() { }
+
+    /**
+     * Returns a reference to the data stored in this object. It is similar to the pointer de-referencing operation.
+     *
+     * @return a reference to an object of type T
+     */
+    inline T& asReference()
+    {
+        checkDereferencingCapability();
+        return *m_pointer;
+    }
+
+    /**
+     * Similar to abstract_ref::getReference but for constant references
+     *
+     * @return a reference to an object of type T
+     */
+    inline const T& asReference() const
+    {
+        checkDereferencingCapability();
+        return *m_pointer;
+    }
+
+    /**
+     * Clears this reference. This method's implementation is overridden by child classes.
      */
     virtual void clear() = 0;
 
+    /**
+     * Returns the value of the pointer stored in this reference.
+     *
+     * @return a pointer of type T
+     */
+    inline T* get()
+    {
+        return m_pointer;
+    }
+
 protected:
 
-    T* m_pointer;
-};
+    deleter_functor m_disposer;     /// Disposer functor
+    T*              m_pointer;      /// A pointer to the data
+
+    /**
+     * Essentially checks if a pointer is null or any other invalid value, and
+     * if so, throws a <code>NullPointerException</code>. The message is built
+     * on the heap.
+     *
+     * TODO: Check if it would be suitable to statically assign a message buffer.
+     */
+    inline void checkDereferencingCapability()
+    {
+        char* message = new char[64];
+        std::sprintf(message, "null dereferencing from pointer at 0x%16x", this);
+
+        if (m_pointer == NULL)
+            throw NullPointerException(message);
+    }
+
+} ;
 
 }
 }

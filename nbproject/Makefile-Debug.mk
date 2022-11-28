@@ -35,15 +35,30 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/sources/Core/Object.o
+	${OBJECTDIR}/sources/Arch/Windows/DllMain.o \
+	${OBJECTDIR}/sources/Core/Exception.o \
+	${OBJECTDIR}/sources/Core/NullPointerException.o \
+	${OBJECTDIR}/sources/Core/Object.o \
+	${OBJECTDIR}/sources/Core/ReferenceCounted.o \
+	${OBJECTDIR}/sources/Core/String.o
 
+# Test Directory
+TESTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}/tests
+
+# Test Files
+TESTFILES= \
+	${TESTDIR}/TestFiles/f1
+
+# Test Object Files
+TESTOBJECTFILES= \
+	${TESTDIR}/tests/axf/core/memory/smart_references.o
 
 # C Compiler Flags
 CFLAGS=
 
 # CC Compiler Flags
-CCFLAGS=
-CXXFLAGS=
+CCFLAGS=-Wall
+CXXFLAGS=-Wall
 
 # Fortran Compiler Flags
 FFLAGS=
@@ -62,13 +77,140 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libartemis-cxx.${CND_DLIB_EXT}: ${OBJ
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libartemis-cxx.${CND_DLIB_EXT} ${OBJECTFILES} ${LDLIBSOPTIONS} -shared
 
+${OBJECTDIR}/sources/Arch/Windows/DllMain.o: sources/Arch/Windows/DllMain.cpp
+	${MKDIR} -p ${OBJECTDIR}/sources/Arch/Windows
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -Werror -Iincludes -std=c++98  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/sources/Arch/Windows/DllMain.o sources/Arch/Windows/DllMain.cpp
+
+${OBJECTDIR}/sources/Core/Exception.o: sources/Core/Exception.cpp
+	${MKDIR} -p ${OBJECTDIR}/sources/Core
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -Werror -Iincludes -std=c++98  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/sources/Core/Exception.o sources/Core/Exception.cpp
+
+${OBJECTDIR}/sources/Core/NullPointerException.o: sources/Core/NullPointerException.cpp
+	${MKDIR} -p ${OBJECTDIR}/sources/Core
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -Werror -Iincludes -std=c++98  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/sources/Core/NullPointerException.o sources/Core/NullPointerException.cpp
+
 ${OBJECTDIR}/sources/Core/Object.o: sources/Core/Object.cpp
 	${MKDIR} -p ${OBJECTDIR}/sources/Core
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -Werror -Iincludes -std=c++98  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/sources/Core/Object.o sources/Core/Object.cpp
 
+${OBJECTDIR}/sources/Core/ReferenceCounted.o: sources/Core/ReferenceCounted.cpp
+	${MKDIR} -p ${OBJECTDIR}/sources/Core
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -Werror -Iincludes -std=c++98  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/sources/Core/ReferenceCounted.o sources/Core/ReferenceCounted.cpp
+
+${OBJECTDIR}/sources/Core/String.o: sources/Core/String.cpp
+	${MKDIR} -p ${OBJECTDIR}/sources/Core
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -Werror -Iincludes -std=c++98  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/sources/Core/String.o sources/Core/String.cpp
+
 # Subprojects
 .build-subprojects:
+
+# Build Test Targets
+.build-tests-conf: .build-tests-subprojects .build-conf ${TESTFILES}
+.build-tests-subprojects:
+
+${TESTDIR}/TestFiles/f1: ${TESTDIR}/tests/axf/core/memory/smart_references.o ${OBJECTFILES:%.o=%_nomain.o}
+	${MKDIR} -p ${TESTDIR}/TestFiles
+	${LINK.cc} -o ${TESTDIR}/TestFiles/f1 $^ ${LDLIBSOPTIONS}   
+
+
+${TESTDIR}/tests/axf/core/memory/smart_references.o: tests/axf/core/memory/smart_references.cpp 
+	${MKDIR} -p ${TESTDIR}/tests/axf/core/memory
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -Werror -Iincludes -I. -std=c++98 -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/axf/core/memory/smart_references.o tests/axf/core/memory/smart_references.cpp
+
+
+${OBJECTDIR}/sources/Arch/Windows/DllMain_nomain.o: ${OBJECTDIR}/sources/Arch/Windows/DllMain.o sources/Arch/Windows/DllMain.cpp 
+	${MKDIR} -p ${OBJECTDIR}/sources/Arch/Windows
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/sources/Arch/Windows/DllMain.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -g -Werror -Iincludes -std=c++98  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/sources/Arch/Windows/DllMain_nomain.o sources/Arch/Windows/DllMain.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/sources/Arch/Windows/DllMain.o ${OBJECTDIR}/sources/Arch/Windows/DllMain_nomain.o;\
+	fi
+
+${OBJECTDIR}/sources/Core/Exception_nomain.o: ${OBJECTDIR}/sources/Core/Exception.o sources/Core/Exception.cpp 
+	${MKDIR} -p ${OBJECTDIR}/sources/Core
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/sources/Core/Exception.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -g -Werror -Iincludes -std=c++98  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/sources/Core/Exception_nomain.o sources/Core/Exception.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/sources/Core/Exception.o ${OBJECTDIR}/sources/Core/Exception_nomain.o;\
+	fi
+
+${OBJECTDIR}/sources/Core/NullPointerException_nomain.o: ${OBJECTDIR}/sources/Core/NullPointerException.o sources/Core/NullPointerException.cpp 
+	${MKDIR} -p ${OBJECTDIR}/sources/Core
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/sources/Core/NullPointerException.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -g -Werror -Iincludes -std=c++98  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/sources/Core/NullPointerException_nomain.o sources/Core/NullPointerException.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/sources/Core/NullPointerException.o ${OBJECTDIR}/sources/Core/NullPointerException_nomain.o;\
+	fi
+
+${OBJECTDIR}/sources/Core/Object_nomain.o: ${OBJECTDIR}/sources/Core/Object.o sources/Core/Object.cpp 
+	${MKDIR} -p ${OBJECTDIR}/sources/Core
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/sources/Core/Object.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -g -Werror -Iincludes -std=c++98  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/sources/Core/Object_nomain.o sources/Core/Object.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/sources/Core/Object.o ${OBJECTDIR}/sources/Core/Object_nomain.o;\
+	fi
+
+${OBJECTDIR}/sources/Core/ReferenceCounted_nomain.o: ${OBJECTDIR}/sources/Core/ReferenceCounted.o sources/Core/ReferenceCounted.cpp 
+	${MKDIR} -p ${OBJECTDIR}/sources/Core
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/sources/Core/ReferenceCounted.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -g -Werror -Iincludes -std=c++98  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/sources/Core/ReferenceCounted_nomain.o sources/Core/ReferenceCounted.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/sources/Core/ReferenceCounted.o ${OBJECTDIR}/sources/Core/ReferenceCounted_nomain.o;\
+	fi
+
+${OBJECTDIR}/sources/Core/String_nomain.o: ${OBJECTDIR}/sources/Core/String.o sources/Core/String.cpp 
+	${MKDIR} -p ${OBJECTDIR}/sources/Core
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/sources/Core/String.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -g -Werror -Iincludes -std=c++98  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/sources/Core/String_nomain.o sources/Core/String.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/sources/Core/String.o ${OBJECTDIR}/sources/Core/String_nomain.o;\
+	fi
+
+# Run Test Targets
+.test-conf:
+	@if [ "${TEST}" = "" ]; \
+	then  \
+	    ${TESTDIR}/TestFiles/f1 || true; \
+	else  \
+	    ./${TEST} || true; \
+	fi
 
 # Clean Targets
 .clean-conf: ${CLEAN_SUBPROJECTS}

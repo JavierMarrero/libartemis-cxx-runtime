@@ -18,53 +18,44 @@
  */
 
 /* 
- * File:   Object.cpp
+ * File:   smart_references.cpp
  * Author: Javier Marrero
- * 
- * Created on November 27, 2022, 1:18 AM
+ *
+ * Created on November 28, 2022, 5:02 PM
  */
 
-#include <Axf/Core/Object.h>
+#include <stdlib.h>
+#include <iostream>
+#include <cstdio>
 
-using namespace axf;
-using namespace axf::core;
+#include <Axf.h>
 
-#define FNV_OFFSET_BASIS_32B    2166136261u
-#define FNV_PRIME_32B           16777619u
-
-Object::Object()
+class Dummy
 {
-}
+public:
 
-Object::~Object()
-{
-}
-
-bool Object::equals(const
-Object& object) const
-{
-    return this == &object;
-}
-
-int Object::hashCode() const
-{
-    int hash = FNV_OFFSET_BASIS_32B;
-    const char* memory = reinterpret_cast<const char*> (this);
-
-    // TODO: replace sizeof with something more descriptive (use rtti)
-    for (unsigned int i = 0; i < sizeof (*this); ++i)
+    Dummy()
     {
-        char octet = *(memory + i);
-
-        // FNV hashing
-        hash ^= octet;
-        hash *= FNV_PRIME_32B;
+        std::cout << "creating a new dummy at " << this << std::endl;
     }
 
-    return hash;
+    ~Dummy()
+    {
+        std::cout << "deleting a dummy at " << this << std::endl;
+    }
+} ;
+
+void test_unique_ptr()
+{
+    axf::core::unique_ref<Dummy> dummy = new Dummy();
 }
 
-String Object::toString() const
+int main(int argc, char** argv)
 {
-    return String("<");
+    std::printf("testing unique pointers...\n");
+    test_unique_ptr();
+
+    std::getchar();
+    return (EXIT_SUCCESS);
 }
+
