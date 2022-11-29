@@ -18,58 +18,36 @@
  */
 
 /* 
- * File:   smart_references.cpp
+ * File:   array.cpp
  * Author: Javier Marrero
  *
- * Created on November 28, 2022, 5:02 PM
+ * Created on November 28, 2022, 8:30 PM
  */
 
 #include <stdlib.h>
 #include <iostream>
-#include <cstdio>
 
 #include <Axf.h>
 
-class Dummy
-{
-public:
-
-    Dummy()
-    {
-        std::cout << "creating a new dummy at " << this << std::endl;
-    }
-
-    ~Dummy()
-    {
-        std::cout << "deleting a dummy at " << this << std::endl;
-    }
-} ;
-
-void test_unique_ptr()
-{
-    axf::core::unique_ref<Dummy> dummy = new Dummy();
-    axf::core::unique_ref<Dummy> dummy2 = new Dummy();
-
-    if (dummy == dummy2)
-    {
-        std::cout << "pointers are equals" << std::endl;
-    }
-    else
-    {
-        std::cout << "pointers are not equals" << std::endl;
-    }
-
-    // Dummy2 must be deleted
-    std::cout << "transferring ownership from object 2 to object 1." << std::endl;
-    dummy = dummy2;
-
-}
+using namespace axf;
+using namespace axf::core;
 
 int main(int argc, char** argv)
 {
-    std::printf("testing unique pointers...\n");
-    test_unique_ptr();
+    Array<int, 10> array;
+    for (int i = 0; i < 10; ++i)
+    {
+        array[i] = i;
+    }
 
+    size_t j = array.length;
+    while (j-- > 0)
+    {
+        std::cout << array[j] << ", ";
+    }
+    std::cout << std::endl;
+
+    
     std::getchar();
     return (EXIT_SUCCESS);
 }

@@ -37,6 +37,8 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 OBJECTFILES= \
 	${OBJECTDIR}/sources/Arch/Windows/DllMain.o \
 	${OBJECTDIR}/sources/Core/Exception.o \
+	${OBJECTDIR}/sources/Core/IllegalStateException.o \
+	${OBJECTDIR}/sources/Core/IndexOutOfBoundsException.o \
 	${OBJECTDIR}/sources/Core/NullPointerException.o \
 	${OBJECTDIR}/sources/Core/Object.o \
 	${OBJECTDIR}/sources/Core/ReferenceCounted.o \
@@ -47,10 +49,12 @@ TESTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}/tests
 
 # Test Files
 TESTFILES= \
+	${TESTDIR}/TestFiles/f2 \
 	${TESTDIR}/TestFiles/f1
 
 # Test Object Files
 TESTOBJECTFILES= \
+	${TESTDIR}/tests/axf/core/array.o \
 	${TESTDIR}/tests/axf/core/memory/smart_references.o
 
 # C Compiler Flags
@@ -87,6 +91,16 @@ ${OBJECTDIR}/sources/Core/Exception.o: sources/Core/Exception.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -Werror -Iincludes -std=c++98  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/sources/Core/Exception.o sources/Core/Exception.cpp
 
+${OBJECTDIR}/sources/Core/IllegalStateException.o: sources/Core/IllegalStateException.cpp
+	${MKDIR} -p ${OBJECTDIR}/sources/Core
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -Werror -Iincludes -std=c++98  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/sources/Core/IllegalStateException.o sources/Core/IllegalStateException.cpp
+
+${OBJECTDIR}/sources/Core/IndexOutOfBoundsException.o: sources/Core/IndexOutOfBoundsException.cpp
+	${MKDIR} -p ${OBJECTDIR}/sources/Core
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -Werror -Iincludes -std=c++98  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/sources/Core/IndexOutOfBoundsException.o sources/Core/IndexOutOfBoundsException.cpp
+
 ${OBJECTDIR}/sources/Core/NullPointerException.o: sources/Core/NullPointerException.cpp
 	${MKDIR} -p ${OBJECTDIR}/sources/Core
 	${RM} "$@.d"
@@ -114,9 +128,19 @@ ${OBJECTDIR}/sources/Core/String.o: sources/Core/String.cpp
 .build-tests-conf: .build-tests-subprojects .build-conf ${TESTFILES}
 .build-tests-subprojects:
 
+${TESTDIR}/TestFiles/f2: ${TESTDIR}/tests/axf/core/array.o ${OBJECTFILES:%.o=%_nomain.o}
+	${MKDIR} -p ${TESTDIR}/TestFiles
+	${LINK.cc} -o ${TESTDIR}/TestFiles/f2 $^ ${LDLIBSOPTIONS}   
+
 ${TESTDIR}/TestFiles/f1: ${TESTDIR}/tests/axf/core/memory/smart_references.o ${OBJECTFILES:%.o=%_nomain.o}
 	${MKDIR} -p ${TESTDIR}/TestFiles
 	${LINK.cc} -o ${TESTDIR}/TestFiles/f1 $^ ${LDLIBSOPTIONS}   
+
+
+${TESTDIR}/tests/axf/core/array.o: tests/axf/core/array.cpp 
+	${MKDIR} -p ${TESTDIR}/tests/axf/core
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -Werror -Iincludes -I. -std=c++98 -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/axf/core/array.o tests/axf/core/array.cpp
 
 
 ${TESTDIR}/tests/axf/core/memory/smart_references.o: tests/axf/core/memory/smart_references.cpp 
@@ -149,6 +173,32 @@ ${OBJECTDIR}/sources/Core/Exception_nomain.o: ${OBJECTDIR}/sources/Core/Exceptio
 	    $(COMPILE.cc) -O2 -Werror -Iincludes -std=c++98  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/sources/Core/Exception_nomain.o sources/Core/Exception.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/sources/Core/Exception.o ${OBJECTDIR}/sources/Core/Exception_nomain.o;\
+	fi
+
+${OBJECTDIR}/sources/Core/IllegalStateException_nomain.o: ${OBJECTDIR}/sources/Core/IllegalStateException.o sources/Core/IllegalStateException.cpp 
+	${MKDIR} -p ${OBJECTDIR}/sources/Core
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/sources/Core/IllegalStateException.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -O2 -Werror -Iincludes -std=c++98  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/sources/Core/IllegalStateException_nomain.o sources/Core/IllegalStateException.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/sources/Core/IllegalStateException.o ${OBJECTDIR}/sources/Core/IllegalStateException_nomain.o;\
+	fi
+
+${OBJECTDIR}/sources/Core/IndexOutOfBoundsException_nomain.o: ${OBJECTDIR}/sources/Core/IndexOutOfBoundsException.o sources/Core/IndexOutOfBoundsException.cpp 
+	${MKDIR} -p ${OBJECTDIR}/sources/Core
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/sources/Core/IndexOutOfBoundsException.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -O2 -Werror -Iincludes -std=c++98  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/sources/Core/IndexOutOfBoundsException_nomain.o sources/Core/IndexOutOfBoundsException.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/sources/Core/IndexOutOfBoundsException.o ${OBJECTDIR}/sources/Core/IndexOutOfBoundsException_nomain.o;\
 	fi
 
 ${OBJECTDIR}/sources/Core/NullPointerException_nomain.o: ${OBJECTDIR}/sources/Core/NullPointerException.o sources/Core/NullPointerException.cpp 
@@ -207,6 +257,7 @@ ${OBJECTDIR}/sources/Core/String_nomain.o: ${OBJECTDIR}/sources/Core/String.o so
 .test-conf:
 	@if [ "${TEST}" = "" ]; \
 	then  \
+	    ${TESTDIR}/TestFiles/f2 || true; \
 	    ${TESTDIR}/TestFiles/f1 || true; \
 	else  \
 	    ./${TEST} || true; \

@@ -64,7 +64,7 @@ int Object::hashCode() const
     return hash;
 }
 
-String Object::toString() const
+string Object::toString() const
 {
-    return String("<");
+    return string("<");
 }

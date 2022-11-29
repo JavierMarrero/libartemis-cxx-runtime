@@ -18,26 +18,27 @@
  */
 
 /* 
- * File:   Axf.h - Artemis Extended Framework main header file
+ * File:   IndexOutOfBoundsException.cpp
  * Author: Javier Marrero
- *
- * Created on November 27, 2022, 1:11 AM
+ * 
+ * Created on November 28, 2022, 7:58 PM
  */
 
-#ifndef AXF_H
-#define AXF_H
-
-// C++
-#include <cstddef>
-
-// API
-#include <Axf/Core/Array.h>
-#include <Axf/Core/Exception.h>
 #include <Axf/Core/IndexOutOfBoundsException.h>
-#include <Axf/Core/Memory.h>
-#include <Axf/Core/NullPointerException.h>
-#include <Axf/Core/Object.h>
-#include <Axf/Core/ReferenceCounted.h>
-#include <Axf/Core/String.h>
 
-#endif /* AXF_H */
+using namespace axf;
+using namespace axf::core;
+
+IndexOutOfBoundsException::IndexOutOfBoundsException(const char* message, long long index)
+:
+Exception(message),
+m_index(index)
+{
+}
+
+IndexOutOfBoundsException::~IndexOutOfBoundsException()
+{
+}
+
+
+

@@ -92,7 +92,7 @@ public:
      * 
      * @return a new String object representing this object
      */
-    virtual String toString() const;
+    virtual string toString() const;
 
 } ;
 

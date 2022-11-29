@@ -39,7 +39,7 @@ namespace core
  * A <b>unique reference</b> is a type of smart pointer that only allows single
  * ownership of a particular reference. The object owned by a
  * <code>unique_ref</code> object has a life cycle never exceeding that of
- * this object's.
+ * this pointer´s.
  * <p>
  * The semantics of this reference is determined by the quality that this
  * reference owns and manages another object, disposing of it when it goes out
@@ -87,10 +87,34 @@ public:
      */
     inline void clear()
     {
-        this->m_disposer(this->m_pointer);
-        this->m_pointer = NULL;
+        if (this->m_pointer != NULL)
+        {
+            this->m_disposer(this->m_pointer);
+            this->m_pointer = NULL;
+        }
     }
 
+    /**
+     * Assignment operator overload.
+     * 
+     * @param rhs
+     * @return
+     */
+    inline unique_ref<T, deleter_functor>& operator=(unique_ref<T, deleter_functor>& rhs)
+    {
+        if (this != &rhs)
+        {
+            clear();
+
+            // Reassign the pointer
+            this->m_pointer = rhs.m_pointer;
+
+            // Clear the second pointer
+            rhs.m_pointer = NULL;
+        }
+        return *this;
+    }
+    
 } ;
 
 }

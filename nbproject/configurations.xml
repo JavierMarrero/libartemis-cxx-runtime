@@ -4,8 +4,11 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
+      <itemPath>includes/Axf/Core/Array.h</itemPath>
       <itemPath>includes/Axf.h</itemPath>
       <itemPath>includes/Axf/Core/Exception.h</itemPath>
+      <itemPath>includes/Axf/Core/IllegalStateException.h</itemPath>
+      <itemPath>includes/Axf/Core/IndexOutOfBoundsException.h</itemPath>
       <itemPath>includes/Axf/Core/Memory.h</itemPath>
       <itemPath>includes/Axf/Core/NullPointerException.h</itemPath>
       <itemPath>includes/Axf/Core/Object.h</itemPath>
@@ -24,6 +27,8 @@
                    projectFiles="true">
       <itemPath>sources/Arch/Windows/DllMain.cpp</itemPath>
       <itemPath>sources/Core/Exception.cpp</itemPath>
+      <itemPath>sources/Core/IllegalStateException.cpp</itemPath>
+      <itemPath>sources/Core/IndexOutOfBoundsException.cpp</itemPath>
       <itemPath>sources/Core/NullPointerException.cpp</itemPath>
       <itemPath>sources/Core/Object.cpp</itemPath>
       <itemPath>sources/Core/ReferenceCounted.cpp</itemPath>
@@ -33,6 +38,12 @@
                    displayName="Test Files"
                    projectFiles="false"
                    kind="TEST_LOGICAL_FOLDER">
+      <logicalFolder name="f2"
+                     displayName="Array Test"
+                     projectFiles="true"
+                     kind="TEST">
+        <itemPath>tests/axf/core/array.cpp</itemPath>
+      </logicalFolder>
       <logicalFolder name="f1"
                      displayName="Smart Pointer Test"
                      projectFiles="true"
@@ -88,7 +99,24 @@
           <output>${TESTDIR}/TestFiles/f1</output>
         </linkerTool>
       </folder>
+      <folder path="TestFiles/f2">
+        <cTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </cTool>
+        <ccTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f2</output>
+        </linkerTool>
+      </folder>
       <item path="includes/Axf.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="includes/Axf/Core/Array.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="includes/Axf/Core/Bits/abstract_ref.h"
             ex="false"
@@ -106,6 +134,16 @@
             flavor2="0">
       </item>
       <item path="includes/Axf/Core/Exception.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="includes/Axf/Core/IllegalStateException.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="includes/Axf/Core/IndexOutOfBoundsException.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
       </item>
       <item path="includes/Axf/Core/Memory.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -127,6 +165,16 @@
       </item>
       <item path="sources/Core/Exception.cpp" ex="false" tool="1" flavor2="0">
       </item>
+      <item path="sources/Core/IllegalStateException.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="sources/Core/IndexOutOfBoundsException.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
       <item path="sources/Core/NullPointerException.cpp"
             ex="false"
             tool="1"
@@ -137,6 +185,8 @@
       <item path="sources/Core/ReferenceCounted.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="sources/Core/String.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="tests/axf/core/array.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="tests/axf/core/memory/smart_references.cpp"
             ex="false"
@@ -191,7 +241,24 @@
           <output>${TESTDIR}/TestFiles/f1</output>
         </linkerTool>
       </folder>
+      <folder path="TestFiles/f2">
+        <cTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </cTool>
+        <ccTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f2</output>
+        </linkerTool>
+      </folder>
       <item path="includes/Axf.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="includes/Axf/Core/Array.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="includes/Axf/Core/Bits/abstract_ref.h"
             ex="false"
@@ -209,6 +276,16 @@
             flavor2="0">
       </item>
       <item path="includes/Axf/Core/Exception.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="includes/Axf/Core/IllegalStateException.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="includes/Axf/Core/IndexOutOfBoundsException.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
       </item>
       <item path="includes/Axf/Core/Memory.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -230,6 +307,16 @@
       </item>
       <item path="sources/Core/Exception.cpp" ex="false" tool="1" flavor2="0">
       </item>
+      <item path="sources/Core/IllegalStateException.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="sources/Core/IndexOutOfBoundsException.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
       <item path="sources/Core/NullPointerException.cpp"
             ex="false"
             tool="1"
@@ -240,6 +327,8 @@
       <item path="sources/Core/ReferenceCounted.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="sources/Core/String.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="tests/axf/core/array.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="tests/axf/core/memory/smart_references.cpp"
             ex="false"
