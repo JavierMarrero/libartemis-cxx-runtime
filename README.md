@@ -27,7 +27,18 @@ Artemis presents the user a set of interfaces and classes that may be used to fu
 
 ## Installation
 
-Artemis uses Apache Netbeans for its active development (as of december, 2022) and exports its build interface via makefiles. GNU Make is supported. Bash scripts are provided where necessary. To build the library, do:
+Artemis uses Apache NetBeans for its active development (as of december, 2022) and exports its build interface via makefiles. GNU Make is supported. Bash scripts are provided where necessary. 
+
+## Using NetBeans
+
+Using NetBeans it is quite easy to build and test the library since it is the mian development platform. Just clone this repository, and open the project in NetBeans.
+The rest should work seamlessly.
+
+> Other IDEs compatible with the GNU Build System are supported.
+
+## Using Bash shell directly
+
+To build the library, do:
 
 ```bash 
 # Switch to the project's directory
@@ -41,7 +52,7 @@ make all
 
 The following is a list of Artemis' contributors! :grinning: Feel free to include yourself :wink:, but, please, just keep this list sorted alphabetically!!
 
-- J. Marrero (jv.freelancerdevteam.qba@gmail.com)
+- J. Marrero <jv.freelancerdevteam.qba@gmail.com>
 
 ## License
 
