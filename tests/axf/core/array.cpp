@@ -18,32 +18,37 @@
  */
 
 /* 
- * File:   Axf.h - Artemis Extended Framework main header file
+ * File:   array.cpp
  * Author: Javier Marrero
  *
- * Created on November 27, 2022, 1:11 AM
+ * Created on November 28, 2022, 8:30 PM
  */
 
-#ifndef AXF_H
-#define AXF_H
+#include <stdlib.h>
+#include <iostream>
 
-// C++
-#include <cstddef>
+#include <Axf.h>
 
-// API
-#include <Axf/API/Compiler.h>
-#include <Axf/API/Platform.h>
-#include <Axf/API/Version.h>
+using namespace axf;
+using namespace axf::core;
 
-#include <Axf/Core/Lang-C++/traits.h>
+int main(int argc, char** argv)
+{
+    Array<int, 10> array;
+    for (int i = 0; i < 10; ++i)
+    {
+        array[i] = i;
+    }
 
-#include <Axf/Core/Array.h>
-#include <Axf/Core/Exception.h>
-#include <Axf/Core/IndexOutOfBoundsException.h>
-#include <Axf/Core/Memory.h>
-#include <Axf/Core/NullPointerException.h>
-#include <Axf/Core/Object.h>
-#include <Axf/Core/ReferenceCounted.h>
-#include <Axf/Core/String.h>
+    size_t j = array.length;
+    while (j-- > 0)
+    {
+        std::cout << array[j] << ", ";
+    }
+    std::cout << std::endl;
 
-#endif /* AXF_H */
+    
+    std::getchar();
+    return (EXIT_SUCCESS);
+}
+

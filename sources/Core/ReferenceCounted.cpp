@@ -18,32 +18,27 @@
  */
 
 /* 
- * File:   Axf.h - Artemis Extended Framework main header file
+ * File:   ReferenceCounted.cpp
  * Author: Javier Marrero
- *
- * Created on November 27, 2022, 1:11 AM
+ * 
+ * Created on November 28, 2022, 5:19 PM
  */
 
-#ifndef AXF_H
-#define AXF_H
-
-// C++
-#include <cstddef>
-
-// API
-#include <Axf/API/Compiler.h>
-#include <Axf/API/Platform.h>
-#include <Axf/API/Version.h>
-
-#include <Axf/Core/Lang-C++/traits.h>
-
-#include <Axf/Core/Array.h>
-#include <Axf/Core/Exception.h>
-#include <Axf/Core/IndexOutOfBoundsException.h>
-#include <Axf/Core/Memory.h>
-#include <Axf/Core/NullPointerException.h>
-#include <Axf/Core/Object.h>
 #include <Axf/Core/ReferenceCounted.h>
-#include <Axf/Core/String.h>
 
-#endif /* AXF_H */
+using namespace axf;
+using namespace axf::core;
+
+refcount_t& axf::core::init_refcount(refcount_t& rc)
+{
+    rc.m_strong = 0;
+    rc.m_weak = 0;
+
+    return rc;
+}
+
+ReferenceCounted::~ReferenceCounted()
+{
+    m_references.m_strong = -1;
+    m_references.m_weak = -1;
+}

@@ -27,10 +27,16 @@
 #ifndef OBJECT_H
 #define OBJECT_H
 
+// API
+#include <Axf/Core/ReferenceCounted.h>
+#include <Axf/Core/String.h>
+
 namespace axf
 {
 namespace core
 {
+
+#define ARTEMIS_OBJECT(Type, SuperType)
 
 /**
  * The object class is the superclass of all objects in the <i>Artemis</i> framework. It provides some common 
@@ -48,16 +54,47 @@ namespace core
  * 
  * @author J. Marrero
  */
-class Object
+class Object : public ReferenceCounted
 {
 public:
 
-    Object();               /// Constructs a new instance of an <code>Object</code>
-    virtual ~Object();      /// Destructs this object
+    Object();                       /// Constructs a new instance of an <code>Object</code>
+    virtual ~Object();              /// Destructs this object
 
-private:
+    /**
+     * Performs the equality check between two objects. 
+     * <p>
+     * This method may be overridden by child classes in order to implement
+     * custom comparison behavior. If this is the actual case, then, the
+     * overriding implementation must guarantee these axioms:
+     * <ul>
+     *  <li>It must be reflexive: <code>x == y</code> must be equals to <code>y == x</code></li>
+     *  <li>It must be transitive: if <code>x == y</code> and <code>y == z</code>
+     *      then <code>x == z</code></li>
+     * </ul>
+     * 
+     * @return a boolean value indicating whether the two comparing objects are equals.
+     */
+    virtual bool equals(const Object& object) const;
 
-};
+    /**
+     * Returns a unique 32-bit integer identifying this object.
+     * 
+     * @return
+     */
+    virtual int hashCode() const;
+
+    /**
+     * Returns a (possibly human readable) representation of this object.
+     * <p>
+     * The default implementation returns the class name, appended to the
+     * address of the calling object.
+     * 
+     * @return a new String object representing this object
+     */
+    virtual string toString() const;
+
+} ;
 
 }
 }

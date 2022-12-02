@@ -17,33 +17,18 @@
  * MA 02110-1301  USA
  */
 
-/* 
- * File:   Axf.h - Artemis Extended Framework main header file
- * Author: Javier Marrero
- *
- * Created on November 27, 2022, 1:11 AM
- */
+// Include the engine API because we're sadistic psychos and
+// we want that the compiler does some hard work
+#include <Axf.h>
 
-#ifndef AXF_H
-#define AXF_H
+// If this is not windows, complain!
+#ifndef _WIN32
+#    warning "Why is this file being compiled? Anyway, I've put a safety guard because I imagined there were morons like you."
+#else
 
-// C++
-#include <cstddef>
+// Windows API
+#include <windows.h>
 
-// API
-#include <Axf/API/Compiler.h>
-#include <Axf/API/Platform.h>
-#include <Axf/API/Version.h>
 
-#include <Axf/Core/Lang-C++/traits.h>
 
-#include <Axf/Core/Array.h>
-#include <Axf/Core/Exception.h>
-#include <Axf/Core/IndexOutOfBoundsException.h>
-#include <Axf/Core/Memory.h>
-#include <Axf/Core/NullPointerException.h>
-#include <Axf/Core/Object.h>
-#include <Axf/Core/ReferenceCounted.h>
-#include <Axf/Core/String.h>
-
-#endif /* AXF_H */
+#endif

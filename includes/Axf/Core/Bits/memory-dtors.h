@@ -18,32 +18,54 @@
  */
 
 /* 
- * File:   Axf.h - Artemis Extended Framework main header file
+ * File:   memory-dtors.h
  * Author: Javier Marrero
  *
- * Created on November 27, 2022, 1:11 AM
+ * Created on November 28, 2022, 4:49 PM
  */
 
-#ifndef AXF_H
-#define AXF_H
+#ifndef MEMORY_DTORS_H
+#define MEMORY_DTORS_H
 
 // C++
-#include <cstddef>
+#include <cstdio>
 
-// API
-#include <Axf/API/Compiler.h>
-#include <Axf/API/Platform.h>
-#include <Axf/API/Version.h>
+namespace axf
+{
+namespace core
+{
+namespace bits
+{
 
-#include <Axf/Core/Lang-C++/traits.h>
+/**
+ * Default delete invocation functor.
+ */
+template <typename T>
+struct default_delete
+{
 
-#include <Axf/Core/Array.h>
-#include <Axf/Core/Exception.h>
-#include <Axf/Core/IndexOutOfBoundsException.h>
-#include <Axf/Core/Memory.h>
-#include <Axf/Core/NullPointerException.h>
-#include <Axf/Core/Object.h>
-#include <Axf/Core/ReferenceCounted.h>
-#include <Axf/Core/String.h>
+    void operator()(T* pointer)
+    {
+        delete pointer;
+    }
+} ;
 
-#endif /* AXF_H */
+/**
+ * Default <code>std::free</code> invocation functor.
+ */
+template <typename T>
+struct default_free
+{
+
+    void operator()(T* pointer)
+    {
+        std::free(pointer);
+    }
+} ;
+
+}
+}
+}
+
+#endif /* MEMORY_DTORS_H */
+

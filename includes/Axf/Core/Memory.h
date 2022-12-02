@@ -18,32 +18,28 @@
  */
 
 /* 
- * File:   Axf.h - Artemis Extended Framework main header file
+ * File:   SmartPointers.h
  * Author: Javier Marrero
  *
- * Created on November 27, 2022, 1:11 AM
+ * Created on November 27, 2022, 2:35 AM
  */
 
-#ifndef AXF_H
-#define AXF_H
+#ifndef SMARTPOINTERS_H
+#define SMARTPOINTERS_H
 
-// C++
-#include <cstddef>
+// Include the private API
+#include "./Bits/scoped_ref.h"
+#include "./Bits/strong_ref.h"
+#include "./Bits/weak_ref.h"
 
-// API
-#include <Axf/API/Compiler.h>
-#include <Axf/API/Platform.h>
-#include <Axf/API/Version.h>
+namespace axf
+{
+namespace core
+{
 
-#include <Axf/Core/Lang-C++/traits.h>
 
-#include <Axf/Core/Array.h>
-#include <Axf/Core/Exception.h>
-#include <Axf/Core/IndexOutOfBoundsException.h>
-#include <Axf/Core/Memory.h>
-#include <Axf/Core/NullPointerException.h>
-#include <Axf/Core/Object.h>
-#include <Axf/Core/ReferenceCounted.h>
-#include <Axf/Core/String.h>
 
-#endif /* AXF_H */
+}
+}
+
+#endif /* SMARTPOINTERS_H */

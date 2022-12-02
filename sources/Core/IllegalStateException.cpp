@@ -18,32 +18,26 @@
  */
 
 /* 
- * File:   Axf.h - Artemis Extended Framework main header file
+ * File:   IllegalStateException.cpp
  * Author: Javier Marrero
- *
- * Created on November 27, 2022, 1:11 AM
+ * 
+ * Created on November 28, 2022, 10:41 PM
  */
 
-#ifndef AXF_H
-#define AXF_H
+#include <Axf/Core/IllegalStateException.h>
 
-// C++
-#include <cstddef>
+using namespace axf;
+using namespace axf::core;
 
-// API
-#include <Axf/API/Compiler.h>
-#include <Axf/API/Platform.h>
-#include <Axf/API/Version.h>
+IllegalStateException::IllegalStateException(const char* message)
+:
+Exception(message)
+{
+}
 
-#include <Axf/Core/Lang-C++/traits.h>
+IllegalStateException::~IllegalStateException()
+{
+}
 
-#include <Axf/Core/Array.h>
-#include <Axf/Core/Exception.h>
-#include <Axf/Core/IndexOutOfBoundsException.h>
-#include <Axf/Core/Memory.h>
-#include <Axf/Core/NullPointerException.h>
-#include <Axf/Core/Object.h>
-#include <Axf/Core/ReferenceCounted.h>
-#include <Axf/Core/String.h>
 
-#endif /* AXF_H */
+
