@@ -27,6 +27,10 @@
 #ifndef REFERENCECOUNTED_H
 #define REFERENCECOUNTED_H
 
+// API
+#include <Axf/Core/Lang-C++/traits.h>
+#include <Axf/Core/IllegalStateException.h>
+
 namespace axf
 {
 namespace core
@@ -101,6 +105,22 @@ public:
     virtual ~ReferenceCounted();
 
     /**
+     * Increases the strong reference counting of this object by one.
+     */
+    inline void grabStrongReference() const
+    {
+        m_references.m_strong++;
+    }
+
+    /**
+     * Increases the weak reference counting of this object by one.
+     */
+    inline void grabWeakReference() const
+    {
+        m_references.m_weak++;
+    }
+
+    /**
      * Returns a constant reference to the reference counting structure.
      * 
      * @return a refcount_t const reference
@@ -115,7 +135,7 @@ public:
      * 
      * @return a long integer representing the value of the strong reference.
      */
-    inline volatile long queryStrongReferences() const
+    inline long queryStrongReferences() const
     {
         return m_references.m_strong;
     }
@@ -125,9 +145,38 @@ public:
      * 
      * @return a long integer representing the value of the weak reference.
      */
-    inline volatile long queryWeakReferences() const
+    inline long queryWeakReferences() const
     {
         return m_references.m_weak;
+    }
+
+    /**
+     * Releases a strong reference of this object. If the strong reference
+     * count reaches zero, the object deletes itself.
+     */
+    inline void releaseStrongReference() const
+    {
+        if (m_references.m_strong == 0)
+            throw IllegalStateException("attempted to release a reference of an already deleted object.");
+
+        if (--m_references.m_strong <= 0)
+        {
+            delete this;
+        }
+    }
+
+    /**
+     * Releases a weak reference from this object.
+     */
+    inline void releaseWeakReference() const
+    {
+        if (m_references.m_weak == 0)
+            throw IllegalStateException("attempted to release a reference of an already deleted object.");
+
+        if (--m_references.m_weak <= 0 && (m_references.m_strong == 0))
+        {
+            delete this;
+        }
     }
 
 protected:
@@ -146,6 +195,22 @@ protected:
 private:
 
     mutable refcount_t m_references;    /// This field is mutable since it may be used with const objects
+} ;
+
+/**
+ * This type trait allows to determinate whether a determined data type is an instance
+ * of ReferenceCounted. This is used in several contexts to determine whether
+ * intrusive reference counting must be used.
+ * <p>
+ * This type trait's evaluation result is computed in compile time and therefore
+ * there are no runtime penalties implied in the evaluation of this expression,
+ * other than slower compile times.
+ *
+ * @author J. Marrero
+ */
+template <typename T>
+struct is_reference_counted : public traits::integral_constant<bool, traits::is_base_of<ReferenceCounted, T>::value>
+{
 } ;
 
 }

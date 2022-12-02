@@ -18,22 +18,32 @@
  */
 
 /* 
- * File:   Exception.cpp
+ * File:   Compiler.h
  * Author: Javier Marrero
- * 
- * Created on November 27, 2022, 4:48 PM
+ *
+ * Created on August 15, 2022, 12:47 AM
  */
 
-#include <Axf/Core/Exception.h>
+#ifndef COMPILER_H
+#define COMPILER_H
 
-using namespace axf;
-using namespace axf::core;
+#if defined(__GNUC__)
+#define ARTEMIS_COMPILER_GCC_COMPATIBLE 1
+#define GNUC_VERSION (__GNUC__ * 10000 \
+                     + __GNUC_MINOR__ * 100 \
+                     + __GNUC_PATCHLEVEL__)
+#endif
 
-Exception::Exception(const char* message) : m_message(message)
-{
-}
+#if defined(__GNUC__) && !defined(__llvm__) && !defined(__INTEL_COMPILER)
+#define ARTEMIS_COMPILER_GCC   __GNUC__ // probably
+#endif
 
-Exception::~Exception()
-{
-}
+/* Configurations for GCC only */
+
+/* Language-wide configuration */
+#if __cplusplus >= 201103L
+#define ARTEMIS_CXX11_SUPPORTED    1
+#endif
+
+#endif /* COMPILER_H */
 

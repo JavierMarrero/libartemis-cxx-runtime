@@ -30,6 +30,9 @@
 // C++
 #include <cstddef>
 
+// API
+#include <Axf/Core/ReferenceCounted.h>
+
 namespace axf
 {
 namespace core
@@ -39,7 +42,7 @@ namespace core
  * Represents the string data type: a finite and null terminated sequence
  * of characters.
  * <p>
- * The <code>String</code> class is akin to that in another programming
+ * The <code>string</code> class is akin to that in another programming
  * languages, such as Java and C# (type string). It defines a finite and delimited
  * sequence of characters. Internally, this class uses UTF-8 encoding to support
  * <i>Unicode</i>. UTF-8, being a variable character encoding, provides poor
@@ -65,14 +68,42 @@ namespace core
  *
  * @author J. Marrero
  */
-class String
+class string : protected ReferenceCounted
 {
 public:
 
-    String();                   /// Default constructor
-    ~String();                  /// This class' destructor is not marked virtual on purpose
+    /**
+     * An integer value representing an invalid position in the string. It is
+     * normally the return value of methods that need to find or return an index
+     * and the index returned is not valid somehow.
+     */
+    static const int NPOS = -1;
 
-    String(const char* cstr);   /// Constructs a string via a pointer to a c string
+    string();                       /// Default constructor
+    ~string();                      /// This class' destructor is not marked virtual on purpose
+
+    string(const char* cstr);       /// Constructs a string via a pointer to a c string
+    string(const wchar_t* wstr);    /// Constructs a string via a wide character array
+
+    /**
+     * Appends 'str' to this string. This is a mutator method and the reference
+     * to the string must itself not be constant. The mutated string is the
+     * same calling string.
+     *
+     * @param str
+     * @return a reference to "this"
+     */
+    string& append(const string& str);
+
+    /**
+     * Returns the bytes of this string as a pointer to char.
+     * 
+     * @return
+     */
+    inline const char* bytes() const
+    {
+        return m_buffer;
+    }
 
     /**
      * Clear this string's content, releasing all the memory allocated by this
@@ -81,13 +112,62 @@ public:
      */
     void clear();
 
+    /**
+     * Returns the length of this string in characters, not counting the
+     * terminating null.
+     * 
+     * @return a size_t representing the length of the string (in characters)
+     */
+    inline size_t length() const
+    {
+        return m_length;
+    }
+
 private:
 
     typedef char utf8_char;
 
     utf8_char*  m_buffer;       /// The data-buffer itself
     size_t      m_capacity;     /// The capacity of the buffer
-    size_t      m_size;         /// The actual size of the string
+    size_t      m_length;       /// The length in characters of the buffer
+    size_t      m_size;         /// The actual size of the string in bytes
+
+    /**
+     * Copies the contents of this string's buffer to the newly specified array.
+     * The array must be sufficiently large to hold the resulting copy. These
+     * bound checks are not performed, therefore it is programmer's responsibility.
+     * <p>
+     * <code>startIndex</code> must be an integer larger than zero. If negative,
+     * it will be clamped to zero.
+     * <p>
+     * <code>endIndex</code> must be an integer smaller than the size of the buffer.
+     * If larger, it will be clamped to the size of the buffer.
+     *
+     * @param startIndex
+     * @param endIndex
+     * @param newArray
+     *
+     * @return the array passed as parameter
+     */
+    utf8_char* arrayCopy(int startIndex, int endIndex, utf8_char* newArray) const;
+
+    /**
+     * Checks that the index is a value between 0 (inclusive) and size (exclusive).
+     * If the value is not between 0 and size then an IndexOutOfBoundsException
+     * is raised.
+     * 
+     * @param index
+     */
+    void checkIndexExclusive(int index);
+
+    /**
+     * Resizes the string to a new capacity. If the string had content copies
+     * the content into the newly allocated buffer. The provided integer is
+     * a delta, a value to which the capacity is algebraically added.
+     * 
+     * @param newCapacity
+     */
+    void resize(int delta);
 
 } ;
 

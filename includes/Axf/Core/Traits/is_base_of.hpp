@@ -18,22 +18,45 @@
  */
 
 /* 
- * File:   Exception.cpp
+ * File:   is_base_of.hpp
  * Author: Javier Marrero
- * 
- * Created on November 27, 2022, 4:48 PM
+ *
+ * Created on August 17, 2022, 9:42 PM
  */
 
-#include <Axf/Core/Exception.h>
+#ifndef IS_BASE_OF_HPP
+#define IS_BASE_OF_HPP
 
-using namespace axf;
-using namespace axf::core;
+/* Selenium API */
+#include "is_base_and_derived.hpp"
+#include "remove_cv.hpp"
 
-Exception::Exception(const char* message) : m_message(message)
+namespace axf
 {
+namespace traits
+{
+namespace bits
+{
+
+template <class B, class D>
+struct is_base_of_impl
+{
+    typedef typename remove_cv<B>::type ncvB;
+    typedef typename remove_cv<D>::type ncvD;
+
+    ///TODO: Being a class is also a requisite
+    static const bool value = (ARTEMIS_IS_BASE_OF(ncvB, ncvD) || is_same<ncvB, ncvD>::value);
+} ;
+
 }
 
-Exception::~Exception()
+template <class Base, class Derived> struct is_base_of
+: public integral_constant<bool, (bits::is_base_of_impl<Base, Derived>::value)>
 {
+} ;
+
 }
+}
+
+#endif /* IS_BASE_OF_HPP */
 

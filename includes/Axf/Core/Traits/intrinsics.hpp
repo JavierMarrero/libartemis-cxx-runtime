@@ -18,22 +18,25 @@
  */
 
 /* 
- * File:   Exception.cpp
+ * File:   intrinsics.hpp
  * Author: Javier Marrero
- * 
- * Created on November 27, 2022, 4:48 PM
+ *
+ * Created on August 17, 2022, 9:29 PM
  */
 
-#include <Axf/Core/Exception.h>
+#ifndef INTRINSICS_HPP
+#define INTRINSICS_HPP
 
-using namespace axf;
-using namespace axf::core;
+/* Configurations */
+#include <Axf/API/Compiler.h>
 
-Exception::Exception(const char* message) : m_message(message)
-{
-}
+#if defined(ARTEMIS_COMPILER_GCC)
+#   if GNUC_VERSION >= 40403
+#       define ARTEMIS_IS_UNION(T)         __is_union(T)
+#       define ARTEMIS_IS_CLASS(T)         __is_class(T)
+#       define ARTEMIS_IS_BASE_OF(T, U)    (__is_base_of(T, U) && !axf::traits::is_same<T, U>::value)
+#   endif
+#endif
 
-Exception::~Exception()
-{
-}
+#endif /* INTRINSICS_HPP */
 

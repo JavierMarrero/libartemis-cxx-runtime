@@ -18,22 +18,18 @@
  */
 
 /* 
- * File:   Exception.cpp
+ * File:   Platform.h
  * Author: Javier Marrero
- * 
- * Created on November 27, 2022, 4:48 PM
+ *
+ * Created on August 15, 2022, 12:36 AM
  */
 
-#include <Axf/Core/Exception.h>
+#ifndef PLATFORM_H
+#define PLATFORM_H
 
-using namespace axf;
-using namespace axf::core;
+#if defined(_WIN32) || defined (__WIN32) || defined(__WIN32__) || defined(WINDOWS)
+#   define ARTEMIS_PLATFORM_W32
+#endif
 
-Exception::Exception(const char* message) : m_message(message)
-{
-}
-
-Exception::~Exception()
-{
-}
+#endif /* PLATFORM_H */
 

@@ -18,22 +18,34 @@
  */
 
 /* 
- * File:   Exception.cpp
+ * File:   integral_constant.hpp
  * Author: Javier Marrero
- * 
- * Created on November 27, 2022, 4:48 PM
+ *
+ * Created on August 17, 2022, 9:32 PM
  */
 
-#include <Axf/Core/Exception.h>
+#ifndef INTEGRAL_CONSTANT_HPP
+#define INTEGRAL_CONSTANT_HPP
 
-using namespace axf;
-using namespace axf::core;
-
-Exception::Exception(const char* message) : m_message(message)
+namespace axf
 {
+namespace traits
+{
+
+template <typename T, T val>
+struct integral_constant
+{
+    typedef T value_type;
+    typedef integral_constant<T, val> type;
+
+    static const T value = val;
+} ;
+
+typedef integral_constant<bool, true> true_type;
+typedef integral_constant<bool, false> false_type;
+
+}
 }
 
-Exception::~Exception()
-{
-}
+#endif /* INTEGRAL_CONSTANT_HPP */
 

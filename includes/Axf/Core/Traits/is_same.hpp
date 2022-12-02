@@ -18,22 +18,28 @@
  */
 
 /* 
- * File:   Exception.cpp
+ * File:   is_same.hpp
  * Author: Javier Marrero
- * 
- * Created on November 27, 2022, 4:48 PM
+ *
+ * Created on August 17, 2022, 9:42 PM
  */
 
-#include <Axf/Core/Exception.h>
+#ifndef IS_SAME_HPP
+#define IS_SAME_HPP
 
-using namespace axf;
-using namespace axf::core;
+#include "integral_constant.hpp"
 
-Exception::Exception(const char* message) : m_message(message)
+namespace axf
 {
+namespace traits
+{
+
+template <class T, class U> struct is_same : public false_type {};
+template <class T> struct is_same<T, T> : public true_type {};
+
+}
 }
 
-Exception::~Exception()
-{
-}
+
+#endif /* IS_SAME_HPP */
 

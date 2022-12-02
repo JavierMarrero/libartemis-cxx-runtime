@@ -18,22 +18,37 @@
  */
 
 /* 
- * File:   Exception.cpp
+ * File:   array.cpp
  * Author: Javier Marrero
- * 
- * Created on November 27, 2022, 4:48 PM
+ *
+ * Created on November 28, 2022, 8:30 PM
  */
 
-#include <Axf/Core/Exception.h>
+#include <stdlib.h>
+#include <iostream>
+
+#include <Axf.h>
 
 using namespace axf;
 using namespace axf::core;
 
-Exception::Exception(const char* message) : m_message(message)
+int main(int argc, char** argv)
 {
-}
+    Array<int, 10> array;
+    for (int i = 0; i < 10; ++i)
+    {
+        array[i] = i;
+    }
 
-Exception::~Exception()
-{
+    size_t j = array.length;
+    while (j-- > 0)
+    {
+        std::cout << array[j] << ", ";
+    }
+    std::cout << std::endl;
+
+    
+    std::getchar();
+    return (EXIT_SUCCESS);
 }
 

@@ -18,22 +18,27 @@
  */
 
 /* 
- * File:   Exception.cpp
+ * File:   IndexOutOfBoundsException.cpp
  * Author: Javier Marrero
  * 
- * Created on November 27, 2022, 4:48 PM
+ * Created on November 28, 2022, 7:58 PM
  */
 
-#include <Axf/Core/Exception.h>
+#include <Axf/Core/IndexOutOfBoundsException.h>
 
 using namespace axf;
 using namespace axf::core;
 
-Exception::Exception(const char* message) : m_message(message)
+IndexOutOfBoundsException::IndexOutOfBoundsException(const char* message, long long index)
+:
+Exception(message),
+m_index(index)
 {
 }
 
-Exception::~Exception()
+IndexOutOfBoundsException::~IndexOutOfBoundsException()
 {
 }
+
+
 

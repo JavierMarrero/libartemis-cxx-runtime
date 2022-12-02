@@ -18,22 +18,45 @@
  */
 
 /* 
- * File:   Exception.cpp
+ * File:   Version.h
  * Author: Javier Marrero
- * 
- * Created on November 27, 2022, 4:48 PM
+ *
+ * Created on August 15, 2022, 12:35 AM
  */
 
-#include <Axf/Core/Exception.h>
+#ifndef __SELENIUM_VERSION_H
+#define __SELENIUM_VERSION_H
 
-using namespace axf;
-using namespace axf::core;
+/* Version macros */
+#ifndef __ARTEMIS_VERSION_MACROS_SET
+#define  __ARTEMIS_VERSION_MACROS_SET 1
 
-Exception::Exception(const char* message) : m_message(message)
+#define _ARTEMIS_MAJOR_VERSION     0
+#define _ARTEMIS_MINOR_VERSION     1
+#define _ARTEMIS_REVISION_VERSION  0
+
+#endif
+
+namespace axf
 {
+namespace api
+{
+
+/**
+ * This enumerated type defines the different version fields for the library.
+ * It relies on the version macros, this is just a 'typesafe' way to access
+ * these fields. They must be used throughout the code instead of the macros.
+ */
+enum Version
+{
+    MAJOR = _ARTEMIS_MAJOR_VERSION,
+    MINOR = _ARTEMIS_MINOR_VERSION,
+    REVISION = _ARTEMIS_REVISION_VERSION
+} ;
+typedef enum Version Version;
+
+}
 }
 
-Exception::~Exception()
-{
-}
+#endif /* VERSION_H */
 

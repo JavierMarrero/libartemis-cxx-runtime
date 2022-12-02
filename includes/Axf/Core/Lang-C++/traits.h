@@ -18,22 +18,23 @@
  */
 
 /* 
- * File:   Exception.cpp
+ * File:   type-traits.h
  * Author: Javier Marrero
- * 
- * Created on November 27, 2022, 4:48 PM
+ *
+ * Created on August 17, 2022, 9:24 PM
  */
 
-#include <Axf/Core/Exception.h>
+#ifndef TYPE_TRAITS_H
+#define TYPE_TRAITS_H
 
-using namespace axf;
-using namespace axf::core;
+/* Artemis API C++ Type Traits */
+#include <Axf/Core/Traits/enable_if.hpp>
+#include <Axf/Core/Traits/integral_constant.hpp>
+#include <Axf/Core/Traits/intrinsics.hpp>
+#include <Axf/Core/Traits/is_base_and_derived.hpp>
+#include <Axf/Core/Traits/is_base_of.hpp>
+#include <Axf/Core/Traits/is_same.hpp>
+#include <Axf/Core/Traits/remove_cv.hpp>
 
-Exception::Exception(const char* message) : m_message(message)
-{
-}
-
-Exception::~Exception()
-{
-}
+#endif /* TYPE_TRAITS_H */
 

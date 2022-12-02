@@ -18,22 +18,26 @@
  */
 
 /* 
- * File:   Exception.cpp
+ * File:   IllegalStateException.cpp
  * Author: Javier Marrero
  * 
- * Created on November 27, 2022, 4:48 PM
+ * Created on November 28, 2022, 10:41 PM
  */
 
-#include <Axf/Core/Exception.h>
+#include <Axf/Core/IllegalStateException.h>
 
 using namespace axf;
 using namespace axf::core;
 
-Exception::Exception(const char* message) : m_message(message)
+IllegalStateException::IllegalStateException(const char* message)
+:
+Exception(message)
 {
 }
 
-Exception::~Exception()
+IllegalStateException::~IllegalStateException()
 {
 }
+
+
 

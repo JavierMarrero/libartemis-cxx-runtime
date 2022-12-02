@@ -18,22 +18,44 @@
  */
 
 /* 
- * File:   Exception.cpp
+ * File:   enable_if.hpp
  * Author: Javier Marrero
- * 
- * Created on November 27, 2022, 4:48 PM
+ *
+ * Created on August 17, 2022, 10:25 PM
  */
 
-#include <Axf/Core/Exception.h>
+#ifndef ENABLE_IF_HPP
+#define ENABLE_IF_HPP
 
-using namespace axf;
-using namespace axf::core;
-
-Exception::Exception(const char* message) : m_message(message)
+namespace axf
 {
+namespace traits
+{
+
+template <typename T, typename R = void>
+struct enable_if_has_type
+{
+    typedef R type;
+} ;
+
+template <bool B, class T = void>
+struct enable_if_c
+{
+    typedef T type;
+} ;
+
+template <class T>
+struct enable_if_c<false, T>
+{
+} ;
+
+template <class Cond, class T = void>
+struct enable_if : public enable_if_c<Cond::value, T>
+{
+} ;
+
+}
 }
 
-Exception::~Exception()
-{
-}
+#endif /* ENABLE_IF_HPP */
 

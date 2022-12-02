@@ -31,7 +31,19 @@
 #include <cstddef>
 
 // API
+#include <Axf/API/Compiler.h>
+#include <Axf/API/Platform.h>
+#include <Axf/API/Version.h>
+
+#include <Axf/Core/Lang-C++/traits.h>
+
+#include <Axf/Core/Array.h>
+#include <Axf/Core/Exception.h>
+#include <Axf/Core/IndexOutOfBoundsException.h>
 #include <Axf/Core/Memory.h>
+#include <Axf/Core/NullPointerException.h>
 #include <Axf/Core/Object.h>
+#include <Axf/Core/ReferenceCounted.h>
+#include <Axf/Core/String.h>
 
 #endif /* AXF_H */

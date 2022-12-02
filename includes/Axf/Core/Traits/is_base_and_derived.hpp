@@ -18,22 +18,46 @@
  */
 
 /* 
- * File:   Exception.cpp
+ * File:   is_base_and_derived.hpp
  * Author: Javier Marrero
- * 
- * Created on November 27, 2022, 4:48 PM
+ *
+ * Created on August 17, 2022, 10:13 PM
  */
 
-#include <Axf/Core/Exception.h>
+#ifndef IS_BASE_AND_DERIVED_HPP
+#define IS_BASE_AND_DERIVED_HPP
 
-using namespace axf;
-using namespace axf::core;
+/* Selenium API */
+#include "intrinsics.hpp"
+#include "integral_constant.hpp"
+#include "is_same.hpp"
+#include "remove_cv.hpp"
 
-Exception::Exception(const char* message) : m_message(message)
+namespace axf
 {
+namespace traits
+{
+namespace bits
+{
+
+template <typename B, typename D>
+struct is_base_and_derived_impl
+{
+    typedef typename remove_cv<B>::type ncvB;
+    typedef typename remove_cv<D>::type ncvD;
+
+    static const bool value = (ARTEMIS_IS_BASE_OF(B, D) && !traits::is_same<ncvB, ncvD>::value);
+} ;
+
 }
 
-Exception::~Exception()
+template <class Base, class Derived>
+struct is_base_and_derived : public integral_constant<bool, bits::is_base_and_derived_impl<Base, Derived>::value>
 {
+} ;
+
 }
+}
+
+#endif /* IS_BASE_AND_DERIVED_HPP */
 

@@ -68,7 +68,7 @@ public:
      * 
      * @param pointer
      */
-    abstract_ref(T* pointer) : m_pointer(pointer) { }
+    explicit abstract_ref(T* pointer) : m_pointer(pointer) { }
 
     /// Default destructor
 
@@ -99,7 +99,7 @@ public:
     /**
      * Clears this reference. This method's implementation is overridden by child classes.
      */
-    virtual void clear() = 0;
+    virtual void reset() = 0;
 
     /**
      * Returns the value of the pointer stored in this reference.
@@ -109,6 +109,49 @@ public:
     inline T* get()
     {
         return m_pointer;
+    }
+
+    /**
+     * Returns the value of the pointer stored in this reference as a const
+     * pointer.
+     *
+     * @return
+     */
+    inline const T* get() const
+    {
+        return m_pointer;
+    }
+
+    /**
+     * Returns true if the pointed object is a null reference.
+     * 
+     * @return
+     */
+    inline bool isNull() const
+    {
+        return m_pointer == NULL;
+    }
+
+    /**
+     * Returns the truth value of this pointer. It is considered true if the
+     * pointed object is not null, false otherwise.
+     * 
+     * @return
+     */
+    inline operator bool()
+    {
+        return m_pointer != NULL;
+    }
+
+    /**
+     * Two pointers are deemed equals if they point to the same memory location.
+     *
+     * @param rhs
+     * @return
+     */
+    inline bool operator==(const T* rhs) const
+    {
+        return m_pointer == rhs;
     }
 
 protected:
@@ -122,10 +165,11 @@ protected:
      * on the heap.
      *
      * TODO: Check if it would be suitable to statically assign a message buffer.
+     * UPDATE: Seems that it is possible
      */
     inline void checkDereferencingCapability()
     {
-        char* message = new char[64];
+        char message[64] = {0};
         std::sprintf(message, "null dereferencing from pointer at 0x%16x", this);
 
         if (m_pointer == NULL)

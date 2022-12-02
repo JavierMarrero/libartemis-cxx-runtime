@@ -18,22 +18,42 @@
  */
 
 /* 
- * File:   Exception.cpp
+ * File:   remove_cv.hpp
  * Author: Javier Marrero
- * 
- * Created on November 27, 2022, 4:48 PM
+ *
+ * Created on August 17, 2022, 9:41 PM
  */
 
-#include <Axf/Core/Exception.h>
+#ifndef REMOVE_CV_HPP
+#define REMOVE_CV_HPP
 
-using namespace axf;
-using namespace axf::core;
-
-Exception::Exception(const char* message) : m_message(message)
+namespace axf
 {
+namespace traits
+{
+
+template <class T> struct remove_cv
+{
+    typedef T type;
+} ;
+
+template <class T> struct remove_cv<T const>
+{
+    typedef T type;
+} ;
+
+template <class T> struct remove_cv<T volatile>
+{
+    typedef T type;
+} ;
+
+template <class T> struct remove_cv<T const volatile>
+{
+    typedef T type;
+} ;
+
+}
 }
 
-Exception::~Exception()
-{
-}
+#endif /* REMOVE_CV_HPP */
 

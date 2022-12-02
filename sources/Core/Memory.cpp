@@ -17,23 +17,7 @@
  * MA 02110-1301  USA
  */
 
-/* 
- * File:   Exception.cpp
- * Author: Javier Marrero
- * 
- * Created on November 27, 2022, 4:48 PM
- */
-
-#include <Axf/Core/Exception.h>
+#include <Axf/Core/Memory.h>
 
 using namespace axf;
 using namespace axf::core;
-
-Exception::Exception(const char* message) : m_message(message)
-{
-}
-
-Exception::~Exception()
-{
-}
-

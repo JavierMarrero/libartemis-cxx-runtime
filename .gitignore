@@ -154,6 +154,8 @@ local.properties
 *.gcda
 *.gcov
 
+*.stackdump
+
 ### NetBeans ###
 **/nbproject/private/
 **/nbproject/Makefile-*.mk

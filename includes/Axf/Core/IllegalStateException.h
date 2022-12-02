@@ -18,14 +18,14 @@
  */
 
 /* 
- * File:   NullPointerException.h
+ * File:   IllegalStateException.h
  * Author: Javier Marrero
  *
- * Created on November 27, 2022, 5:05 PM
+ * Created on November 28, 2022, 10:41 PM
  */
 
-#ifndef NULLPOINTEREXCEPTION_H
-#define NULLPOINTEREXCEPTION_H
+#ifndef ILLEGALSTATEEXCEPTION_H
+#define ILLEGALSTATEEXCEPTION_H
 
 // API
 #include <Axf/Core/Exception.h>
@@ -36,28 +36,31 @@ namespace core
 {
 
 /**
- * A <b>null pointer dereferencing</b> is a highly risky type of error that
- * arises whenever the programmer dereferences a pointer that points to an
- * invalid memory location.
+ * Signals the runtime environment that the program has reached some sort of
+ * illegal state at which computations may not be normally resumed.
  * <p>
- * This is normally a fatal error that results in a crash of the application.
- * However, smart pointers will throw this exception signaling a <i>null-pointer
- * dereferencing</i>, and handlers will be allowed to recover from this
- * abnormal condition.
+ * This exception is raised whenever the computation has reduced to a illegal
+ * state. Illegal states include incongruent internal state of classes,
+ * data inconsistency, miscarried control flow, bad method invocation, and
+ * others.
+ * <p>
+ * An exception message should be provided in order to clarify the nature of
+ * the error.
  *
+ * @ref Exception "Exception class"
  * @author J. Marrero
  */
-class NullPointerException : public Exception
+class IllegalStateException : public Exception
 {
 public:
 
-    NullPointerException(const char* message);
-    ~NullPointerException();                    /// The destructor is marked non-virtual on purpose
+    IllegalStateException(const char* message);     /// Default constructor
+    ~IllegalStateException();                       /// Default destructor
 
 } ;
 
 }
 }
 
-#endif /* NULLPOINTEREXCEPTION_H */
+#endif /* ILLEGALSTATEEXCEPTION_H */
 

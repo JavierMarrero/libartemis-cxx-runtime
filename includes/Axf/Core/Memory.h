@@ -28,6 +28,18 @@
 #define SMARTPOINTERS_H
 
 // Include the private API
-#include "./Bits/unique_ref.h"
+#include "./Bits/scoped_ref.h"
+#include "./Bits/strong_ref.h"
+#include "./Bits/weak_ref.h"
+
+namespace axf
+{
+namespace core
+{
+
+
+
+}
+}
 
 #endif /* SMARTPOINTERS_H */
