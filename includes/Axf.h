@@ -31,6 +31,12 @@
 #include <cstddef>
 
 // API
+#include <Axf/API/Compiler.h>
+#include <Axf/API/Platform.h>
+#include <Axf/API/Version.h>
+
+#include <Axf/Core/Lang-C++/traits.h>
+
 #include <Axf/Core/Array.h>
 #include <Axf/Core/Exception.h>
 #include <Axf/Core/IndexOutOfBoundsException.h>

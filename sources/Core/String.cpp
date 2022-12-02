@@ -65,6 +65,21 @@ string& string::append(const string& str)
     return *this;
 }
 
+string::utf8_char* string::arrayCopy(int startIndex, int endIndex, utf8_char* newArray) const
+{
+    if (startIndex < 0)
+        startIndex = 0;
+    if (endIndex >= (int) m_size)
+        endIndex = m_size;
+
+    for (int i = startIndex; i < endIndex; ++i)
+    {
+        newArray[i] = m_buffer[i];
+    }
+
+    return newArray;
+}
+
 void string::checkIndexExclusive(int index)
 {
     if (index < 0 || index >= ((int) m_size))
@@ -80,6 +95,7 @@ void string::clear()
         delete m_buffer;
     }
     m_capacity = 0;
+    m_length = 0;
     m_size = 0;
 }
 

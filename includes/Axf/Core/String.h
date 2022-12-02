@@ -120,7 +120,7 @@ public:
      */
     inline size_t length() const
     {
-        return m_size;
+        return m_length;
     }
 
 private:
@@ -129,7 +129,27 @@ private:
 
     utf8_char*  m_buffer;       /// The data-buffer itself
     size_t      m_capacity;     /// The capacity of the buffer
-    size_t      m_size;         /// The actual size of the string
+    size_t      m_length;       /// The length in characters of the buffer
+    size_t      m_size;         /// The actual size of the string in bytes
+
+    /**
+     * Copies the contents of this string's buffer to the newly specified array.
+     * The array must be sufficiently large to hold the resulting copy. These
+     * bound checks are not performed, therefore it is programmer's responsibility.
+     * <p>
+     * <code>startIndex</code> must be an integer larger than zero. If negative,
+     * it will be clamped to zero.
+     * <p>
+     * <code>endIndex</code> must be an integer smaller than the size of the buffer.
+     * If larger, it will be clamped to the size of the buffer.
+     *
+     * @param startIndex
+     * @param endIndex
+     * @param newArray
+     *
+     * @return the array passed as parameter
+     */
+    utf8_char* arrayCopy(int startIndex, int endIndex, utf8_char* newArray) const;
 
     /**
      * Checks that the index is a value between 0 (inclusive) and size (exclusive).

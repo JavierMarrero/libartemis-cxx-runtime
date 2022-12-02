@@ -99,7 +99,7 @@ public:
     /**
      * Clears this reference. This method's implementation is overridden by child classes.
      */
-    virtual void clear() = 0;
+    virtual void reset() = 0;
 
     /**
      * Returns the value of the pointer stored in this reference.
@@ -109,6 +109,27 @@ public:
     inline T* get()
     {
         return m_pointer;
+    }
+
+    /**
+     * Returns the value of the pointer stored in this reference as a const
+     * pointer.
+     *
+     * @return
+     */
+    inline const T* get() const
+    {
+        return m_pointer;
+    }
+
+    /**
+     * Returns true if the pointed object is a null reference.
+     * 
+     * @return
+     */
+    inline bool isNull() const
+    {
+        return m_pointer == NULL;
     }
 
     /**

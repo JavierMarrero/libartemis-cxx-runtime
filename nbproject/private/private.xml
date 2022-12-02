@@ -6,11 +6,6 @@
     </data>
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/D:/Workspace/libartemis-c++-runtime/tests/axf/core/memory/smart_references.cpp</file>
-            <file>file:/D:/Workspace/libartemis-c++-runtime/includes/Axf/Core/Bits/memory-dtors.h</file>
-            <file>file:/D:/Workspace/libartemis-c++-runtime/includes/Axf/Core/Bits/abstract_ref.h</file>
-            <file>file:/D:/Workspace/libartemis-c++-runtime/includes/Axf/Core/Bits/unique_ref.h</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>

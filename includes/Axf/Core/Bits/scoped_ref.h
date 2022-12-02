@@ -36,9 +36,9 @@ namespace core
 {
 
 /**
- * A <b>unique reference</b> is a type of smart pointer that only allows single
+ * A <b>scoped reference</b> is a type of smart pointer that only allows single
  * ownership of a particular reference. The object owned by a
- * <code>unique_ref</code> object has a life cycle never exceeding that of
+ * <code>scoped_ref</code> object has a life cycle never exceeding that of
  * this pointer´s.
  * <p>
  * The semantics of this reference is determined by the quality that this
@@ -48,8 +48,8 @@ namespace core
  * The object is deleted using a deleter functor object when either of the
  * following happens:
  * <ul>
- *  <li>the managing <code>unique_ref</code> is deleted.</li>
- *  <li>the managing <code>unique_ref</code> is assigned to another reference</li>
+ *  <li>the managing <code>scoped_ref</code> is deleted.</li>
+ *  <li>the managing <code>scoped_ref</code> is assigned to another reference</li>
  * </ul>
  * <p>
  * The pointer is deleted using a <i>(possibly user-supplied)</i> deleter to
@@ -60,7 +60,7 @@ namespace core
  * @author J. Marrero
  */
 template <typename T, typename deleter_functor = axf::core::bits::default_delete<T> >
-class unique_ref : public bits::abstract_ref<T, deleter_functor>
+class scoped_ref : public bits::abstract_ref<T, deleter_functor>
 {
 public:
 
@@ -70,14 +70,14 @@ public:
      * 
      * @param pointer
      */
-    unique_ref(T* pointer = NULL) : bits::abstract_ref<T>(pointer) { }
+    scoped_ref(T* pointer = NULL) : bits::abstract_ref<T>(pointer) { }
 
     /**
      * Destroys this object, invoking the destructor of the pointed object.
      */
-    ~unique_ref()
+    ~scoped_ref()
     {
-        clear();
+        reset();
     }
 
     /**
@@ -85,7 +85,7 @@ public:
      * without exception, deleted, since this pointer semantics implies the
      * ownership of a reference.
      */
-    inline void clear()
+    inline void reset()
     {
         if (this->m_pointer != NULL)
         {
@@ -100,11 +100,11 @@ public:
      * @param rhs
      * @return
      */
-    inline unique_ref<T, deleter_functor>& operator=(unique_ref<T, deleter_functor>& rhs)
+    inline scoped_ref<T, deleter_functor>& operator=(scoped_ref<T, deleter_functor>& rhs)
     {
         if (this != &rhs)
         {
-            clear();
+            reset();
 
             // Reassign the pointer
             this->m_pointer = rhs.m_pointer;
@@ -114,7 +114,7 @@ public:
         }
         return *this;
     }
-    
+
 } ;
 
 }

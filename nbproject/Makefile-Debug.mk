@@ -39,6 +39,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/sources/Core/Exception.o \
 	${OBJECTDIR}/sources/Core/IllegalStateException.o \
 	${OBJECTDIR}/sources/Core/IndexOutOfBoundsException.o \
+	${OBJECTDIR}/sources/Core/Memory.o \
 	${OBJECTDIR}/sources/Core/NullPointerException.o \
 	${OBJECTDIR}/sources/Core/Object.o \
 	${OBJECTDIR}/sources/Core/ReferenceCounted.o \
@@ -100,6 +101,11 @@ ${OBJECTDIR}/sources/Core/IndexOutOfBoundsException.o: sources/Core/IndexOutOfBo
 	${MKDIR} -p ${OBJECTDIR}/sources/Core
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -Werror -Iincludes -std=c++98  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/sources/Core/IndexOutOfBoundsException.o sources/Core/IndexOutOfBoundsException.cpp
+
+${OBJECTDIR}/sources/Core/Memory.o: sources/Core/Memory.cpp
+	${MKDIR} -p ${OBJECTDIR}/sources/Core
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -Werror -Iincludes -std=c++98  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/sources/Core/Memory.o sources/Core/Memory.cpp
 
 ${OBJECTDIR}/sources/Core/NullPointerException.o: sources/Core/NullPointerException.cpp
 	${MKDIR} -p ${OBJECTDIR}/sources/Core
@@ -199,6 +205,19 @@ ${OBJECTDIR}/sources/Core/IndexOutOfBoundsException_nomain.o: ${OBJECTDIR}/sourc
 	    $(COMPILE.cc) -g -Werror -Iincludes -std=c++98  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/sources/Core/IndexOutOfBoundsException_nomain.o sources/Core/IndexOutOfBoundsException.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/sources/Core/IndexOutOfBoundsException.o ${OBJECTDIR}/sources/Core/IndexOutOfBoundsException_nomain.o;\
+	fi
+
+${OBJECTDIR}/sources/Core/Memory_nomain.o: ${OBJECTDIR}/sources/Core/Memory.o sources/Core/Memory.cpp 
+	${MKDIR} -p ${OBJECTDIR}/sources/Core
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/sources/Core/Memory.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -g -Werror -Iincludes -std=c++98  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/sources/Core/Memory_nomain.o sources/Core/Memory.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/sources/Core/Memory.o ${OBJECTDIR}/sources/Core/Memory_nomain.o;\
 	fi
 
 ${OBJECTDIR}/sources/Core/NullPointerException_nomain.o: ${OBJECTDIR}/sources/Core/NullPointerException.o sources/Core/NullPointerException.cpp 

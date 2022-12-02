@@ -47,6 +47,7 @@ namespace core
  * An exception message should be provided in order to clarify the nature of
  * the error.
  *
+ * @ref Exception "Exception class"
  * @author J. Marrero
  */
 class IllegalStateException : public Exception

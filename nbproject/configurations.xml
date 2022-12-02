@@ -6,17 +6,30 @@
                    projectFiles="true">
       <itemPath>includes/Axf/Core/Array.h</itemPath>
       <itemPath>includes/Axf.h</itemPath>
+      <itemPath>includes/Axf/API/Compiler.h</itemPath>
       <itemPath>includes/Axf/Core/Exception.h</itemPath>
       <itemPath>includes/Axf/Core/IllegalStateException.h</itemPath>
       <itemPath>includes/Axf/Core/IndexOutOfBoundsException.h</itemPath>
       <itemPath>includes/Axf/Core/Memory.h</itemPath>
       <itemPath>includes/Axf/Core/NullPointerException.h</itemPath>
       <itemPath>includes/Axf/Core/Object.h</itemPath>
+      <itemPath>includes/Axf/API/Platform.h</itemPath>
       <itemPath>includes/Axf/Core/ReferenceCounted.h</itemPath>
       <itemPath>includes/Axf/Core/String.h</itemPath>
+      <itemPath>includes/Axf/API/Version.h</itemPath>
       <itemPath>includes/Axf/Core/Bits/abstract_ref.h</itemPath>
+      <itemPath>includes/Axf/Core/Traits/enable_if.hpp</itemPath>
+      <itemPath>includes/Axf/Core/Traits/integral_constant.hpp</itemPath>
+      <itemPath>includes/Axf/Core/Traits/intrinsics.hpp</itemPath>
+      <itemPath>includes/Axf/Core/Traits/is_base_and_derived.hpp</itemPath>
+      <itemPath>includes/Axf/Core/Traits/is_base_of.hpp</itemPath>
+      <itemPath>includes/Axf/Core/Traits/is_same.hpp</itemPath>
       <itemPath>includes/Axf/Core/Bits/memory-dtors.h</itemPath>
-      <itemPath>includes/Axf/Core/Bits/unique_ref.h</itemPath>
+      <itemPath>includes/Axf/Core/Traits/remove_cv.hpp</itemPath>
+      <itemPath>includes/Axf/Core/Bits/scoped_ref.h</itemPath>
+      <itemPath>includes/Axf/Core/Bits/strong_ref.h</itemPath>
+      <itemPath>includes/Axf/Core/c++/traits.h</itemPath>
+      <itemPath>includes/Axf/Core/Bits/weak_ref.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -29,6 +42,7 @@
       <itemPath>sources/Core/Exception.cpp</itemPath>
       <itemPath>sources/Core/IllegalStateException.cpp</itemPath>
       <itemPath>sources/Core/IndexOutOfBoundsException.cpp</itemPath>
+      <itemPath>sources/Core/Memory.cpp</itemPath>
       <itemPath>sources/Core/NullPointerException.cpp</itemPath>
       <itemPath>sources/Core/Object.cpp</itemPath>
       <itemPath>sources/Core/ReferenceCounted.cpp</itemPath>
@@ -116,6 +130,12 @@
       </folder>
       <item path="includes/Axf.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="includes/Axf/API/Compiler.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="includes/Axf/API/Platform.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="includes/Axf/API/Version.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="includes/Axf/Core/Array.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="includes/Axf/Core/Bits/abstract_ref.h"
@@ -128,10 +148,17 @@
             tool="3"
             flavor2="0">
       </item>
-      <item path="includes/Axf/Core/Bits/unique_ref.h"
+      <item path="includes/Axf/Core/Bits/scoped_ref.h"
             ex="false"
             tool="3"
             flavor2="0">
+      </item>
+      <item path="includes/Axf/Core/Bits/strong_ref.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="includes/Axf/Core/Bits/weak_ref.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="includes/Axf/Core/Exception.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -161,6 +188,43 @@
       </item>
       <item path="includes/Axf/Core/String.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="includes/Axf/Core/Traits/enable_if.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="includes/Axf/Core/Traits/integral_constant.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="includes/Axf/Core/Traits/intrinsics.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="includes/Axf/Core/Traits/is_base_and_derived.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="includes/Axf/Core/Traits/is_base_of.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="includes/Axf/Core/Traits/is_same.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="includes/Axf/Core/Traits/remove_cv.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="includes/Axf/Core/c++/traits.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="sources/Arch/Windows/DllMain.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="sources/Core/Exception.cpp" ex="false" tool="1" flavor2="0">
@@ -174,6 +238,8 @@
             ex="false"
             tool="1"
             flavor2="0">
+      </item>
+      <item path="sources/Core/Memory.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="sources/Core/NullPointerException.cpp"
             ex="false"
@@ -258,6 +324,12 @@
       </folder>
       <item path="includes/Axf.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="includes/Axf/API/Compiler.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="includes/Axf/API/Platform.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="includes/Axf/API/Version.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="includes/Axf/Core/Array.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="includes/Axf/Core/Bits/abstract_ref.h"
@@ -270,10 +342,17 @@
             tool="3"
             flavor2="0">
       </item>
-      <item path="includes/Axf/Core/Bits/unique_ref.h"
+      <item path="includes/Axf/Core/Bits/scoped_ref.h"
             ex="false"
             tool="3"
             flavor2="0">
+      </item>
+      <item path="includes/Axf/Core/Bits/strong_ref.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="includes/Axf/Core/Bits/weak_ref.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="includes/Axf/Core/Exception.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -303,6 +382,43 @@
       </item>
       <item path="includes/Axf/Core/String.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="includes/Axf/Core/Traits/enable_if.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="includes/Axf/Core/Traits/integral_constant.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="includes/Axf/Core/Traits/intrinsics.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="includes/Axf/Core/Traits/is_base_and_derived.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="includes/Axf/Core/Traits/is_base_of.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="includes/Axf/Core/Traits/is_same.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="includes/Axf/Core/Traits/remove_cv.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="includes/Axf/Core/c++/traits.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="sources/Arch/Windows/DllMain.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="sources/Core/Exception.cpp" ex="false" tool="1" flavor2="0">
@@ -316,6 +432,8 @@
             ex="false"
             tool="1"
             flavor2="0">
+      </item>
+      <item path="sources/Core/Memory.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="sources/Core/NullPointerException.cpp"
             ex="false"
