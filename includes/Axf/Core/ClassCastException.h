@@ -18,34 +18,45 @@
  */
 
 /* 
- * File:   Axf.h - Artemis Extended Framework main header file
+ * File:   ClassCastException.h
  * Author: Javier Marrero
  *
- * Created on November 27, 2022, 1:11 AM
+ * Created on December 3, 2022, 12:20 PM
  */
 
-#ifndef AXF_H
-#define AXF_H
-
-// C++
-#include <cstddef>
+#ifndef CLASSCASTEXCEPTION_H
+#define CLASSCASTEXCEPTION_H
 
 // API
-#include <Axf/API/Compiler.h>
-#include <Axf/API/Platform.h>
-#include <Axf/API/Version.h>
-
-#include <Axf/Core/Lang-C++/traits.h>
-
-#include <Axf/Core/Array.h>
-#include <Axf/Core/Class.h>
 #include <Axf/Core/Exception.h>
-#include <Axf/Core/IndexOutOfBoundsException.h>
-#include <Axf/Core/Memory.h>
-#include <Axf/Core/NullPointerException.h>
-#include <Axf/Core/Number.h>
-#include <Axf/Core/Object.h>
-#include <Axf/Core/ReferenceCounted.h>
-#include <Axf/Core/String.h>
 
-#endif /* AXF_H */
+namespace axf
+{
+namespace core
+{
+
+/**
+ * The <code>ClassCastException</code> exception is thrown whenever a bad
+ * casting operation is performed, or when type safety of operations is
+ * somehow compromised.
+ * <p>
+ * 
+ * 
+ * @author J. Marrero
+ */
+class ClassCastException : public Exception
+{
+    AXF_EXCEPTION_TYPE(axf::core::ClassCastException, axf::core::Exception)
+
+public:
+
+    ClassCastException(const char* message);
+    ~ClassCastException();
+
+} ;
+
+}
+}
+
+#endif /* CLASSCASTEXCEPTION_H */
+

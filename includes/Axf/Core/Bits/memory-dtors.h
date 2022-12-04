@@ -28,7 +28,7 @@
 #define MEMORY_DTORS_H
 
 // C++
-#include <cstdio>
+#include <cstdlib>
 
 namespace axf
 {

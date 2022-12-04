@@ -28,6 +28,7 @@
 #define OBJECT_H
 
 // API
+#include <Axf/Core/Class.h>
 #include <Axf/Core/ReferenceCounted.h>
 #include <Axf/Core/String.h>
 
@@ -36,7 +37,40 @@ namespace axf
 namespace core
 {
 
-#define ARTEMIS_OBJECT(Type, SuperType)
+/**
+ * Returns a pointer to the <code>Class</code> object that encapsulates this
+ * object's type.
+ */
+#define AXF_TYPE(...) &__VA_ARGS__::getCompileTimeClass()
+
+/**
+ * A macro that encapsulates a multi-parameter template into a single expression.
+ * Useful to avoid some nasty errors when passing templates as parameters.
+ */
+#define AXF_TEMPLATE_CLASS(...) __VA_ARGS__
+
+/**
+ * This macro defines an object hierarchy and runtime type information queries
+ * meta-data available to all the users of the class.
+ * <p>
+ * This macro should be first in each class declaration, immediately below the
+ * opening curly brace. The first argument is the class itself, and the super
+ * types goes next in a comma separated list. One must use the macro
+ * <code>AXF_TYPE</code> to pass the super types.
+ */
+#define AXF_OBJECT(_Type, ...) \
+    public: \
+    \
+    static const axf::core::Class<_Type >& getCompileTimeClass() \
+    { \
+        static axf::core::Class<_Type > classVariable(#_Type, __VA_ARGS__, NULL); \
+        \
+        return classVariable; \
+    } \
+    \
+    private: \
+    \
+    virtual const axf::core::bits::Type* getRuntimeType() const { return &getCompileTimeClass(); }
 
 /**
  * The object class is the superclass of all objects in the <i>Artemis</i> framework. It provides some common 
@@ -58,6 +92,14 @@ class Object : public ReferenceCounted
 {
 public:
 
+    /**
+     * Returns a reference to the <code>Class</code> object that describes this
+     * object at compile time.
+     *
+     * @return
+     */
+    static const axf::core::Class<Object>& getCompileTimeClass();
+
     Object();                       /// Constructs a new instance of an <code>Object</code>
     virtual ~Object();              /// Destructs this object
 
@@ -78,6 +120,21 @@ public:
     virtual bool equals(const Object& object) const;
 
     /**
+     * Returns the <code>Class</code> object associated with this type at
+     * runtime.
+     * <p>
+     * This method is polymorphic and will always return the type of the
+     * underlying object, rather than the calling pointer.
+     * 
+     * @return
+     */
+    template <typename T>
+    inline const Class<T>& getClass() const
+    {
+        return reflection::asClassUnsafe<T>(*(getRuntimeType()));
+    }
+
+    /**
      * Returns a unique 32-bit integer identifying this object.
      * 
      * @return
@@ -93,6 +150,15 @@ public:
      * @return a new String object representing this object
      */
     virtual string toString() const;
+
+private:
+
+    /**
+     * Returns the runtime type object associated with this.
+     * 
+     * @return
+     */
+    virtual const bits::Type* getRuntimeType() const;
 
 } ;
 

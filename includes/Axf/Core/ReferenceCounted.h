@@ -29,7 +29,6 @@
 
 // API
 #include <Axf/Core/Lang-C++/traits.h>
-#include <Axf/Core/IllegalStateException.h>
 
 namespace axf
 {
@@ -154,30 +153,12 @@ public:
      * Releases a strong reference of this object. If the strong reference
      * count reaches zero, the object deletes itself.
      */
-    inline void releaseStrongReference() const
-    {
-        if (m_references.m_strong == 0)
-            throw IllegalStateException("attempted to release a reference of an already deleted object.");
-
-        if (--m_references.m_strong <= 0)
-        {
-            delete this;
-        }
-    }
+    void releaseStrongReference() const;
 
     /**
      * Releases a weak reference from this object.
      */
-    inline void releaseWeakReference() const
-    {
-        if (m_references.m_weak == 0)
-            throw IllegalStateException("attempted to release a reference of an already deleted object.");
-
-        if (--m_references.m_weak <= 0 && (m_references.m_strong == 0))
-        {
-            delete this;
-        }
-    }
+    void releaseWeakReference() const;
 
 protected:
 

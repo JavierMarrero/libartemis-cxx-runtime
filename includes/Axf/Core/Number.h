@@ -18,34 +18,38 @@
  */
 
 /* 
- * File:   Axf.h - Artemis Extended Framework main header file
+ * File:   Number.h
  * Author: Javier Marrero
  *
- * Created on November 27, 2022, 1:11 AM
+ * Created on December 2, 2022, 2:21 PM
  */
 
-#ifndef AXF_H
-#define AXF_H
-
-// C++
-#include <cstddef>
+#ifndef NUMBER_H
+#define NUMBER_H
 
 // API
-#include <Axf/API/Compiler.h>
-#include <Axf/API/Platform.h>
-#include <Axf/API/Version.h>
-
-#include <Axf/Core/Lang-C++/traits.h>
-
-#include <Axf/Core/Array.h>
-#include <Axf/Core/Class.h>
-#include <Axf/Core/Exception.h>
-#include <Axf/Core/IndexOutOfBoundsException.h>
-#include <Axf/Core/Memory.h>
-#include <Axf/Core/NullPointerException.h>
-#include <Axf/Core/Number.h>
 #include <Axf/Core/Object.h>
-#include <Axf/Core/ReferenceCounted.h>
-#include <Axf/Core/String.h>
 
-#endif /* AXF_H */
+namespace axf
+{
+namespace core
+{
+
+/**
+ * The <code>Number</code> class is the base for all numeric types wrapper
+ * objects.
+ * <p>
+ */
+class Number : public Object
+{
+    AXF_OBJECT(axf::core::Number, AXF_TYPE(axf::core::Object))
+
+public:
+
+} ;
+
+}
+}
+
+#endif /* NUMBER_H */
+

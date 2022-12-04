@@ -52,6 +52,8 @@ namespace core
  */
 class IllegalStateException : public Exception
 {
+    AXF_EXCEPTION_TYPE(IllegalStateException, Exception)
+
 public:
 
     IllegalStateException(const char* message);     /// Default constructor
