@@ -25,15 +25,75 @@
  */
 
 #include <Axf/Core/Exception.h>
+#include <Axf/Core/IllegalStateException.h>
+
+// C
+#include <cstring>
 
 using namespace axf;
 using namespace axf::core;
+using namespace axf::core::bits;
 
-Exception::Exception(const char* message) : m_message(message)
+ExceptionTypeDescriptor::ExceptionTypeDescriptor(const char* className, const ExceptionTypeDescriptor* super)
+:
+m_className(className),
+m_super(super)
 {
+}
+
+ExceptionTypeDescriptor::~ExceptionTypeDescriptor()
+{
+}
+
+bool ExceptionTypeDescriptor::isInstanceOf(const ExceptionTypeDescriptor& exceptionType) const
+{
+    return this == &exceptionType;
+}
+
+bool ExceptionTypeDescriptor::isKindOf(const ExceptionTypeDescriptor& exceptionType) const
+{
+    const ExceptionTypeDescriptor* current = this;
+    while (current != NULL)
+    {
+        if (current == &exceptionType)
+        {
+            return true;
+        }
+        current = current->m_super;
+    }
+    return false;
+}
+
+const ExceptionTypeDescriptor& ExceptionTypeDescriptor::super() const
+{
+    if (m_super == NULL)
+        throw IllegalStateException("attempted to retrieve the super-type of a base class!");
+    return *m_super;
+}
+
+const ExceptionTypeDescriptor& Exception::getCompileTimeClass()
+{
+    static ExceptionTypeDescriptor descriptor("axf::core::Exception", NULL);
+
+    // Return a reference to the newly allocated constructor
+    return descriptor;
+}
+
+Exception::Exception(const char* message)
+{
+    std::strncpy(m_message, message, 1024);
 }
 
 Exception::~Exception()
 {
 }
 
+const bits::ExceptionTypeDescriptor& Exception::getClass() const
+{
+    return getCompileTimeClass();
+}
+
+const char* Exception::getClassName() const
+{
+    return "axf::core::Exception";
+}

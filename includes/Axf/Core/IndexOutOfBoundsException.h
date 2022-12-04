@@ -53,6 +53,8 @@ namespace core
  */
 class IndexOutOfBoundsException : public Exception
 {
+    AXF_EXCEPTION_TYPE(axf::core::IndexOutOfBoundsException, axf::core::Exception)
+
 public:
 
     IndexOutOfBoundsException(const char* message, long long index);

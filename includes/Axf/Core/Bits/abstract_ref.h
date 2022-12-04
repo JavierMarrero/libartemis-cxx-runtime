@@ -29,7 +29,6 @@
 
 // C++
 #include <cstddef>
-#include <cstdlib>
 #include <cstdio>
 
 // API

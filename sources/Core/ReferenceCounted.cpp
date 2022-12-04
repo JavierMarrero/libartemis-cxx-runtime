@@ -25,6 +25,7 @@
  */
 
 #include <Axf/Core/ReferenceCounted.h>
+#include <Axf/Core/IllegalStateException.h>
 
 using namespace axf;
 using namespace axf::core;
@@ -41,4 +42,26 @@ ReferenceCounted::~ReferenceCounted()
 {
     m_references.m_strong = -1;
     m_references.m_weak = -1;
+}
+
+void ReferenceCounted::releaseStrongReference() const
+{
+    if (m_references.m_strong == 0)
+        throw IllegalStateException("attempted to release a reference of an already deleted object.");
+
+    if (--m_references.m_strong <= 0)
+    {
+        delete this;
+    }
+}
+
+void ReferenceCounted::releaseWeakReference() const
+{
+    if (m_references.m_weak == 0)
+        throw IllegalStateException("attempted to release a reference of an already deleted object.");
+
+    if (--m_references.m_weak <= 0 && (m_references.m_strong == 0))
+    {
+        delete this;
+    }
 }
