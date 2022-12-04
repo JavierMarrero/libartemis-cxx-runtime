@@ -32,6 +32,14 @@ using namespace axf::core;
 #define FNV_OFFSET_BASIS_32B    2166136261u
 #define FNV_PRIME_32B           16777619u
 
+const axf::core::Class<Object>& Object::getCompileTimeClass()
+{
+    static Class<Object> classVariable("axf::core::Object", NULL);
+
+    // Return the statically allocated class object
+    return classVariable;
+}
+
 Object::Object()
 {
 }
@@ -40,10 +48,14 @@ Object::~Object()
 {
 }
 
-bool Object::equals(const
-Object& object) const
+bool Object::equals(const Object& object) const
 {
     return this == &object;
+}
+
+const bits::Type* Object::getRuntimeType() const
+{
+    return &getCompileTimeClass();
 }
 
 int Object::hashCode() const

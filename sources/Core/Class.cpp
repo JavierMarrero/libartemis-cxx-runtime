@@ -17,35 +17,43 @@
  * MA 02110-1301  USA
  */
 
-/* 
- * File:   Axf.h - Artemis Extended Framework main header file
- * Author: Javier Marrero
- *
- * Created on November 27, 2022, 1:11 AM
- */
-
-#ifndef AXF_H
-#define AXF_H
+#include <Axf/Core/Class.h>
 
 // C++
-#include <cstddef>
+#include <cstring>
 
-// API
-#include <Axf/API/Compiler.h>
-#include <Axf/API/Platform.h>
-#include <Axf/API/Version.h>
+using namespace axf;
+using namespace axf::core;
+using namespace axf::core::bits;
 
-#include <Axf/Core/Lang-C++/traits.h>
+int bits::Type::encodeTypeName(const char* str)
+{
+    size_t len = std::strlen(str);
+    int hash = 0;
 
-#include <Axf/Core/Array.h>
-#include <Axf/Core/Class.h>
-#include <Axf/Core/Exception.h>
-#include <Axf/Core/IndexOutOfBoundsException.h>
-#include <Axf/Core/Memory.h>
-#include <Axf/Core/NullPointerException.h>
-#include <Axf/Core/Number.h>
-#include <Axf/Core/Object.h>
-#include <Axf/Core/ReferenceCounted.h>
-#include <Axf/Core/String.h>
+    for (unsigned i = 0; i < len; ++i)
+    {
+        hash += str[i];
+        hash += hash << 10;
+        hash ^= hash >> 6;
+    }
 
-#endif /* AXF_H */
+    hash += hash << 3;
+    hash ^= hash >> 11;
+    hash += hash << 15;
+
+    return hash;
+}
+
+const char* Type::getSimpleName() const
+{
+    const char* result = m_className;
+
+    size_t i = std::strlen(m_className);
+    while ((i >= 0) && (*(result + (i - 1)) != ':'))
+    {
+        --i;
+    }
+
+    return result + i;
+}

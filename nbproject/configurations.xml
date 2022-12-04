@@ -6,12 +6,15 @@
                    projectFiles="true">
       <itemPath>includes/Axf/Core/Array.h</itemPath>
       <itemPath>includes/Axf.h</itemPath>
+      <itemPath>includes/Axf/Core/Class.h</itemPath>
+      <itemPath>includes/Axf/Core/ClassCastException.h</itemPath>
       <itemPath>includes/Axf/API/Compiler.h</itemPath>
       <itemPath>includes/Axf/Core/Exception.h</itemPath>
       <itemPath>includes/Axf/Core/IllegalStateException.h</itemPath>
       <itemPath>includes/Axf/Core/IndexOutOfBoundsException.h</itemPath>
       <itemPath>includes/Axf/Core/Memory.h</itemPath>
       <itemPath>includes/Axf/Core/NullPointerException.h</itemPath>
+      <itemPath>includes/Axf/Core/Number.h</itemPath>
       <itemPath>includes/Axf/Core/Object.h</itemPath>
       <itemPath>includes/Axf/API/Platform.h</itemPath>
       <itemPath>includes/Axf/Core/ReferenceCounted.h</itemPath>
@@ -28,7 +31,6 @@
       <itemPath>includes/Axf/Core/Traits/remove_cv.hpp</itemPath>
       <itemPath>includes/Axf/Core/Bits/scoped_ref.h</itemPath>
       <itemPath>includes/Axf/Core/Bits/strong_ref.h</itemPath>
-      <itemPath>includes/Axf/Core/c++/traits.h</itemPath>
       <itemPath>includes/Axf/Core/Bits/weak_ref.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
@@ -38,12 +40,15 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
+      <itemPath>sources/Core/Class.cpp</itemPath>
+      <itemPath>sources/Core/ClassCastException.cpp</itemPath>
       <itemPath>sources/Arch/Windows/DllMain.cpp</itemPath>
       <itemPath>sources/Core/Exception.cpp</itemPath>
       <itemPath>sources/Core/IllegalStateException.cpp</itemPath>
       <itemPath>sources/Core/IndexOutOfBoundsException.cpp</itemPath>
       <itemPath>sources/Core/Memory.cpp</itemPath>
       <itemPath>sources/Core/NullPointerException.cpp</itemPath>
+      <itemPath>sources/Core/Number.cpp</itemPath>
       <itemPath>sources/Core/Object.cpp</itemPath>
       <itemPath>sources/Core/ReferenceCounted.cpp</itemPath>
       <itemPath>sources/Core/String.cpp</itemPath>
@@ -57,6 +62,12 @@
                      projectFiles="true"
                      kind="TEST">
         <itemPath>tests/axf/core/array.cpp</itemPath>
+      </logicalFolder>
+      <logicalFolder name="f3"
+                     displayName="RTTI Test"
+                     projectFiles="true"
+                     kind="TEST">
+        <itemPath>tests/rtti_test.cpp</itemPath>
       </logicalFolder>
       <logicalFolder name="f1"
                      displayName="Smart Pointer Test"
@@ -128,6 +139,21 @@
           <output>${TESTDIR}/TestFiles/f2</output>
         </linkerTool>
       </folder>
+      <folder path="TestFiles/f3">
+        <cTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </cTool>
+        <ccTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f3</output>
+        </linkerTool>
+      </folder>
       <item path="includes/Axf.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="includes/Axf/API/Compiler.h" ex="false" tool="3" flavor2="0">
@@ -160,6 +186,13 @@
       </item>
       <item path="includes/Axf/Core/Bits/weak_ref.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="includes/Axf/Core/Class.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="includes/Axf/Core/ClassCastException.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="includes/Axf/Core/Exception.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="includes/Axf/Core/IllegalStateException.h"
@@ -178,6 +211,8 @@
             ex="false"
             tool="3"
             flavor2="0">
+      </item>
+      <item path="includes/Axf/Core/Number.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="includes/Axf/Core/Object.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -223,9 +258,14 @@
             tool="3"
             flavor2="0">
       </item>
-      <item path="includes/Axf/Core/c++/traits.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="sources/Arch/Windows/DllMain.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="sources/Core/Class.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="sources/Core/ClassCastException.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
       </item>
       <item path="sources/Core/Exception.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -246,6 +286,8 @@
             tool="1"
             flavor2="0">
       </item>
+      <item path="sources/Core/Number.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="sources/Core/Object.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="sources/Core/ReferenceCounted.cpp" ex="false" tool="1" flavor2="0">
@@ -258,6 +300,8 @@
             ex="false"
             tool="1"
             flavor2="0">
+      </item>
+      <item path="tests/rtti_test.cpp" ex="false" tool="1" flavor2="0">
       </item>
     </conf>
     <conf name="Release" type="2">
@@ -322,6 +366,21 @@
           <output>${TESTDIR}/TestFiles/f2</output>
         </linkerTool>
       </folder>
+      <folder path="TestFiles/f3">
+        <cTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </cTool>
+        <ccTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f3</output>
+        </linkerTool>
+      </folder>
       <item path="includes/Axf.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="includes/Axf/API/Compiler.h" ex="false" tool="3" flavor2="0">
@@ -354,6 +413,13 @@
       </item>
       <item path="includes/Axf/Core/Bits/weak_ref.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="includes/Axf/Core/Class.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="includes/Axf/Core/ClassCastException.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="includes/Axf/Core/Exception.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="includes/Axf/Core/IllegalStateException.h"
@@ -372,6 +438,8 @@
             ex="false"
             tool="3"
             flavor2="0">
+      </item>
+      <item path="includes/Axf/Core/Number.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="includes/Axf/Core/Object.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -417,9 +485,14 @@
             tool="3"
             flavor2="0">
       </item>
-      <item path="includes/Axf/Core/c++/traits.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="sources/Arch/Windows/DllMain.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="sources/Core/Class.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="sources/Core/ClassCastException.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
       </item>
       <item path="sources/Core/Exception.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -440,6 +513,8 @@
             tool="1"
             flavor2="0">
       </item>
+      <item path="sources/Core/Number.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="sources/Core/Object.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="sources/Core/ReferenceCounted.cpp" ex="false" tool="1" flavor2="0">
@@ -452,6 +527,8 @@
             ex="false"
             tool="1"
             flavor2="0">
+      </item>
+      <item path="tests/rtti_test.cpp" ex="false" tool="1" flavor2="0">
       </item>
     </conf>
   </confs>

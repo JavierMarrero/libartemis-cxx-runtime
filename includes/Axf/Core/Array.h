@@ -29,16 +29,48 @@
 
 // API
 #include <Axf/Core/IndexOutOfBoundsException.h>
+#include <Axf/Core/Object.h>
+
+// C++
+#include <cstring>
 
 namespace axf
 {
 namespace core
 {
 
+/**
+ * Represents an statically allocated array. Objects of this type may be returned
+ * by reference or by value.
+ * <p>
+ * Arrays are zero-initialized at creation time, which is an O(n) operation. This
+ * setting may be overridden by passing the value 'false' as parameter to the
+ * constructor. Zero-initialized arrays are obtained with zeros at the memory
+ * locations, not necessarily integer or numerical zeros.
+ * <p>
+ * The class has overloads for the <code>[]</code> operators, and may be passed
+ * where pointers are expected.
+ * <p>
+ * The class inherits <code>ReferenceCounted</code> which makes it suitable for
+ * intrusive reference counting. Arrays under this model are objects in all its
+ * splendor, and reflexive queries may be used with them.
+ * <p>
+ * It is possible to ask an array for its underlying type, and use type traits
+ * over that type to query information at compile time.
+ *
+ * @author J. Marrero
+ */
 template <typename T, unsigned long long SIZE>
-class Array
+class Array : public Object
 {
+    AXF_OBJECT(AXF_TEMPLATE_CLASS(axf::core::Array<T, SIZE>), AXF_TYPE(axf::core::Object));
+
 public:
+
+    /**
+     * The type of this array.
+     */
+    typedef T type;
 
     /**
      * This is the physical length of this array.
@@ -46,9 +78,18 @@ public:
     static const size_t length = SIZE;
 
     /**
+     * Length in bytes of the array.
+     */
+    static const size_t sizeOf = SIZE * sizeof (T);
+
+    /**
      * Default constructor.
      */
-    Array() { }
+    Array(bool zeroInitialize = true)
+    {
+        if (zeroInitialize)
+            std::memset(m_primitive, 0, length * sizeof (T));
+    }
 
     /**
      * Copy the contents of the array 'rhs' to this array. This array´s length

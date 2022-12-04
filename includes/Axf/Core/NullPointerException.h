@@ -49,6 +49,8 @@ namespace core
  */
 class NullPointerException : public Exception
 {
+    AXF_EXCEPTION_TYPE(axf::core::NullPointerException, axf::core::Exception)
+
 public:
 
     NullPointerException(const char* message);
