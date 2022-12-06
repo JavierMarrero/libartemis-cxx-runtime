@@ -18,38 +18,36 @@
  */
 
 /* 
- * File:   Number.h
+ * File:   OutOfMemoryError.h
  * Author: Javier Marrero
  *
- * Created on December 2, 2022, 2:21 PM
+ * Created on December 4, 2022, 12:20 PM
  */
 
-#ifndef NUMBER_H
-#define NUMBER_H
+#ifndef OUTOFMEMORYERROR_H
+#define OUTOFMEMORYERROR_H
 
 // API
-#include <Axf/Core/Object.h>
+#include <Axf/Core/Exception.h>
 
 namespace axf
 {
 namespace core
 {
 
-/**
- * The <code>Number</code> class is the base for all numeric types wrapper
- * objects.
- * <p>
- */
-class Number : public Object
+class OutOfMemoryError : public Exception
 {
-    AXF_CLASS_TYPE(axf::core::Number, AXF_TYPE(axf::core::Object))
+    AXF_EXCEPTION_TYPE(axf::core::OutOfMemoryError, axf::core::Exception)
 
 public:
 
+    OutOfMemoryError();
+    OutOfMemoryError(const char* message);
+    ~OutOfMemoryError();
 } ;
 
 }
 }
 
-#endif /* NUMBER_H */
+#endif /* OUTOFMEMORYERROR_H */
 

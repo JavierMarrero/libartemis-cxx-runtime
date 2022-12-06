@@ -17,39 +17,8 @@
  * MA 02110-1301  USA
  */
 
-/* 
- * File:   Number.h
- * Author: Javier Marrero
- *
- * Created on December 2, 2022, 2:21 PM
- */
+#include <Axf/Collections/Iterator.h>
 
-#ifndef NUMBER_H
-#define NUMBER_H
-
-// API
-#include <Axf/Core/Object.h>
-
-namespace axf
-{
-namespace core
-{
-
-/**
- * The <code>Number</code> class is the base for all numeric types wrapper
- * objects.
- * <p>
- */
-class Number : public Object
-{
-    AXF_CLASS_TYPE(axf::core::Number, AXF_TYPE(axf::core::Object))
-
-public:
-
-} ;
-
-}
-}
-
-#endif /* NUMBER_H */
+using namespace axf;
+using namespace axf::collections;
 

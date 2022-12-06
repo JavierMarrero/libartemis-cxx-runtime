@@ -18,38 +18,40 @@
  */
 
 /* 
- * File:   Number.h
+ * File:   Iterable.h
  * Author: Javier Marrero
  *
- * Created on December 2, 2022, 2:21 PM
+ * Created on December 5, 2022, 1:53 AM
  */
 
-#ifndef NUMBER_H
-#define NUMBER_H
+#ifndef ITERABLE_H
+#define ITERABLE_H
 
 // API
-#include <Axf/Core/Object.h>
+#include <Axf/Collections/Iterator.h>
 
 namespace axf
 {
-namespace core
+namespace collections
 {
 
 /**
- * The <code>Number</code> class is the base for all numeric types wrapper
- * objects.
+ * The <code>Iterable</code> interface describes collections that can be
+ * iterated through. This interface decouples the <i>iterable</i> property
+ * from the <i>collection type</i>
  * <p>
+ * 
+ *
+ * @author J. Marrero
  */
-class Number : public Object
+template <typename T>
+class Iterable : public core::Object
 {
-    AXF_CLASS_TYPE(axf::core::Number, AXF_TYPE(axf::core::Object))
-
-public:
-
-} ;
+    
+};
 
 }
 }
 
-#endif /* NUMBER_H */
+#endif /* ITERABLE_H */
 

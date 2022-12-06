@@ -37,9 +37,22 @@
 
 #include <Axf/Core/Lang-C++/traits.h>
 
+#include <Axf/Collections/Algorithms.h>
+#include <Axf/Collections/Allocator.h>
+#include <Axf/Collections/Collection.h>
+#include <Axf/Collections/DefaultAllocator.h>
+#include <Axf/Collections/Iterable.h>
+#include <Axf/Collections/Iterator.h>
+#include <Axf/Collections/LinkedList.h>
+#include <Axf/Collections/List.h>
+#include <Axf/Collections/Queue.h>
+#include <Axf/Collections/Stack.h>
+
 #include <Axf/Core/Array.h>
 #include <Axf/Core/Class.h>
+#include <Axf/Core/ClassCastException.h>
 #include <Axf/Core/Exception.h>
+#include <Axf/Core/IllegalStateException.h>
 #include <Axf/Core/IndexOutOfBoundsException.h>
 #include <Axf/Core/Memory.h>
 #include <Axf/Core/NullPointerException.h>
@@ -47,5 +60,9 @@
 #include <Axf/Core/Object.h>
 #include <Axf/Core/ReferenceCounted.h>
 #include <Axf/Core/String.h>
+
+#include <Axf/Logging/Logger.h>
+
+#include <Axf/Utils/Pair.h>
 
 #endif /* AXF_H */

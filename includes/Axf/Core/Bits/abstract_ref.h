@@ -153,6 +153,58 @@ public:
         return m_pointer == rhs;
     }
 
+    /**
+     * Two pointers are deemed different if they don't point to the same memory
+     * location.
+     *
+     * @param rhs
+     * @return
+     */
+    inline bool operator!=(const T* rhs) const
+    {
+        return m_pointer != rhs;
+    }
+
+    /**
+     * Returns the pointer
+     * 
+     * @return
+     */
+    inline T* operator->()
+    {
+        return get();
+    }
+
+    /**
+     * Returns a const pointer to the pointer.
+     * 
+     * @return
+     */
+    inline const T* operator->() const
+    {
+        return get();
+    }
+
+    /**
+     * Dereferences the pointer.
+     * 
+     * @return
+     */
+    inline T& operator*()
+    {
+        return asReference();
+    }
+
+    /**
+     * Dereferences the pointer.
+     *
+     * @return
+     */
+    inline const T& operator*() const
+    {
+        return asReference();
+    }
+
 protected:
 
     deleter_functor m_disposer;     /// Disposer functor
@@ -169,7 +221,7 @@ protected:
     inline void checkDereferencingCapability()
     {
         char message[64] = {0};
-        std::sprintf(message, "null dereferencing from pointer at 0x%16x", this);
+        std::sprintf(message, "null dereferencing from pointer at 0x%p", this);
 
         if (m_pointer == NULL)
             throw NullPointerException(message);

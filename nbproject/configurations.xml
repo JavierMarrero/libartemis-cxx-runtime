@@ -4,20 +4,34 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
+      <itemPath>includes/Axf/Collections/Algorithms.h</itemPath>
+      <itemPath>includes/Axf/Collections/Allocator.h</itemPath>
       <itemPath>includes/Axf/Core/Array.h</itemPath>
       <itemPath>includes/Axf.h</itemPath>
       <itemPath>includes/Axf/Core/Class.h</itemPath>
       <itemPath>includes/Axf/Core/ClassCastException.h</itemPath>
+      <itemPath>includes/Axf/Collections/Collection.h</itemPath>
       <itemPath>includes/Axf/API/Compiler.h</itemPath>
+      <itemPath>includes/Axf/Collections/DefaultAllocator.h</itemPath>
       <itemPath>includes/Axf/Core/Exception.h</itemPath>
+      <itemPath>includes/Axf/Core/IllegalOperationException.h</itemPath>
       <itemPath>includes/Axf/Core/IllegalStateException.h</itemPath>
       <itemPath>includes/Axf/Core/IndexOutOfBoundsException.h</itemPath>
+      <itemPath>includes/Axf/Collections/Iterable.h</itemPath>
+      <itemPath>includes/Axf/Collections/Iterator.h</itemPath>
+      <itemPath>includes/Axf/Collections/LinkedList.h</itemPath>
+      <itemPath>includes/Axf/Collections/List.h</itemPath>
+      <itemPath>includes/Axf/Logging/Logger.h</itemPath>
       <itemPath>includes/Axf/Core/Memory.h</itemPath>
       <itemPath>includes/Axf/Core/NullPointerException.h</itemPath>
       <itemPath>includes/Axf/Core/Number.h</itemPath>
       <itemPath>includes/Axf/Core/Object.h</itemPath>
+      <itemPath>includes/Axf/Core/OutOfMemoryError.h</itemPath>
+      <itemPath>includes/Axf/Utils/Pair.h</itemPath>
       <itemPath>includes/Axf/API/Platform.h</itemPath>
+      <itemPath>includes/Axf/Collections/Queue.h</itemPath>
       <itemPath>includes/Axf/Core/ReferenceCounted.h</itemPath>
+      <itemPath>includes/Axf/Collections/Stack.h</itemPath>
       <itemPath>includes/Axf/Core/String.h</itemPath>
       <itemPath>includes/Axf/API/Version.h</itemPath>
       <itemPath>includes/Axf/Core/Bits/abstract_ref.h</itemPath>
@@ -44,12 +58,16 @@
       <itemPath>sources/Core/ClassCastException.cpp</itemPath>
       <itemPath>sources/Arch/Windows/DllMain.cpp</itemPath>
       <itemPath>sources/Core/Exception.cpp</itemPath>
+      <itemPath>sources/Core/IllegalOperationException.cpp</itemPath>
       <itemPath>sources/Core/IllegalStateException.cpp</itemPath>
       <itemPath>sources/Core/IndexOutOfBoundsException.cpp</itemPath>
+      <itemPath>sources/Collections/Iterator.cpp</itemPath>
+      <itemPath>sources/Logging/Logger.cpp</itemPath>
       <itemPath>sources/Core/Memory.cpp</itemPath>
       <itemPath>sources/Core/NullPointerException.cpp</itemPath>
       <itemPath>sources/Core/Number.cpp</itemPath>
       <itemPath>sources/Core/Object.cpp</itemPath>
+      <itemPath>sources/Core/OutOfMemoryError.cpp</itemPath>
       <itemPath>sources/Core/ReferenceCounted.cpp</itemPath>
       <itemPath>sources/Core/String.cpp</itemPath>
     </logicalFolder>
@@ -62,6 +80,12 @@
                      projectFiles="true"
                      kind="TEST">
         <itemPath>tests/axf/core/array.cpp</itemPath>
+      </logicalFolder>
+      <logicalFolder name="f4"
+                     displayName="Linked List Test"
+                     projectFiles="true"
+                     kind="TEST">
+        <itemPath>tests/linkedlist_test.cpp</itemPath>
       </logicalFolder>
       <logicalFolder name="f3"
                      displayName="RTTI Test"
@@ -154,6 +178,21 @@
           <output>${TESTDIR}/TestFiles/f3</output>
         </linkerTool>
       </folder>
+      <folder path="TestFiles/f4">
+        <cTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </cTool>
+        <ccTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f4</output>
+        </linkerTool>
+      </folder>
       <item path="includes/Axf.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="includes/Axf/API/Compiler.h" ex="false" tool="3" flavor2="0">
@@ -161,6 +200,47 @@
       <item path="includes/Axf/API/Platform.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="includes/Axf/API/Version.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="includes/Axf/Collections/Algorithms.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="includes/Axf/Collections/Allocator.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="includes/Axf/Collections/Collection.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="includes/Axf/Collections/DefaultAllocator.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="includes/Axf/Collections/Iterable.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="includes/Axf/Collections/Iterator.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="includes/Axf/Collections/LinkedList.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="includes/Axf/Collections/List.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="includes/Axf/Collections/Queue.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="includes/Axf/Collections/Stack.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="includes/Axf/Core/Array.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -195,6 +275,11 @@
       </item>
       <item path="includes/Axf/Core/Exception.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="includes/Axf/Core/IllegalOperationException.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="includes/Axf/Core/IllegalStateException.h"
             ex="false"
             tool="3"
@@ -215,6 +300,11 @@
       <item path="includes/Axf/Core/Number.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="includes/Axf/Core/Object.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="includes/Axf/Core/OutOfMemoryError.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
       </item>
       <item path="includes/Axf/Core/ReferenceCounted.h"
             ex="false"
@@ -258,7 +348,13 @@
             tool="3"
             flavor2="0">
       </item>
+      <item path="includes/Axf/Logging/Logger.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="includes/Axf/Utils/Pair.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="sources/Arch/Windows/DllMain.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="sources/Collections/Iterator.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="sources/Core/Class.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -268,6 +364,11 @@
             flavor2="0">
       </item>
       <item path="sources/Core/Exception.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="sources/Core/IllegalOperationException.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
       </item>
       <item path="sources/Core/IllegalStateException.cpp"
             ex="false"
@@ -290,9 +391,13 @@
       </item>
       <item path="sources/Core/Object.cpp" ex="false" tool="1" flavor2="0">
       </item>
+      <item path="sources/Core/OutOfMemoryError.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="sources/Core/ReferenceCounted.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="sources/Core/String.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="sources/Logging/Logger.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="tests/axf/core/array.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -300,6 +405,8 @@
             ex="false"
             tool="1"
             flavor2="0">
+      </item>
+      <item path="tests/linkedlist_test.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="tests/rtti_test.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -381,6 +488,21 @@
           <output>${TESTDIR}/TestFiles/f3</output>
         </linkerTool>
       </folder>
+      <folder path="TestFiles/f4">
+        <cTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </cTool>
+        <ccTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f4</output>
+        </linkerTool>
+      </folder>
       <item path="includes/Axf.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="includes/Axf/API/Compiler.h" ex="false" tool="3" flavor2="0">
@@ -388,6 +510,47 @@
       <item path="includes/Axf/API/Platform.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="includes/Axf/API/Version.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="includes/Axf/Collections/Algorithms.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="includes/Axf/Collections/Allocator.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="includes/Axf/Collections/Collection.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="includes/Axf/Collections/DefaultAllocator.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="includes/Axf/Collections/Iterable.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="includes/Axf/Collections/Iterator.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="includes/Axf/Collections/LinkedList.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="includes/Axf/Collections/List.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="includes/Axf/Collections/Queue.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="includes/Axf/Collections/Stack.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="includes/Axf/Core/Array.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -422,6 +585,11 @@
       </item>
       <item path="includes/Axf/Core/Exception.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="includes/Axf/Core/IllegalOperationException.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="includes/Axf/Core/IllegalStateException.h"
             ex="false"
             tool="3"
@@ -442,6 +610,11 @@
       <item path="includes/Axf/Core/Number.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="includes/Axf/Core/Object.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="includes/Axf/Core/OutOfMemoryError.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
       </item>
       <item path="includes/Axf/Core/ReferenceCounted.h"
             ex="false"
@@ -485,7 +658,13 @@
             tool="3"
             flavor2="0">
       </item>
+      <item path="includes/Axf/Logging/Logger.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="includes/Axf/Utils/Pair.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="sources/Arch/Windows/DllMain.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="sources/Collections/Iterator.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="sources/Core/Class.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -495,6 +674,11 @@
             flavor2="0">
       </item>
       <item path="sources/Core/Exception.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="sources/Core/IllegalOperationException.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
       </item>
       <item path="sources/Core/IllegalStateException.cpp"
             ex="false"
@@ -517,9 +701,13 @@
       </item>
       <item path="sources/Core/Object.cpp" ex="false" tool="1" flavor2="0">
       </item>
+      <item path="sources/Core/OutOfMemoryError.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="sources/Core/ReferenceCounted.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="sources/Core/String.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="sources/Logging/Logger.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="tests/axf/core/array.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -527,6 +715,8 @@
             ex="false"
             tool="1"
             flavor2="0">
+      </item>
+      <item path="tests/linkedlist_test.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="tests/rtti_test.cpp" ex="false" tool="1" flavor2="0">
       </item>
