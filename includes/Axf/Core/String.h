@@ -102,7 +102,7 @@ public:
      */
     inline const char* bytes() const
     {
-        return m_buffer;
+        return reinterpret_cast<const char*> (m_buffer);
     }
 
     /**
@@ -123,9 +123,21 @@ public:
         return m_length;
     }
 
+    /**
+     * This class is implicitly usable where a const char pointer is requested.
+     * Notice how the buffer is not encoded in the default C locale or any
+     * specific encoding, other than UTF-8.
+     *
+     * @return
+     */
+    inline operator const char*() const
+    {
+        return bytes();
+    }
+
 private:
 
-    typedef char utf8_char;
+    typedef unsigned char utf8_char;
 
     utf8_char*  m_buffer;       /// The data-buffer itself
     size_t      m_capacity;     /// The capacity of the buffer

@@ -18,38 +18,26 @@
  */
 
 /* 
- * File:   Number.h
+ * File:   Algorithms.h
  * Author: Javier Marrero
  *
- * Created on December 2, 2022, 2:21 PM
+ * Created on December 5, 2022, 2:31 AM
  */
 
-#ifndef NUMBER_H
-#define NUMBER_H
+#ifndef ALGORITHMS_H
+#define ALGORITHMS_H
 
 // API
-#include <Axf/Core/Object.h>
+#include <Axf/Collections/Iterator.h>
 
 namespace axf
 {
-namespace core
+namespace collections
 {
 
-/**
- * The <code>Number</code> class is the base for all numeric types wrapper
- * objects.
- * <p>
- */
-class Number : public Object
-{
-    AXF_CLASS_TYPE(axf::core::Number, AXF_TYPE(axf::core::Object))
-
-public:
-
-} ;
 
 }
 }
 
-#endif /* NUMBER_H */
+#endif /* ALGORITHMS_H */
 

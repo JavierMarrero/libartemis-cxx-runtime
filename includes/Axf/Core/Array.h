@@ -63,7 +63,7 @@ namespace core
 template <typename T, unsigned long long SIZE>
 class Array : public Object
 {
-    AXF_OBJECT(AXF_TEMPLATE_CLASS(axf::core::Array<T, SIZE>), AXF_TYPE(axf::core::Object));
+    AXF_CLASS_TYPE(AXF_TEMPLATE_CLASS(axf::core::Array<T, SIZE>), AXF_TYPE(axf::core::Object));
 
 public:
 

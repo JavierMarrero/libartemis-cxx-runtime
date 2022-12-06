@@ -18,38 +18,31 @@
  */
 
 /* 
- * File:   Number.h
+ * File:   IllegalOperationException.cpp
  * Author: Javier Marrero
- *
- * Created on December 2, 2022, 2:21 PM
+ * 
+ * Created on December 5, 2022, 11:29 PM
  */
 
-#ifndef NUMBER_H
-#define NUMBER_H
+#include <Axf/Core/IllegalOperationException.h>
 
-// API
-#include <Axf/Core/Object.h>
+// C
+#include <cstring>
 
-namespace axf
+using namespace axf;
+using namespace axf::core;
+
+IllegalOperationException::IllegalOperationException(const char* message, const char* method)
+:
+Exception(message)
 {
-namespace core
-{
-
-/**
- * The <code>Number</code> class is the base for all numeric types wrapper
- * objects.
- * <p>
- */
-class Number : public Object
-{
-    AXF_CLASS_TYPE(axf::core::Number, AXF_TYPE(axf::core::Object))
-
-public:
-
-} ;
-
-}
+    std::memset(m_method, 0, 256);
+    std::strncpy(m_method, method, 256);
 }
 
-#endif /* NUMBER_H */
+IllegalOperationException::~IllegalOperationException()
+{
+}
+
+
 

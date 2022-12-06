@@ -34,14 +34,14 @@ using namespace axf::core;
 
 class AClass : virtual public core::Object
 {
-    AXF_OBJECT(AClass, AXF_TYPE(axf::core::Object))
+    AXF_CLASS_TYPE(AClass, AXF_TYPE(axf::core::Object))
 public:
 
 } ;
 
 class AInterface : virtual public core::Object
 {
-    AXF_OBJECT(AInterface, AXF_TYPE(axf::core::Object))
+    AXF_CLASS_TYPE(AInterface, AXF_TYPE(axf::core::Object))
 public:
 
 
@@ -49,7 +49,7 @@ public:
 
 class AMultipleInherited : public AClass, public AInterface
 {
-    AXF_OBJECT(AMultipleInherited, AXF_TYPE(AClass), AXF_TYPE(AInterface))
+    AXF_CLASS_TYPE(AMultipleInherited, AXF_TYPE(AClass), AXF_TYPE(AInterface))
 
 public:
 
@@ -58,7 +58,7 @@ public:
 
 class UnrelatedType : public Object
 {
-    AXF_OBJECT(UnrelatedType, AXF_TYPE(Object))
+    AXF_CLASS_TYPE(UnrelatedType, AXF_TYPE(Object))
 public:
 } ;
 
