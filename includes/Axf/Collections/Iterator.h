@@ -56,6 +56,8 @@ public:
      */
     virtual E& current() = 0;
 
+    virtual const E& current() const = 0;
+
     /**
      * Returns a reference to the currently pointed object and advances the
      * iterator one position forward.
@@ -64,12 +66,19 @@ public:
      */
     virtual E& next() = 0;
 
+    virtual const E& next() const = 0;
+
     /**
      * Dereferences the iterator.
      * 
      * @return
      */
     inline E& operator*()
+    {
+        return current();
+    }
+
+    inline const E& operator*() const
     {
         return current();
     }
@@ -135,6 +144,8 @@ class iterator_ref
 {
 public:
 
+    iterator_ref() : m_iterator(NULL) { }
+
     iterator_ref(Iterator<T>* iterator) : m_iterator(iterator) { }
 
     ~iterator_ref()
@@ -152,7 +163,17 @@ public:
         return *m_iterator;
     }
 
+    operator Iterator<T>&() const
+    {
+        return *m_iterator;
+    }
+
     operator Iterator<T>*()
+    {
+        return m_iterator;
+    }
+
+    operator const Iterator<T>*() const
     {
         return m_iterator;
     }
@@ -162,19 +183,24 @@ public:
         return m_iterator;
     }
 
-    bool operator!=(const iterator_ref<T>& rhs)
+    const Iterator<T>* operator->() const
+    {
+        return m_iterator;
+    }
+
+    bool operator!=(const iterator_ref<T>& rhs) const
     {
         return *m_iterator != *rhs.m_iterator;
     }
 
-    bool operator==(const iterator_ref<T>& rhs)
+    bool operator==(const iterator_ref<T>& rhs) const
     {
         return *m_iterator == *rhs.m_iterator;
     }
 
 private:
 
-    Iterator<T>* m_iterator;
+    mutable Iterator<T>* m_iterator;
 } ;
 
 }

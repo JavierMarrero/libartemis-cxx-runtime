@@ -14,6 +14,9 @@
       <itemPath>includes/Axf/API/Compiler.h</itemPath>
       <itemPath>includes/Axf/Collections/DefaultAllocator.h</itemPath>
       <itemPath>includes/Axf/Core/Exception.h</itemPath>
+      <itemPath>includes/Axf/Collections/HashMap.h</itemPath>
+      <itemPath>includes/Axf/Collections/HashSet.h</itemPath>
+      <itemPath>includes/Axf/Collections/Bits/HashUtils.h</itemPath>
       <itemPath>includes/Axf/Core/IllegalOperationException.h</itemPath>
       <itemPath>includes/Axf/Core/IllegalStateException.h</itemPath>
       <itemPath>includes/Axf/Core/IndexOutOfBoundsException.h</itemPath>
@@ -22,6 +25,7 @@
       <itemPath>includes/Axf/Collections/LinkedList.h</itemPath>
       <itemPath>includes/Axf/Collections/List.h</itemPath>
       <itemPath>includes/Axf/Logging/Logger.h</itemPath>
+      <itemPath>includes/Axf/Collections/Map.h</itemPath>
       <itemPath>includes/Axf/Core/Memory.h</itemPath>
       <itemPath>includes/Axf/Core/NullPointerException.h</itemPath>
       <itemPath>includes/Axf/Core/Number.h</itemPath>
@@ -31,6 +35,7 @@
       <itemPath>includes/Axf/API/Platform.h</itemPath>
       <itemPath>includes/Axf/Collections/Queue.h</itemPath>
       <itemPath>includes/Axf/Core/ReferenceCounted.h</itemPath>
+      <itemPath>includes/Axf/Collections/Set.h</itemPath>
       <itemPath>includes/Axf/Collections/Stack.h</itemPath>
       <itemPath>includes/Axf/Core/String.h</itemPath>
       <itemPath>includes/Axf/API/Version.h</itemPath>
@@ -80,6 +85,18 @@
                      projectFiles="true"
                      kind="TEST">
         <itemPath>tests/axf/core/array.cpp</itemPath>
+      </logicalFolder>
+      <logicalFolder name="f5"
+                     displayName="Hash Map Test"
+                     projectFiles="true"
+                     kind="TEST">
+        <itemPath>tests/hashmap_test.cpp</itemPath>
+      </logicalFolder>
+      <logicalFolder name="f6"
+                     displayName="Hash Set Test"
+                     projectFiles="true"
+                     kind="TEST">
+        <itemPath>tests/hashset_test.cpp</itemPath>
       </logicalFolder>
       <logicalFolder name="f4"
                      displayName="Linked List Test"
@@ -193,6 +210,36 @@
           <output>${TESTDIR}/TestFiles/f4</output>
         </linkerTool>
       </folder>
+      <folder path="TestFiles/f5">
+        <cTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </cTool>
+        <ccTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f5</output>
+        </linkerTool>
+      </folder>
+      <folder path="TestFiles/f6">
+        <cTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </cTool>
+        <ccTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f6</output>
+        </linkerTool>
+      </folder>
       <item path="includes/Axf.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="includes/Axf/API/Compiler.h" ex="false" tool="3" flavor2="0">
@@ -211,6 +258,11 @@
             tool="3"
             flavor2="0">
       </item>
+      <item path="includes/Axf/Collections/Bits/HashUtils.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="includes/Axf/Collections/Collection.h"
             ex="false"
             tool="3"
@@ -220,6 +272,10 @@
             ex="false"
             tool="3"
             flavor2="0">
+      </item>
+      <item path="includes/Axf/Collections/HashMap.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="includes/Axf/Collections/HashSet.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="includes/Axf/Collections/Iterable.h"
             ex="false"
@@ -238,7 +294,11 @@
       </item>
       <item path="includes/Axf/Collections/List.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="includes/Axf/Collections/Map.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="includes/Axf/Collections/Queue.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="includes/Axf/Collections/Set.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="includes/Axf/Collections/Stack.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -405,6 +465,10 @@
             ex="false"
             tool="1"
             flavor2="0">
+      </item>
+      <item path="tests/hashmap_test.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="tests/hashset_test.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="tests/linkedlist_test.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -503,6 +567,36 @@
           <output>${TESTDIR}/TestFiles/f4</output>
         </linkerTool>
       </folder>
+      <folder path="TestFiles/f5">
+        <cTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </cTool>
+        <ccTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f5</output>
+        </linkerTool>
+      </folder>
+      <folder path="TestFiles/f6">
+        <cTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </cTool>
+        <ccTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f6</output>
+        </linkerTool>
+      </folder>
       <item path="includes/Axf.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="includes/Axf/API/Compiler.h" ex="false" tool="3" flavor2="0">
@@ -521,6 +615,11 @@
             tool="3"
             flavor2="0">
       </item>
+      <item path="includes/Axf/Collections/Bits/HashUtils.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="includes/Axf/Collections/Collection.h"
             ex="false"
             tool="3"
@@ -530,6 +629,10 @@
             ex="false"
             tool="3"
             flavor2="0">
+      </item>
+      <item path="includes/Axf/Collections/HashMap.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="includes/Axf/Collections/HashSet.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="includes/Axf/Collections/Iterable.h"
             ex="false"
@@ -548,7 +651,11 @@
       </item>
       <item path="includes/Axf/Collections/List.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="includes/Axf/Collections/Map.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="includes/Axf/Collections/Queue.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="includes/Axf/Collections/Set.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="includes/Axf/Collections/Stack.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -715,6 +822,10 @@
             ex="false"
             tool="1"
             flavor2="0">
+      </item>
+      <item path="tests/hashmap_test.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="tests/hashset_test.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="tests/linkedlist_test.cpp" ex="false" tool="1" flavor2="0">
       </item>

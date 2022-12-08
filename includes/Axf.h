@@ -41,11 +41,15 @@
 #include <Axf/Collections/Allocator.h>
 #include <Axf/Collections/Collection.h>
 #include <Axf/Collections/DefaultAllocator.h>
+#include <Axf/Collections/HashMap.h>
+#include <Axf/Collections/HashSet.h>
 #include <Axf/Collections/Iterable.h>
 #include <Axf/Collections/Iterator.h>
 #include <Axf/Collections/LinkedList.h>
 #include <Axf/Collections/List.h>
+#include <Axf/Collections/Map.h>
 #include <Axf/Collections/Queue.h>
+#include <Axf/Collections/Set.h>
 #include <Axf/Collections/Stack.h>
 
 #include <Axf/Core/Array.h>

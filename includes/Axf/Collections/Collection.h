@@ -29,6 +29,7 @@
 
 // API
 #include <Axf/Collections/Iterator.h>
+#include <Axf/Collections/Iterable.h>
 #include <Axf/Core/Memory.h>
 #include <Axf/Core/Object.h>
 
@@ -44,10 +45,11 @@ namespace collections
  * @return
  */
 template <typename E>
-class Collection : virtual public core::Object
+class Collection : virtual public core::Object, virtual public Iterable<E>
 {
     AXF_CLASS_TYPE(axf::collections::Collection<E>,
-                   AXF_TYPE(axf::core::Object))
+                   AXF_TYPE(axf::core::Object),
+                   AXF_TYPE(axf::collections::Iterable<E>))
 public:
 
     /**
@@ -62,19 +64,12 @@ public:
     virtual bool add(const E& element) = 0;
 
     /**
-     * Returns an iterator to the beginning of this sequence.
+     * Returns true if this collection contains the specified value.
      *
+     * @param element
      * @return
      */
-    virtual iterator_ref<E> begin() = 0;
-
-    /**
-     * Returns an iterator to the end of this sequence. The returned iterator
-     * does not points to a valid list element.
-     *
-     * @return
-     */
-    virtual iterator_ref<E> end() = 0;
+    virtual bool contains(const E& element) const = 0;
 
     /**
      * Returns true if the collection is empty.

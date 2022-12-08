@@ -74,11 +74,16 @@ class LinkedListIterator : public axf::collections::Iterator<E>
 {
 public:
 
-    LinkedListIterator() : m_current(static_cast<Node<E>*> (Iterator<E>::getBadPointer())) { }
+    LinkedListIterator() : m_current((Node<E>*) Iterator<E>::getBadPointer()) { }
 
     LinkedListIterator(Node<E>* node) : m_current(node) { }
 
     virtual E& current()
+    {
+        return m_current->m_data;
+    }
+
+    virtual const E& current() const
     {
         return m_current->m_data;
     }
@@ -96,7 +101,20 @@ public:
         E& result = m_current->m_data;
 
         if (m_current->m_next == NULL)
-            m_current = static_cast<Node<E>*> (Iterator<E>::getBadPointer());
+            m_current = (Node<E>*) Iterator<E>::getBadPointer();
+        else
+            m_current = m_current->m_next;
+
+        return result;
+    }
+
+    virtual const E& next() const
+    {
+        // Store the result
+        const E& result = m_current->m_data;
+
+        if (m_current->m_next == NULL)
+            m_current = (Node<E>*) Iterator<E>::getBadPointer();
         else
             m_current = m_current->m_next;
 
@@ -105,7 +123,7 @@ public:
 
 private:
 
-    Node<E>* m_current;
+    mutable Node<E>* m_current;
 } ;
 
 }
@@ -214,10 +232,35 @@ public:
         return new LinkedListIterator<E>(m_head);
     }
 
+    virtual const iterator_ref<E> begin() const
+    {
+        return new LinkedListIterator<E>(m_head);
+    }
+
+    virtual bool contains(const E& element) const
+    {
+        bool result = false;
+        Node<E>* current = m_head;
+        while (current != NULL && result == false)
+        {
+            if (current->m_data == element)
+            {
+                result = true;
+            }
+            current = current->m_next;
+        }
+        return result;
+    }
+
     /**
      * @see axf::collections::Collection::end
      */
     virtual iterator_ref<E> end()
+    {
+        return new LinkedListIterator<E>();
+    }
+
+    virtual const iterator_ref<E> end() const
     {
         return new LinkedListIterator<E>();
     }

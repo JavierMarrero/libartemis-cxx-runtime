@@ -45,10 +45,31 @@ namespace collections
  * @author J. Marrero
  */
 template <typename T>
-class Iterable : public core::Object
+class Iterable : virtual public core::Object
 {
-    
-};
+    AXF_CLASS_TYPE(axf::collections::Iterable<T>,
+                   AXF_TYPE(axf::core::Object))
+public:
+
+    /**
+     * Returns an iterator to the beginning of this sequence.
+     *
+     * @return
+     */
+    virtual iterator_ref<T> begin() = 0;
+
+    virtual const iterator_ref<T> begin() const = 0;
+
+    /**
+     * Returns an iterator to the end of this sequence. The returned iterator
+     * does not points to a valid list element.
+     *
+     * @return
+     */
+    virtual iterator_ref<T> end() = 0;
+
+    virtual const iterator_ref<T> end() const = 0;
+} ;
 
 }
 }

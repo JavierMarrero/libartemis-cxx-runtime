@@ -32,6 +32,7 @@
 
 // C++
 #include <climits>
+#include <cstring>
 
 namespace axf
 {
@@ -50,12 +51,15 @@ class DefaultAllocator : public Allocator<T>
 {
 
     AXF_CLASS_TYPE(axf::collections::DefaultAllocator<T>,
-               AXF_TYPE(axf::collections::Allocator<T>))
+                   AXF_TYPE(axf::collections::Allocator<T>))
 public:
 
     T* allocate(typename Allocator<T>::size_type n = 1)
     {
-        return reinterpret_cast<T*> (new char[n * sizeof (T)]);
+        char* memory = new char[n * sizeof (T)];
+        std::memset(memory, 0, n * sizeof (T));
+
+        return reinterpret_cast<T*> (memory);
     }
 
     T* construct(T* p, const T& args)
