@@ -35,14 +35,16 @@
 #endif
 
 #if defined(__GNUC__) && !defined(__llvm__) && !defined(__INTEL_COMPILER)
-#define ARTEMIS_COMPILER_GCC   __GNUC__ // probably
+#   define ARTEMIS_COMPILER_GCC   __GNUC__ // probably
 #endif
 
 /* Configurations for GCC only */
 
 /* Language-wide configuration */
 #if __cplusplus >= 201103L
-#define ARTEMIS_CXX11_SUPPORTED    1
+#   define ARTEMIS_CXX11_SUPPORTED  1
+#else
+#   define ARTEMIS_CXX11_SUPPORTED  0
 #endif
 
 #endif /* COMPILER_H */

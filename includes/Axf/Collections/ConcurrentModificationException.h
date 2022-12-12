@@ -18,62 +18,47 @@
  */
 
 /* 
- * File:   OutOfMemoryError.h
+ * File:   ConcurrentModificationException.h
  * Author: Javier Marrero
  *
- * Created on December 4, 2022, 12:20 PM
+ * Created on December 10, 2022, 10:32 AM
  */
 
-#ifndef OUTOFMEMORYERROR_H
-#define OUTOFMEMORYERROR_H
+#ifndef CONCURRENTMODIFICATIONEXCEPTION_H
+#define CONCURRENTMODIFICATIONEXCEPTION_H
 
 // API
 #include <Axf/Core/Exception.h>
 
-// C
-#include <climits>
-
 namespace axf
 {
-namespace core
+namespace collections
 {
 
 /**
- * Signals the runtime system that allocation requests are no longer available
- * due to a shortage in system's available memory.
+ * Exception that is thrown when a collection detected that a modification has
+ * been made when it is not allowed, such as when an iterator is operating over
+ * the collection and the collection is structurally modified.
  * <p>
- * 
+ * An iterator that detects this condition is deemed to be <i>fail-fast</i>.
+ * This exception may be thrown even in single-threaded designs, if methods
+ * are called out of order.
  *
- * @return
+ * @author J. Marrero
  */
-class OutOfMemoryError : public Exception
+class ConcurrentModificationException : public core::Exception
 {
-    AXF_EXCEPTION_TYPE(axf::core::OutOfMemoryError, axf::core::Exception)
+    AXF_EXCEPTION_TYPE(axf::collections::ConcurrentModificationException,
+                       axf::core::Exception)
 
 public:
 
-    OutOfMemoryError();
-    OutOfMemoryError(const char* message, std::size_t requested = 0);
-    ~OutOfMemoryError();
-
-    /**
-     * Returns how many bytes were requested upon allocation that caused the
-     * memory shortage.
-     *
-     * @return
-     */
-    inline std::size_t getRequested() const
-    {
-        return m_requested;
-    }
-
-private:
-
-    std::size_t m_requested;
+    ConcurrentModificationException(const char* message);
+    ~ConcurrentModificationException();
 } ;
 
 }
 }
 
-#endif /* OUTOFMEMORYERROR_H */
+#endif /* CONCURRENTMODIFICATIONEXCEPTION_H */
 

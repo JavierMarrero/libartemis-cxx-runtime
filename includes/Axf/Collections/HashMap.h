@@ -31,6 +31,7 @@
 #include <Axf/Collections/Bits/HashUtils.h>
 #include <Axf/Collections/Map.h>
 #include <Axf/Collections/HashSet.h>
+#include <Axf/Core/Lang-C++/reference-wrapper.h>
 
 // C++
 #include <cstring>
@@ -39,188 +40,321 @@ namespace axf
 {
 namespace collections
 {
+namespace __
+{
 
+/**
+ * Represents the hash map entries.
+ *
+ * @return
+ */
+template <typename K, typename V>
+class HashMapEntry : public Entry<K, V>
+{
+
+    AXF_CLASS_TYPE(AXF_TEMPLATE_CLASS(axf::collections::__::HashMapEntry<K, V>),
+                   AXF_TYPE(AXF_TEMPLATE_CLASS(Entry<K, V>)))
+public:
+
+    HashMapEntry(const K& key, const K& value)
+    : Entry<K, V>(key, value), m_next(NULL) { }
+
+    ~HashMapEntry()
+    {
+        m_next = NULL;
+    }
+
+    inline void setNext(HashMapEntry<K, V>* next)
+    {
+        m_next = next;
+    }
+
+    inline HashMapEntry<K, V>* getNext() const
+    {
+        return m_next;
+    }
+
+private:
+
+    HashMapEntry<K, V>* m_next;
+} ;
+
+}
+
+/**
+ * In computer sciences, a <i>hash table</i>, also known as a <i>hash map</i>
+ * is a data structure that implements associative arrays or dictionary.
+ * <p>
+ * A hash table uses a hash function to compute an index, also called the hash
+ * code into an array of buckets or slots, from which the desired value can be
+ * found. During look-up, the key is hashed and the correspondent value indicates
+ * where the value is stored.
+ * <p>
+ * Ideally, the hash function will evenly distribute keys amongst all the
+ * available buckets, but more often than not, it is used an imperfect hash
+ * function in order to not to affect performance. Collisions are handled using
+ * a <i>chained hash</i> approach.
+ * <p>
+ * In a well-dimensioned hash table, the cost of insertion, look-up and removal
+ * is independent of the number of elements. This particular implementation
+ * provides amortized constant time operations.
+ *
+ * @author J. Marrero
+ */
 template
 <
 typename K,
 typename V,
 typename hash_functor_t = __::default_hash<K>,
-typename array_allocator_t = axf::collections::DefaultAllocator<Entry<K, V>*>,
-typename entry_allocator_t = axf::collections::DefaultAllocator<Entry<K, V> >,
-typename keyset_allocator_t = axf::collections::DefaultAllocator<HashSet<K*> >,
-typename valset_allocator_t = axf::collections::DefaultAllocator<HashSet<V*> >
+typename array_allocator_t = axf::collections::DefaultAllocator<__::HashMapEntry<K, V>*>,
+typename entry_allocator_t = axf::collections::DefaultAllocator<__::HashMapEntry<K, V> >
 >
 class HashMap : public Map<K, V>
 {
-
-    AXF_CLASS_TYPE(AXF_TEMPLATE_CLASS(axf::collections::HashMap<K, V, hash_functor_t, array_allocator_t, entry_allocator_t, keyset_allocator_t, valset_allocator_t>),
+    AXF_CLASS_TYPE(AXF_TEMPLATE_CLASS(axf::collections::HashMap<K, V, hash_functor_t, array_allocator_t, entry_allocator_t>),
                    AXF_TYPE(AXF_TEMPLATE_CLASS(Map<K, V>)))
+
+private:
+
+    typedef __::HashMapEntry<K, V> entry_t;
+    typedef HashSet<core::reference_wrapper<const K> > keyset_t;
+    typedef HashSet<core::reference_wrapper<const V> > valset_t;
 
 public:
 
-    HashMap(unsigned initialSize = 64)
+    static const std::size_t    DEFAULT_CAPACITY = 16;
+    static const float          DEFAULT_LOAD_FACTOR = 0.75f;
+
+    HashMap(std::size_t initialSize = DEFAULT_CAPACITY, float loadFactor = DEFAULT_LOAD_FACTOR)
     :
-    m_array(NULL), m_arraySize(initialSize)
+    m_buckets(NULL),
+    m_capacity(initialSize),
+    m_keySet(initialSize, loadFactor),
+    m_loadFactor(loadFactor),
+    m_modCount(0),
+    m_size(0),
+    m_threshold((std::size_t) (initialSize * loadFactor)),
+    m_valueSet(initialSize, loadFactor)
     {
-        resizeArray(m_arraySize);
+        // Allocate the new array
+        m_buckets = m_bucketAllocator.newArray(initialSize);
     }
 
     ~HashMap()
     {
-        m_arrayAllocator.deleteObject(m_array);
-    }
-
-    bool add(const Entry<K, V>& element)
-    {
-        Entry<K, V>* entry = allocateEntry(element.getKey(), element.getValue());
-
-        bool result = (entry == NULL);
-        if (entry)
+        // Iterate through all the buckets
+        for (std::size_t i = 0; i < m_capacity; ++i)
         {
-            unsigned int idx = hashKey(element.getKey());
-            if (m_array[idx] == NULL)
+            entry_t* current = m_buckets[i];
+            while (current != NULL)
             {
-                m_array[idx] = entry;
-                result = true;
-            }
-            else
-            {
-                // Check if matches
-                Entry<K, V>* atIndex = m_array[idx];
-                result = element.getKey() != atIndex->getKey();
-                if (result)
-                {
-                    Entry<K, V>* current = atIndex;
-                    while (current->getNext() != NULL && result == true)
-                    {
-                        result = current->getKey() == element.getKey();
-                        current = current->getNext();
-                    }
+                // Store the old entry
+                entry_t* next = current->getNext();
 
-                    // Able to insert
-                    if (result)
-                    {
-                        current->setNext(entry);
-                    }
-                }
+                this->deleteEntry(current);
+
+                // Jump
+                current = next;
             }
         }
 
-        if (result)
-            m_size++;
-        return result;
+        // Release
+        m_bucketAllocator.deleteArray(m_buckets, m_capacity);
+
+        // Set the fields to invalid values
+        m_capacity = 0;
+        m_loadFactor = 0.0f;
+        m_size = 0;
+        m_threshold = 0;
     }
 
-    inline iterator_ref<Entry<K, V> > begin()
+    virtual iterator<Entry<K, V> > begin()
     {
         return NULL;
     }
 
-    virtual const iterator_ref<Entry<K, V> > begin() const
+    virtual const iterator<Entry<K, V> > begin() const
     {
         return NULL;
     }
 
     virtual bool contains(const Entry<K, V>& element) const
     {
-        bool result = false;
-        for (const iterator_ref<Entry<K, V> > it = begin(),
-             end = this->end(); it != end && result == false; it->next())
+        std::size_t index = calculateHash(element.getKey());
+        entry_t* entry = m_buckets[index];
+        while (entry != NULL)
         {
-            const Entry<K, V>& current = it->current();
-            if (current.getKey() == element.getKey() &&
-                current.getValue() == element.getValue())
+            if (entry->getKey() == element.getKey() && entry->getValue() == element.getValue())
             {
-                result = true;
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    virtual iterator<Entry<K, V> > end()
+    {
+        return NULL;
+    }
+
+    virtual const iterator<Entry<K, V> > end() const
+    {
+        return NULL;
+    }
+
+    inline virtual bool isEmpty() const
+    {
+        return m_size == 0;
+    }
+
+    virtual keyset_t& keySet()
+    {
+        return m_keySet;
+    }
+
+    virtual bool put(const K& key, const V& value)
+    {
+        return add(Entry<K, V>(key, value));
+    }
+
+    inline virtual size_t size() const
+    {
+        return m_size;
+    }
+
+    virtual valset_t& valueSet()
+    {
+        return m_valueSet;
+    }
+
+protected:
+
+    virtual bool add(const Entry<K, V>& element)
+    {
+        if (m_size + 1 > m_threshold)
+            rehash();
+
+        entry_t* entry = allocateEntry(element.getKey(), element.getValue());
+        bool result = (entry != NULL);
+        if (result)
+        {
+            std::size_t index = calculateHash(entry->getKey());
+            if (m_buckets[index] == NULL)
+            {
+                m_buckets[index] = entry;
+            }
+            else
+            {
+                entry_t* dest = m_buckets[index];
+                if (dest->getKey() == element.getKey())
+                    result = false;
+
+                while (dest->getNext() != NULL && result)
+                {
+                    if (dest->getKey() == entry->getKey())
+                        result = false;
+                    dest = dest->getNext();
+                }
+
+                dest->setNext(entry);
+            }
+
+            if (result)
+            {
+                m_size++;
+
+                // Add to the key and value sets
+
+
+                // Mod-count
+                m_modCount++;
+            }
+            else
+            {
+                // Clean-up
+                deleteEntry(entry);
             }
         }
         return result;
     }
 
-    inline iterator_ref<Entry<K, V> > end()
-    {
-        return NULL;
-    }
-
-    virtual const iterator_ref<Entry<K, V> > end() const
-    {
-        return NULL;
-    }
-
-    inline bool isEmpty() const
-    {
-        return m_size == 0;
-    }
-
-    virtual const Set<const K*>& keySet()
-    {
-        return m_keySet;
-    }
-
-    inline size_t size() const
-    {
-        return m_size;
-    }
-
-    bool put(const K& key, const V& value)
-    {
-        return add(Entry<K, V>(key, value));
-    }
-
-    bool remove(const Entry<K, V>& element)
+    virtual bool remove(const Entry<K, V>& element)
     {
         return false;
     }
 
-    virtual const Set<const V*>& valueSet()
-    {
-        return m_valueSet;
-    }
-
 private:
 
-    Entry<K, V>**       m_array;
-    array_allocator_t   m_arrayAllocator;
-    std::size_t         m_arraySize;
+    entry_t**           m_buckets;
+    array_allocator_t   m_bucketAllocator;
+    std::size_t         m_capacity;
     entry_allocator_t   m_entryAllocator;
     hash_functor_t      m_hasher;
-    keyset_allocator_t  m_keyset_allocator;
-    HashSet<const K*>   m_keySet;
+    keyset_t            m_keySet;
+    float               m_loadFactor;
+    long                m_modCount;
     std::size_t         m_size;
-    valset_allocator_t  m_valset_allocator;
-    HashSet<const V*>   m_valueSet;
+    std::size_t         m_threshold;
+    valset_t            m_valueSet;
 
-    Entry<K, V>* allocateEntry(const K& key, const V& value)
+    inline entry_t* allocateEntry(const K& key, const V& value)
     {
-        return m_entryAllocator.newObject(Entry<K, V>(key, value));
+        return m_entryAllocator.newObject(entry_t(key, value));
     }
 
-    inline float calculateLoadFactor() const
+    inline std::size_t calculateHash(const K& key) const
     {
-        return ((float) m_size) / m_arraySize;
+        return calculateHash(key, m_capacity);
     }
 
-    unsigned hashKey(const K& key) const
+    inline std::size_t calculateHash(const K& key, const std::size_t limit) const
     {
-        return m_hasher(key) % m_arraySize;
+        return m_hasher(key) % limit;
     }
 
-    Entry<K, V>** resizeArray(std::size_t newSize)
+    inline void deleteEntry(entry_t* entry)
     {
-        if (m_array == NULL)
+        m_entryAllocator.deleteObject(entry);
+    }
+
+    void rehash()
+    {
+        entry_t** oldBuckets = m_buckets;
+        std::size_t oldCapacity = m_capacity;
+
+        std::size_t newCapacity = (m_capacity * 2) + 1;
+        entry_t** newBuckets = m_bucketAllocator.newArray(newCapacity);
+
+        for (std::size_t i = 0; i < oldCapacity; ++i)
         {
-            // This is the first allocation
-            m_array = m_arrayAllocator.allocate(newSize);
-            m_arraySize = newSize;
-        }
-        else
-        {
-            // This is a resize allocation
+            entry_t* current = oldBuckets[i];
+            while (current != NULL)
+            {
+                // Store the next element
+                entry_t* next = current->getNext();
 
+                // Rehash
+                std::size_t index = calculateHash(current->getKey(), newCapacity);
+                entry_t* dest = newBuckets[index];
+                newBuckets[index] = current;
+                current->setNext(dest);
+
+                // Iterate
+                current = next;
+            }
         }
-        return m_array;
+
+        // Reassign
+        m_buckets = newBuckets;
+        m_capacity = newCapacity;
+
+        // Deallocate
+        m_bucketAllocator.deleteArray(oldBuckets, oldCapacity);
+
+        // Recalculate threshold
+        m_threshold = (std::size_t) (newCapacity * m_loadFactor);
     }
-
 } ;
 
 }

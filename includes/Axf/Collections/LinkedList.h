@@ -70,11 +70,11 @@ struct Node : public axf::core::ReferenceCounted
 } ;
 
 template <typename E>
-class LinkedListIterator : public axf::collections::Iterator<E>
+class LinkedListIterator : public axf::collections::BasicIterator<E>
 {
 public:
 
-    LinkedListIterator() : m_current((Node<E>*) Iterator<E>::getBadPointer()) { }
+    LinkedListIterator() : m_current((Node<E>*) BasicIterator<E>::getBadPointer()) { }
 
     LinkedListIterator(Node<E>* node) : m_current(node) { }
 
@@ -101,7 +101,7 @@ public:
         E& result = m_current->m_data;
 
         if (m_current->m_next == NULL)
-            m_current = (Node<E>*) Iterator<E>::getBadPointer();
+            m_current = (Node<E>*) BasicIterator<E>::getBadPointer();
         else
             m_current = m_current->m_next;
 
@@ -114,7 +114,7 @@ public:
         const E& result = m_current->m_data;
 
         if (m_current->m_next == NULL)
-            m_current = (Node<E>*) Iterator<E>::getBadPointer();
+            m_current = (Node<E>*) BasicIterator<E>::getBadPointer();
         else
             m_current = m_current->m_next;
 
@@ -227,12 +227,12 @@ public:
     /**
      * @see axf::collections::Collection::begin
      */
-    virtual iterator_ref<E> begin()
+    virtual iterator<E> begin()
     {
         return new LinkedListIterator<E>(m_head);
     }
 
-    virtual const iterator_ref<E> begin() const
+    virtual const iterator<E> begin() const
     {
         return new LinkedListIterator<E>(m_head);
     }
@@ -255,12 +255,12 @@ public:
     /**
      * @see axf::collections::Collection::end
      */
-    virtual iterator_ref<E> end()
+    virtual iterator<E> end()
     {
         return new LinkedListIterator<E>();
     }
 
-    virtual const iterator_ref<E> end() const
+    virtual const iterator<E> end() const
     {
         return new LinkedListIterator<E>();
     }

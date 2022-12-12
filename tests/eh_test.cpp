@@ -18,18 +18,41 @@
  */
 
 /* 
- * File:   Algorithms.h
+ * File:   eh_test.cpp
  * Author: Javier Marrero
  *
- * Created on December 5, 2022, 2:31 AM
+ * Created on December 11, 2022, 8:19 PM
  */
 
-#ifndef ALGORITHMS_H
-#define ALGORITHMS_H
+#include <stdlib.h>
+#include <iostream>
 
-// API
-#include <Axf/Collections/Algorithms/default-predicates.h>
-#include <Axf/Collections/Algorithms/search.h>
+#include <Axf.h>
 
-#endif /* ALGORITHMS_H */
+using namespace axf;
+using namespace axf::core;
+
+int main(int argc, char** argv)
+{
+    // Caught exception
+    try
+    {
+        throw IllegalStateException("this exception must be caught, don't be a jerk.");
+    }
+    catch (Exception& ex)
+    {
+        std::cout << "caught exception: " << ex.getClassName() << ": " << ex.getMessage() << std::endl;
+    }
+
+    // Uncaught exception
+    try
+    {
+        throw IllegalStateException("bogus...");
+    }
+    catch (Exception& ex)
+    {
+        throw IllegalStateException("uncaught exception thrown on purpose!");
+    }
+    return (EXIT_SUCCESS);
+}
 

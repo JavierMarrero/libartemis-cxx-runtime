@@ -56,9 +56,9 @@ public:
      *
      * @return
      */
-    virtual iterator_ref<T> begin() = 0;
+    virtual iterator<T> begin() = 0;
 
-    virtual const iterator_ref<T> begin() const = 0;
+    virtual const iterator<T> begin() const = 0;
 
     /**
      * Returns an iterator to the end of this sequence. The returned iterator
@@ -66,9 +66,9 @@ public:
      *
      * @return
      */
-    virtual iterator_ref<T> end() = 0;
+    virtual iterator<T> end() = 0;
 
-    virtual const iterator_ref<T> end() const = 0;
+    virtual const iterator<T> end() const = 0;
 } ;
 
 }

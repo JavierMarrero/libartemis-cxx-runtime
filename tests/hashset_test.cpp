@@ -29,6 +29,8 @@
 
 #include <Axf.h>
 
+#include <vector>
+
 /*
  * Simple C++ Test Suite
  */
@@ -37,24 +39,43 @@ using namespace axf::collections;
 
 int main(int argc, char** argv)
 {
-    HashSet<int> intSet(5);
-
-    // Add the numbers from zero to nine
-    for (int i = 0; i < 10; ++i)
+    try
     {
-        std::cout << "adding " <<  i << " to the set: " << intSet.add(i) << std::endl;
+        HashSet<int> intSet(2);
+
+        // Add the numbers from zero to nine
+        for (int i = 0; i < 10; ++i)
+        {
+            std::cout << "adding " <<  i << " to the set: " << intSet.add(i) << std::endl;
+        }
+
+        // Attempt to include a duplicate
+        std::cout << "added duplicate 5?: " << intSet.add(5) << std::endl;
+
+        // Contains?
+        std::cout << "contains a 3?: " << intSet.contains(3) << std::endl;
+        std::cout << "contains a 139?: " << intSet.contains(139) << std::endl;
+
+        // Remove
+        std::cout << "removed a 7?: " << intSet.remove(7) << std::endl;
+
+        // Iterate over the set
+        std::cout << "set: ";
+        for (collections::iterator<int> it = intSet.begin(),
+             end = intSet.end(); it != end; ++it)
+        {
+            std::cout << *it << " ";
+        }
+        std::cout << std::endl;
     }
-
-    // Attempt to include a duplicate
-    std::cout << "added duplicate?: " << intSet.add(5) << std::endl;
-
-    // Contains?
-    std::cout << "contains a 3?: " << intSet.contains(3) << std::endl;
-    std::cout << "contains a 139?: " << intSet.contains(139) << std::endl;
-
-    // Remove
-    std::cout << "removed a 7?: " << intSet.remove(7) << std::endl;
-
+    catch (core::Exception& ex)
+    {
+        std::cerr << ex.getClassName() << ": " << ex.getMessage() << std::endl;
+    }
+    catch (std::exception& ex)
+    {
+        std::cerr << ex.what() << std::endl;
+    }
     // Pause
     std::cout << "done..." << std::endl;
     std::getchar();

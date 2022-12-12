@@ -39,7 +39,7 @@ template <typename E>
 class List : public Collection<E>
 {
     AXF_CLASS_TYPE(axf::collections::List<E>,
-               AXF_TYPE(axf::collections::Collection<E>))
+                   AXF_TYPE(axf::collections::Collection<E>))
 public:
 
     /**
@@ -76,6 +76,28 @@ public:
      * @return
      */
     virtual bool removeAt(std::size_t index) = 0;
+
+    /**
+     * Overload of the <code>[]</code> operator.
+     *
+     * @param index
+     * @return
+     */
+    E& operator[](std::size_t index)
+    {
+        return get(index);
+    }
+
+    /**
+     * Const overload of the <code>[]</code> operator.
+     *
+     * @param index
+     * @return
+     */
+    const E& operator[](std::size_t index) const
+    {
+        return get(index);
+    }
 } ;
 
 }

@@ -33,6 +33,7 @@
 #include <Axf/Collections/DefaultAllocator.h>
 #include <Axf/Collections/Iterator.h>
 #include <Axf/Collections/Set.h>
+#include <Axf/Core/Lang-C++/reference-wrapper.h>
 #include <Axf/Core/Memory.h>
 
 namespace axf
@@ -55,7 +56,7 @@ class Entry : public axf::core::Object
 
 public:
 
-    Entry(const K& key, const V& value) : m_key(key), m_next(NULL), m_value(value) { }
+    Entry(const K& key, const V& value) : m_key(key), m_value(value) { }
 
     ~Entry() { }
 
@@ -69,6 +70,11 @@ public:
         return m_value;
     }
 
+    inline virtual bool equals(const Object& object) const
+    {
+        return keyMatches(static_cast<const Entry<K, V>&> (object));
+    }
+
     /**
      * Returns true if two keys matches exactly.
      *
@@ -80,20 +86,9 @@ public:
         return m_key == rhs.m_key;
     }
 
-    inline void setNext(Entry<K, V>* next)
-    {
-        m_next = next;
-    }
-
-    inline Entry<K, V>* getNext() const
-    {
-        return m_next;
-    }
-
-private:
+protected:
 
     K               m_key;      // The key of the entry
-    Entry<K, V>*    m_next;     // The next key
     V               m_value;    // The value of the entry
 
 } ;
@@ -130,14 +125,14 @@ public:
      *
      * @return
      */
-    virtual const Set<const K*>& keySet() = 0;
+    virtual const Set<core::reference_wrapper<const K> >& keySet() = 0;
 
     /**
      * Returns a set that iterates over all the values of the map.
      *
      * @return
      */
-    virtual const Set<const V*>& valueSet() = 0;
+    virtual const Set<core::reference_wrapper<const V> >& valueSet() = 0;
 
 } ;
 

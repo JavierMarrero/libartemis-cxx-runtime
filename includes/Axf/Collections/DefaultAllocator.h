@@ -29,10 +29,12 @@
 
 // API
 #include <Axf/Collections/Allocator.h>
+#include <Axf/Core/OutOfMemoryError.h>
 
 // C++
 #include <climits>
 #include <cstring>
+#include <cstdio>
 
 namespace axf
 {
@@ -54,32 +56,32 @@ class DefaultAllocator : public Allocator<T>
                    AXF_TYPE(axf::collections::Allocator<T>))
 public:
 
-    T* allocate(typename Allocator<T>::size_type n = 1)
-    {
-        char* memory = new char[n * sizeof (T)];
-        std::memset(memory, 0, n * sizeof (T));
+    DefaultAllocator() { };
 
-        return reinterpret_cast<T*> (memory);
+    ~DefaultAllocator() { };
+
+    inline T* allocate(std::size_t count)
+    {
+        return static_cast<T*> (alloc::_allocate(alloc::getSizeOfBlock<sizeof (T)>(count)));
     }
 
-    T* construct(T* p, const T& args)
+    inline T* construct(T* pointer, const T& element)
     {
-        return new (p) T(args);
+        return new (pointer) T(element);
     }
 
-    void destroy(T* p)
+    inline void deallocate(T* pointer)
     {
-        ((T*) (p))->~T();
+        alloc::_deallocate(static_cast<void*> (pointer));
     }
 
-    void deallocate(T* p, typename Allocator<T>::size_type n)
+    inline void destruct(T* pointer, std::size_t count)
     {
-        delete[] reinterpret_cast<char*> (p);
-    }
-
-    virtual typename Allocator<T>::size_type maxSize() const
-    {
-        return SIZE_MAX;
+        unsigned long offset = 0;
+        while (count-- > 0)
+        {
+            static_cast<T*> (pointer + offset++)->~T();
+        }
     }
 
 } ;

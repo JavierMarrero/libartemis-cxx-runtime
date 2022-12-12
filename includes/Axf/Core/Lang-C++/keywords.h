@@ -18,18 +18,21 @@
  */
 
 /* 
- * File:   Algorithms.h
+ * File:   keywords.h
  * Author: Javier Marrero
  *
- * Created on December 5, 2022, 2:31 AM
+ * Created on December 11, 2022, 11:46 PM
  */
 
-#ifndef ALGORITHMS_H
-#define ALGORITHMS_H
+#ifndef KEYWORDS_H
+#define KEYWORDS_H
 
-// API
-#include <Axf/Collections/Algorithms/default-predicates.h>
-#include <Axf/Collections/Algorithms/search.h>
+#include <Axf/API/Compiler.h>
+#include <Axf/API/Platform.h>
 
-#endif /* ALGORITHMS_H */
+#if ARTEMIS_CXX11_SUPPORTED == 0
+#   define noexcept throw()
+#endif
+
+#endif /* KEYWORDS_H */
 

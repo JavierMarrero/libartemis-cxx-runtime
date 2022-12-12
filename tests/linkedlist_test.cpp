@@ -65,10 +65,10 @@ int main(int argc, char** argv)
 
     // Test for iterators
     std::cout << "list: ";
-    for (collections::iterator_ref<int> it = linkedList.begin(),
+    for (collections::iterator<int> it = linkedList.begin(),
          end = linkedList.end(); it != end; it->next())
     {
-        std::cout << **it << " ";
+        std::cout << *it << " ";
     }
     std::cout << std::endl;
 

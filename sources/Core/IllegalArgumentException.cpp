@@ -18,18 +18,37 @@
  */
 
 /* 
- * File:   Algorithms.h
+ * File:   IllegalArgumentException.cpp
  * Author: Javier Marrero
- *
- * Created on December 5, 2022, 2:31 AM
+ * 
+ * Created on December 10, 2022, 10:46 AM
  */
 
-#ifndef ALGORITHMS_H
-#define ALGORITHMS_H
+#include <Axf/Core/IllegalArgumentException.h>
 
-// API
-#include <Axf/Collections/Algorithms/default-predicates.h>
-#include <Axf/Collections/Algorithms/search.h>
+// C++
+#include <cstdarg>
+#include <cstdio>
 
-#endif /* ALGORITHMS_H */
+using namespace axf;
+using namespace axf::core;
+
+IllegalArgumentException::IllegalArgumentException(const char* fmt, ...)
+:
+Exception("function called with illegal arguments...")
+{
+    std::va_list va;
+    va_start(va, fmt);
+
+    // print the message on the buffer
+    std::vsprintf(m_message, fmt, va);
+
+    va_end(va);
+}
+
+IllegalArgumentException::~IllegalArgumentException()
+{
+}
+
+
 

@@ -18,18 +18,24 @@
  */
 
 /* 
- * File:   Algorithms.h
+ * File:   ConcurrentModificationException.cpp
  * Author: Javier Marrero
- *
- * Created on December 5, 2022, 2:31 AM
+ * 
+ * Created on December 10, 2022, 10:32 AM
  */
 
-#ifndef ALGORITHMS_H
-#define ALGORITHMS_H
+#include <Axf/Collections/ConcurrentModificationException.h>
 
-// API
-#include <Axf/Collections/Algorithms/default-predicates.h>
-#include <Axf/Collections/Algorithms/search.h>
+using namespace axf;
+using namespace axf::collections;
 
-#endif /* ALGORITHMS_H */
+ConcurrentModificationException::ConcurrentModificationException(const char* message)
+:
+core::Exception(message)
+{
+}
+
+ConcurrentModificationException::~ConcurrentModificationException()
+{
+}
 

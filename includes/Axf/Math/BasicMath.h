@@ -18,18 +18,50 @@
  */
 
 /* 
- * File:   Algorithms.h
+ * File:   BasicMath.h
  * Author: Javier Marrero
  *
- * Created on December 5, 2022, 2:31 AM
+ * Created on December 9, 2022, 3:10 PM
  */
 
-#ifndef ALGORITHMS_H
-#define ALGORITHMS_H
+#ifndef BASICMATH_H
+#define BASICMATH_H
 
-// API
-#include <Axf/Collections/Algorithms/default-predicates.h>
-#include <Axf/Collections/Algorithms/search.h>
+namespace axf
+{
+namespace math
+{
 
-#endif /* ALGORITHMS_H */
+/**
+ * Returns the maximum between two elements. The elements must be comparable
+ * using operator <code>></code>.
+ *
+ * @param a
+ * @param b
+ * @return a or b, the greater
+ */
+template <typename T>
+T max(const T a, const T b)
+{
+    return (a > b) ? a : b;
+}
+
+/**
+ * Returns the minimum between two elements. The elements must be comparable
+ * using operator <code>></code>
+ *
+ * @param a
+ * @param b
+ * @return a or b, the lesser
+ */
+template <typename T>
+T min(const T a, const T b)
+{
+    return (a > b) ? b : a;
+}
+
+}
+}
+
+#endif /* BASICMATH_H */
 

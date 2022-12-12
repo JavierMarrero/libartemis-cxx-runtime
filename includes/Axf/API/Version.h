@@ -24,8 +24,8 @@
  * Created on August 15, 2022, 12:35 AM
  */
 
-#ifndef __SELENIUM_VERSION_H
-#define __SELENIUM_VERSION_H
+#ifndef __ARTEMIS_VERSION_H
+#define __ARTEMIS_VERSION_H
 
 /* Version macros */
 #ifndef __ARTEMIS_VERSION_MACROS_SET

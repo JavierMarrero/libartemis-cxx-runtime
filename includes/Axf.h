@@ -35,11 +35,15 @@
 #include <Axf/API/Platform.h>
 #include <Axf/API/Version.h>
 
+#include <Axf/Core/Lang-C++/keywords.h>
+#include <Axf/Core/Lang-C++/reference-wrapper.h>
 #include <Axf/Core/Lang-C++/traits.h>
 
 #include <Axf/Collections/Algorithms.h>
 #include <Axf/Collections/Allocator.h>
+#include <Axf/Collections/ArrayList.h>
 #include <Axf/Collections/Collection.h>
+#include <Axf/Collections/ConcurrentModificationException.h>
 #include <Axf/Collections/DefaultAllocator.h>
 #include <Axf/Collections/HashMap.h>
 #include <Axf/Collections/HashSet.h>
@@ -56,16 +60,22 @@
 #include <Axf/Core/Class.h>
 #include <Axf/Core/ClassCastException.h>
 #include <Axf/Core/Exception.h>
+#include <Axf/Core/IllegalArgumentException.h>
+#include <Axf/Core/IllegalOperationException.h>
 #include <Axf/Core/IllegalStateException.h>
 #include <Axf/Core/IndexOutOfBoundsException.h>
 #include <Axf/Core/Memory.h>
 #include <Axf/Core/NullPointerException.h>
 #include <Axf/Core/Number.h>
 #include <Axf/Core/Object.h>
+#include <Axf/Core/OutOfMemoryError.h>
 #include <Axf/Core/ReferenceCounted.h>
+#include <Axf/Core/Runtime.h>
 #include <Axf/Core/String.h>
 
 #include <Axf/Logging/Logger.h>
+
+#include <Axf/Math/BasicMath.h>
 
 #include <Axf/Utils/Pair.h>
 

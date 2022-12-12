@@ -39,13 +39,17 @@ using namespace axf::collections;
 template <typename K, typename V>
 void printMap(const Map<K, V>& map)
 {
-
+    for (const iterator<Entry<K, V> > it = map.begin(),
+         end = map.end(); it != end;  it->next())
+    {
+        std::cout << "key {" << it->current().getKey() << "} -> {" << it->current().getValue() << "}" << std::endl;
+    }
 }
 
 int main(int argc, char** argv)
 {
     std::cout << "hash map creation " << std::endl;
-    HashMap<int, char> hashMap;
+    HashMap<int, char> hashMap(2);
 
     // Adds the 10 first letters to the map
     for (int i = 0; i < 10; ++i)
@@ -54,12 +58,12 @@ int main(int argc, char** argv)
     }
 
     // Print the state of the map
-    printMap(hashMap);
+    //    printMap(hashMap);
 
     // Remove
 
     // Print the state of the map
-    printMap(hashMap);
+    //    printMap(hashMap);
 
     std::cout << "done..." << std::endl;
     std::getchar();

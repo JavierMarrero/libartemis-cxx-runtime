@@ -32,13 +32,46 @@
 #include <Axf/Core/Object.h>
 #include <Axf/Core/OutOfMemoryError.h>
 
+#include <Axf/Core/Lang-C++/traits.h>
+
 // C++
 #include <cstddef>
+#include <cstring>
 
 namespace axf
 {
 namespace collections
 {
+namespace alloc
+{
+
+template <std::size_t _TypeSize>
+inline std::size_t getSizeOfBlock(std::size_t count)
+{
+    if (_TypeSize > 1)
+    {
+        std::size_t maxPossible = static_cast<std::size_t> (-1);
+
+        if (count > maxPossible)
+        {
+            throw core::OutOfMemoryError("Attempted allocation greater than the maximum", count * _TypeSize);
+        }
+        return count * _TypeSize;
+    }
+    return count;
+}
+
+inline void* _allocate(std::size_t bytes)
+{
+    return static_cast<void*> (new char[bytes]);
+}
+
+inline void _deallocate(void* ptr)
+{
+    delete[] (static_cast<char*> (ptr));
+}
+
+}
 
 /**
  * This interface defines the named requirement for an allocator object.
@@ -67,107 +100,71 @@ template <typename T>
 class Allocator : public core::Object
 {
     AXF_CLASS_TYPE(axf::collections::Allocator<T>,
-               AXF_TYPE(axf::core::Object));
+                   AXF_TYPE(axf::core::Object));
 public:
 
-    typedef T           value_type;     /// The type of objects allocated by this allocator
-    typedef T*          pointer;        /// A pointer to the object type of this allocator
-    typedef const T*    const_pointer;  /// A const pointer to the object type of this allocator
-    typedef T&          reference;      /// A reference to the object type of this allocator
-    typedef const T&    const_reference; /// A const reference to the object type of this allocator
-    typedef std::size_t size_type;      /// Size type
+    Allocator() { }
 
+    virtual ~Allocator() { }
 
     /**
-     * Allocates storage suitable for an array object of type T[n] and creates
-     * the array but does not construct array elements. This means the storage
-     * is uninitialized.
-     * <p>
-     * The method may throw exceptions at will. If n is equals to zero, the
-     * result value is unspecified (commonly a NULL pointer).
+     * Allocates uninitialized storage suitable for storing an array of objects
+     * of type T and <i>count</i> elements.
      *
-     * @param n
+     * @param count
      * @return
      */
-    virtual Allocator<T>::pointer  allocate(Allocator<T>::size_type n = 1) = 0;
+    virtual T* allocate(std::size_t count) = 0;
 
     /**
-     * Constructs an object of type <code>T</code> in previously allocated
-     * storage at address pointed to by <code>xp</code> using <code>args</code>
-     * as the constructor arguments.
+     * Constructs an element in place. The storage must be already allocated.
      *
-     * @param p
-     * @param args
+     * @param element
+     * @return
      */
-    virtual Allocator<T>::pointer construct(Allocator<T>::pointer p, Allocator<T>::const_reference args) = 0;
+    virtual T* construct(T* pointer, const T& element) = 0;
 
     /**
-     * Releases storage pointed to <code>p</code>. <code>p</code> must be
-     * a pointer obtained by a previous call to <code>allocate</code> that
-     * has not been invalidated by a previous call to <code>deallocate</code>.
-     * <p>
-     * The method is guaranteed to not to throw exceptions. If a null pointer
-     * is passed, the deallocation request is ignored.
-     * <p>
-     * <code>n</code> must be an integer matching the previous value passed
-     * to <code>allocate</code>. Some implementations may choose to ignore
-     * this parameter.
-     *
-     * @param p
+     * Deallocates previously allocated storage. The deallocation does not imply
+     * destruction of the elements. The destruction of the elements is
+     * performed using the destruct method.
      */
-    virtual void deallocate(Allocator<T>::pointer p, Allocator<T>::size_type n = 1) = 0;
+    virtual void deallocate(T* pointer) = 0;
 
-    /**
-     * Destroys the object pointed by <code>p</code> and releases the storage
-     * assigned to this object.
-     * <p>
-     * This method does not throw any exception.
-     *
-     * @param ptr
-     */
-    void deleteObject(Allocator<T>::pointer p)
+    inline virtual void deleteArray(T* pointer, std::size_t count)
     {
-        if (p != NULL)
-        {
-            destroy(p);
-            deallocate(p);
-        }
+        destruct(pointer, count);
+        deallocate(pointer);
+    }
+
+    inline virtual void deleteObject(T* pointer)
+    {
+        destruct(pointer);
+        deallocate(pointer);
     }
 
     /**
-     * Destroys an object of type <code>T</code> pointed to by <code>xp</code>
-     * but does not deallocate any storage.
-     * 
-     * @param p
-     */
-    virtual void destroy(Allocator<T>::pointer p) = 0;
-
-    /**
-     * Returns the max size that can allocate this allocator within a single
-     * allocation request.
+     * Destructs an object in place. No storage is deallocated whatsoever. The
+     * second parameter is used if an array is passed as pointer. It iterates
+     * over the array destroying the objects one on one. No bounds checking is
+     * performed.
      *
-     * @return
+     * @param pointer
+     * @param size
      */
-    virtual Allocator<T>::size_type maxSize() const = 0;
+    virtual void destruct(T* pointer, std::size_t count = 1) = 0;
 
-    /**
-     * Constructs a new object object. The object must be copy constructible,
-     * for this method to work properly.
-     * <p>
-     * This method throws an <code>OutOfMemoryError</code> exception if the
-     * system (or the allocator if it is not system-wide) runs out of memory.
-     *
-     * @param args
-     * @return
-     */
-    T* newObject(Allocator<T>::const_reference args)
+    inline virtual T* newArray(const std::size_t count)
     {
-        T* memory = allocate();
-        if (memory == NULL)
-        {
-            throw axf::core::OutOfMemoryError("unable to satisfy allocation request because of memory exhaustion.");
-        }
-        return construct(memory, args);
+        T* allocatedMemory = allocate(count);
+        std::memset(reinterpret_cast<void*> (allocatedMemory), 0, alloc::getSizeOfBlock<sizeof (T)>(count));
+
+        return allocatedMemory;
+    }
+
+    inline virtual T* newObject(const T& rhs)
+    {
+        return construct(allocate(1), rhs);
     }
 
 } ;

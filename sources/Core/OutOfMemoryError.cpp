@@ -31,13 +31,15 @@ using namespace axf::core;
 
 OutOfMemoryError::OutOfMemoryError()
 :
-Exception("the system has ran out of usable memory!")
+Exception("the system has ran out of usable memory!"),
+m_requested(0)
 {
 }
 
-OutOfMemoryError::OutOfMemoryError(const char* message)
+OutOfMemoryError::OutOfMemoryError(const char* message, std::size_t requested)
 :
-Exception(message)
+Exception(message),
+m_requested(requested)
 {
 }
 

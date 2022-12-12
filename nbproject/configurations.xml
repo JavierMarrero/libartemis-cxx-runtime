@@ -7,16 +7,20 @@
       <itemPath>includes/Axf/Collections/Algorithms.h</itemPath>
       <itemPath>includes/Axf/Collections/Allocator.h</itemPath>
       <itemPath>includes/Axf/Core/Array.h</itemPath>
+      <itemPath>includes/Axf/Collections/ArrayList.h</itemPath>
       <itemPath>includes/Axf.h</itemPath>
+      <itemPath>includes/Axf/Math/BasicMath.h</itemPath>
       <itemPath>includes/Axf/Core/Class.h</itemPath>
       <itemPath>includes/Axf/Core/ClassCastException.h</itemPath>
       <itemPath>includes/Axf/Collections/Collection.h</itemPath>
       <itemPath>includes/Axf/API/Compiler.h</itemPath>
+      <itemPath>includes/Axf/Collections/ConcurrentModificationException.h</itemPath>
       <itemPath>includes/Axf/Collections/DefaultAllocator.h</itemPath>
       <itemPath>includes/Axf/Core/Exception.h</itemPath>
       <itemPath>includes/Axf/Collections/HashMap.h</itemPath>
       <itemPath>includes/Axf/Collections/HashSet.h</itemPath>
       <itemPath>includes/Axf/Collections/Bits/HashUtils.h</itemPath>
+      <itemPath>includes/Axf/Core/IllegalArgumentException.h</itemPath>
       <itemPath>includes/Axf/Core/IllegalOperationException.h</itemPath>
       <itemPath>includes/Axf/Core/IllegalStateException.h</itemPath>
       <itemPath>includes/Axf/Core/IndexOutOfBoundsException.h</itemPath>
@@ -35,20 +39,25 @@
       <itemPath>includes/Axf/API/Platform.h</itemPath>
       <itemPath>includes/Axf/Collections/Queue.h</itemPath>
       <itemPath>includes/Axf/Core/ReferenceCounted.h</itemPath>
+      <itemPath>includes/Axf/Core/Runtime.h</itemPath>
       <itemPath>includes/Axf/Collections/Set.h</itemPath>
       <itemPath>includes/Axf/Collections/Stack.h</itemPath>
       <itemPath>includes/Axf/Core/String.h</itemPath>
       <itemPath>includes/Axf/API/Version.h</itemPath>
       <itemPath>includes/Axf/Core/Bits/abstract_ref.h</itemPath>
+      <itemPath>includes/Axf/Collections/Algorithms/default-predicates.h</itemPath>
       <itemPath>includes/Axf/Core/Traits/enable_if.hpp</itemPath>
       <itemPath>includes/Axf/Core/Traits/integral_constant.hpp</itemPath>
       <itemPath>includes/Axf/Core/Traits/intrinsics.hpp</itemPath>
       <itemPath>includes/Axf/Core/Traits/is_base_and_derived.hpp</itemPath>
       <itemPath>includes/Axf/Core/Traits/is_base_of.hpp</itemPath>
       <itemPath>includes/Axf/Core/Traits/is_same.hpp</itemPath>
+      <itemPath>includes/Axf/Core/Lang-C++/keywords.h</itemPath>
       <itemPath>includes/Axf/Core/Bits/memory-dtors.h</itemPath>
+      <itemPath>includes/Axf/Core/Lang-C++/reference-wrapper.h</itemPath>
       <itemPath>includes/Axf/Core/Traits/remove_cv.hpp</itemPath>
       <itemPath>includes/Axf/Core/Bits/scoped_ref.h</itemPath>
+      <itemPath>includes/Axf/Collections/Algorithms/search.h</itemPath>
       <itemPath>includes/Axf/Core/Bits/strong_ref.h</itemPath>
       <itemPath>includes/Axf/Core/Bits/weak_ref.h</itemPath>
     </logicalFolder>
@@ -61,8 +70,10 @@
                    projectFiles="true">
       <itemPath>sources/Core/Class.cpp</itemPath>
       <itemPath>sources/Core/ClassCastException.cpp</itemPath>
+      <itemPath>sources/Collections/ConcurrentModificationException.cpp</itemPath>
       <itemPath>sources/Arch/Windows/DllMain.cpp</itemPath>
       <itemPath>sources/Core/Exception.cpp</itemPath>
+      <itemPath>sources/Core/IllegalArgumentException.cpp</itemPath>
       <itemPath>sources/Core/IllegalOperationException.cpp</itemPath>
       <itemPath>sources/Core/IllegalStateException.cpp</itemPath>
       <itemPath>sources/Core/IndexOutOfBoundsException.cpp</itemPath>
@@ -74,17 +85,36 @@
       <itemPath>sources/Core/Object.cpp</itemPath>
       <itemPath>sources/Core/OutOfMemoryError.cpp</itemPath>
       <itemPath>sources/Core/ReferenceCounted.cpp</itemPath>
+      <itemPath>sources/Core/Runtime.cpp</itemPath>
       <itemPath>sources/Core/String.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
                    displayName="Test Files"
                    projectFiles="false"
                    kind="TEST_LOGICAL_FOLDER">
+      <logicalFolder name="f7"
+                     displayName="Array List Test"
+                     projectFiles="true"
+                     kind="TEST">
+        <itemPath>tests/arraylist_test.cpp</itemPath>
+      </logicalFolder>
       <logicalFolder name="f2"
                      displayName="Array Test"
                      projectFiles="true"
                      kind="TEST">
         <itemPath>tests/axf/core/array.cpp</itemPath>
+      </logicalFolder>
+      <logicalFolder name="f8"
+                     displayName="Default Allocator Test"
+                     projectFiles="true"
+                     kind="TEST">
+        <itemPath>tests/default_alloc_test.cpp</itemPath>
+      </logicalFolder>
+      <logicalFolder name="f9"
+                     displayName="Exception Handling Test"
+                     projectFiles="true"
+                     kind="TEST">
+        <itemPath>tests/eh_test.cpp</itemPath>
       </logicalFolder>
       <logicalFolder name="f5"
                      displayName="Hash Map Test"
@@ -240,6 +270,51 @@
           <output>${TESTDIR}/TestFiles/f6</output>
         </linkerTool>
       </folder>
+      <folder path="TestFiles/f7">
+        <cTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </cTool>
+        <ccTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f7</output>
+        </linkerTool>
+      </folder>
+      <folder path="TestFiles/f8">
+        <cTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </cTool>
+        <ccTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f8</output>
+        </linkerTool>
+      </folder>
+      <folder path="TestFiles/f9">
+        <cTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </cTool>
+        <ccTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f9</output>
+        </linkerTool>
+      </folder>
       <item path="includes/Axf.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="includes/Axf/API/Compiler.h" ex="false" tool="3" flavor2="0">
@@ -253,7 +328,22 @@
             tool="3"
             flavor2="0">
       </item>
+      <item path="includes/Axf/Collections/Algorithms/default-predicates.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="includes/Axf/Collections/Algorithms/search.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="includes/Axf/Collections/Allocator.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="includes/Axf/Collections/ArrayList.h"
             ex="false"
             tool="3"
             flavor2="0">
@@ -264,6 +354,11 @@
             flavor2="0">
       </item>
       <item path="includes/Axf/Collections/Collection.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="includes/Axf/Collections/ConcurrentModificationException.h"
             ex="false"
             tool="3"
             flavor2="0">
@@ -335,6 +430,11 @@
       </item>
       <item path="includes/Axf/Core/Exception.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="includes/Axf/Core/IllegalArgumentException.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="includes/Axf/Core/IllegalOperationException.h"
             ex="false"
             tool="3"
@@ -346,6 +446,16 @@
             flavor2="0">
       </item>
       <item path="includes/Axf/Core/IndexOutOfBoundsException.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="includes/Axf/Core/Lang-C++/keywords.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="includes/Axf/Core/Lang-C++/reference-wrapper.h"
             ex="false"
             tool="3"
             flavor2="0">
@@ -370,6 +480,8 @@
             ex="false"
             tool="3"
             flavor2="0">
+      </item>
+      <item path="includes/Axf/Core/Runtime.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="includes/Axf/Core/String.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -410,9 +522,16 @@
       </item>
       <item path="includes/Axf/Logging/Logger.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="includes/Axf/Math/BasicMath.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="includes/Axf/Utils/Pair.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="sources/Arch/Windows/DllMain.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="sources/Collections/ConcurrentModificationException.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
       </item>
       <item path="sources/Collections/Iterator.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -424,6 +543,11 @@
             flavor2="0">
       </item>
       <item path="sources/Core/Exception.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="sources/Core/IllegalArgumentException.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
       </item>
       <item path="sources/Core/IllegalOperationException.cpp"
             ex="false"
@@ -455,9 +579,13 @@
       </item>
       <item path="sources/Core/ReferenceCounted.cpp" ex="false" tool="1" flavor2="0">
       </item>
+      <item path="sources/Core/Runtime.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="sources/Core/String.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="sources/Logging/Logger.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="tests/arraylist_test.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="tests/axf/core/array.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -465,6 +593,10 @@
             ex="false"
             tool="1"
             flavor2="0">
+      </item>
+      <item path="tests/default_alloc_test.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="tests/eh_test.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="tests/hashmap_test.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -597,6 +729,51 @@
           <output>${TESTDIR}/TestFiles/f6</output>
         </linkerTool>
       </folder>
+      <folder path="TestFiles/f7">
+        <cTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </cTool>
+        <ccTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f7</output>
+        </linkerTool>
+      </folder>
+      <folder path="TestFiles/f8">
+        <cTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </cTool>
+        <ccTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f8</output>
+        </linkerTool>
+      </folder>
+      <folder path="TestFiles/f9">
+        <cTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </cTool>
+        <ccTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f9</output>
+        </linkerTool>
+      </folder>
       <item path="includes/Axf.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="includes/Axf/API/Compiler.h" ex="false" tool="3" flavor2="0">
@@ -610,7 +787,22 @@
             tool="3"
             flavor2="0">
       </item>
+      <item path="includes/Axf/Collections/Algorithms/default-predicates.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="includes/Axf/Collections/Algorithms/search.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="includes/Axf/Collections/Allocator.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="includes/Axf/Collections/ArrayList.h"
             ex="false"
             tool="3"
             flavor2="0">
@@ -621,6 +813,11 @@
             flavor2="0">
       </item>
       <item path="includes/Axf/Collections/Collection.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="includes/Axf/Collections/ConcurrentModificationException.h"
             ex="false"
             tool="3"
             flavor2="0">
@@ -692,6 +889,11 @@
       </item>
       <item path="includes/Axf/Core/Exception.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="includes/Axf/Core/IllegalArgumentException.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="includes/Axf/Core/IllegalOperationException.h"
             ex="false"
             tool="3"
@@ -703,6 +905,16 @@
             flavor2="0">
       </item>
       <item path="includes/Axf/Core/IndexOutOfBoundsException.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="includes/Axf/Core/Lang-C++/keywords.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="includes/Axf/Core/Lang-C++/reference-wrapper.h"
             ex="false"
             tool="3"
             flavor2="0">
@@ -727,6 +939,8 @@
             ex="false"
             tool="3"
             flavor2="0">
+      </item>
+      <item path="includes/Axf/Core/Runtime.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="includes/Axf/Core/String.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -767,9 +981,16 @@
       </item>
       <item path="includes/Axf/Logging/Logger.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="includes/Axf/Math/BasicMath.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="includes/Axf/Utils/Pair.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="sources/Arch/Windows/DllMain.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="sources/Collections/ConcurrentModificationException.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
       </item>
       <item path="sources/Collections/Iterator.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -781,6 +1002,11 @@
             flavor2="0">
       </item>
       <item path="sources/Core/Exception.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="sources/Core/IllegalArgumentException.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
       </item>
       <item path="sources/Core/IllegalOperationException.cpp"
             ex="false"
@@ -812,9 +1038,13 @@
       </item>
       <item path="sources/Core/ReferenceCounted.cpp" ex="false" tool="1" flavor2="0">
       </item>
+      <item path="sources/Core/Runtime.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="sources/Core/String.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="sources/Logging/Logger.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="tests/arraylist_test.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="tests/axf/core/array.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -822,6 +1052,10 @@
             ex="false"
             tool="1"
             flavor2="0">
+      </item>
+      <item path="tests/default_alloc_test.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="tests/eh_test.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="tests/hashmap_test.cpp" ex="false" tool="1" flavor2="0">
       </item>

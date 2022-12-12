@@ -18,7 +18,7 @@
  */
 
 /* 
- * File:   Iterator.h
+ * File:   BasicIterator.h
  * Author: Javier Marrero
  *
  * Created on December 4, 2022, 8:43 PM
@@ -29,6 +29,7 @@
 
 // API
 #include <Axf/Core/Object.h>
+#include <Axf/Core/Memory.h>
 
 namespace axf
 {
@@ -36,7 +37,7 @@ namespace collections
 {
 
 /**
- * Iterators are conceptually defined as being abstract pointers to some point
+ * BasicIterators are conceptually defined as being abstract pointers to some point
  * in the sequence.
  * <p>
  * This concept differs from the classical <i>Java</i> iterator and is more
@@ -45,7 +46,7 @@ namespace collections
  * @author J. Marrero
  */
 template <typename E>
-class Iterator : public core::Object
+class BasicIterator : public core::Object
 {
 public:
 
@@ -88,7 +89,7 @@ public:
      *
      * @return
      */
-    inline Iterator<E>& operator++()
+    inline BasicIterator<E>& operator++()
     {
         next();
         return *this;
@@ -101,7 +102,7 @@ public:
      * @param rhs
      * @return
      */
-    inline bool operator==(const Iterator<E>& rhs) const
+    inline bool operator==(const BasicIterator<E>& rhs) const
     {
         return equals(rhs);
     }
@@ -113,7 +114,7 @@ public:
      * @param rhs
      * @return
      */
-    inline bool operator!=(const Iterator<E>& rhs) const
+    inline bool operator!=(const BasicIterator<E>& rhs) const
     {
         return equals(rhs) == false;
     }
@@ -140,68 +141,83 @@ protected:
  * @author J. Marrero
  */
 template <typename T>
-class iterator_ref
+class iterator
 {
 public:
 
-    iterator_ref() : m_iterator(NULL) { }
+    iterator() : m_iterator(NULL) { }
 
-    iterator_ref(Iterator<T>* iterator) : m_iterator(iterator) { }
+    iterator(BasicIterator<T>* iterator) : m_iterator(iterator) { }
 
-    ~iterator_ref()
-    {
-        delete m_iterator;
-    }
+    iterator(const iterator<T>& rhs) : m_iterator(rhs.m_iterator) { }
+
+    ~iterator() { }
 
     /**
      * Default implicit cast conversion operator
      *
      * @return
      */
-    operator Iterator<T>&()
+    inline operator BasicIterator<T>&()
     {
         return *m_iterator;
     }
 
-    operator Iterator<T>&() const
+    inline operator BasicIterator<T>&() const
     {
         return *m_iterator;
     }
 
-    operator Iterator<T>*()
+    inline T& operator*()
     {
-        return m_iterator;
+        return m_iterator->current();
     }
 
-    operator const Iterator<T>*() const
+    inline const T& operator*() const
     {
-        return m_iterator;
+        return m_iterator->current();
     }
 
-    Iterator<T>* operator->()
+    inline BasicIterator<T>* operator->()
     {
-        return m_iterator;
+        return m_iterator.get();
     }
 
-    const Iterator<T>* operator->() const
+    inline const BasicIterator<T>* operator->() const
     {
-        return m_iterator;
+        return m_iterator.get();
     }
 
-    bool operator!=(const iterator_ref<T>& rhs) const
+    bool operator!=(const iterator<T>& rhs) const
     {
         return *m_iterator != *rhs.m_iterator;
     }
 
-    bool operator==(const iterator_ref<T>& rhs) const
+    inline bool operator==(const iterator<T>& rhs) const
     {
         return *m_iterator == *rhs.m_iterator;
     }
 
+    inline iterator<T>& operator++()
+    {
+        m_iterator->next();
+        return *this;
+    }
+
+    inline iterator<T> operator++(int) const
+    {
+        iterator<T> temp = *this;
+        m_iterator->next();
+
+        return temp;
+    }
+
 private:
 
-    mutable Iterator<T>* m_iterator;
+    mutable core::strong_ref<BasicIterator<T> > m_iterator;
 } ;
+
+
 
 }
 }
