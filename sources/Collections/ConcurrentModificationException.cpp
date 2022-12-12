@@ -18,38 +18,24 @@
  */
 
 /* 
- * File:   Number.h
+ * File:   ConcurrentModificationException.cpp
  * Author: Javier Marrero
- *
- * Created on December 2, 2022, 2:21 PM
+ * 
+ * Created on December 10, 2022, 10:32 AM
  */
 
-#ifndef NUMBER_H
-#define NUMBER_H
+#include <Axf/Collections/ConcurrentModificationException.h>
 
-// API
-#include <Axf/Core/Object.h>
+using namespace axf;
+using namespace axf::collections;
 
-namespace axf
+ConcurrentModificationException::ConcurrentModificationException(const char* message)
+:
+core::Exception(message)
 {
-namespace core
-{
-
-/**
- * The <code>Number</code> class is the base for all numeric types wrapper
- * objects.
- * <p>
- */
-class Number : public Object
-{
-    AXF_CLASS_TYPE(axf::core::Number, AXF_TYPE(axf::core::Object))
-
-public:
-
-} ;
-
-}
 }
 
-#endif /* NUMBER_H */
+ConcurrentModificationException::~ConcurrentModificationException()
+{
+}
 

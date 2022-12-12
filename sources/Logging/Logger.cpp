@@ -17,39 +17,24 @@
  * MA 02110-1301  USA
  */
 
-/* 
- * File:   Number.h
- * Author: Javier Marrero
- *
- * Created on December 2, 2022, 2:21 PM
- */
+#include <Axf/Logging/Logger.h>
 
-#ifndef NUMBER_H
-#define NUMBER_H
+using namespace axf;
+using namespace axf::logging;
 
-// API
-#include <Axf/Core/Object.h>
-
-namespace axf
+const core::string& Logger::getLevelString(const LogLevel level)
 {
-namespace core
-{
+    static const core::string unknown = "?";
+    static const core::string levels[] = {
+                                          "trace",
+                                          "debug",
+                                          "info"
+    };
 
-/**
- * The <code>Number</code> class is the base for all numeric types wrapper
- * objects.
- * <p>
- */
-class Number : public Object
-{
-    AXF_CLASS_TYPE(axf::core::Number, AXF_TYPE(axf::core::Object))
-
-public:
-
-} ;
-
+    if (level > ALL && level < OFF)
+    {
+        return levels[level];
+    }
+    return unknown;
 }
-}
-
-#endif /* NUMBER_H */
 

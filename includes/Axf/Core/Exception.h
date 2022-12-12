@@ -166,6 +166,10 @@ private:
  */
 class Exception : public ReferenceCounted
 {
+private:
+
+    friend class Runtime;
+
 public:
 
     /**
@@ -229,7 +233,7 @@ public:
         return getClass().isKindOf(E::getCompileTimeClass());
     }
 
-private:
+protected:
 
     /// The message of this exception
     char m_message[1024];

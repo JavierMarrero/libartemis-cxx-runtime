@@ -18,38 +18,21 @@
  */
 
 /* 
- * File:   Number.h
+ * File:   keywords.h
  * Author: Javier Marrero
  *
- * Created on December 2, 2022, 2:21 PM
+ * Created on December 11, 2022, 11:46 PM
  */
 
-#ifndef NUMBER_H
-#define NUMBER_H
+#ifndef KEYWORDS_H
+#define KEYWORDS_H
 
-// API
-#include <Axf/Core/Object.h>
+#include <Axf/API/Compiler.h>
+#include <Axf/API/Platform.h>
 
-namespace axf
-{
-namespace core
-{
+#if ARTEMIS_CXX11_SUPPORTED == 0
+#   define noexcept throw()
+#endif
 
-/**
- * The <code>Number</code> class is the base for all numeric types wrapper
- * objects.
- * <p>
- */
-class Number : public Object
-{
-    AXF_CLASS_TYPE(axf::core::Number, AXF_TYPE(axf::core::Object))
-
-public:
-
-} ;
-
-}
-}
-
-#endif /* NUMBER_H */
+#endif /* KEYWORDS_H */
 

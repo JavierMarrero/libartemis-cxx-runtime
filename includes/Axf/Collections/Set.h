@@ -18,38 +18,47 @@
  */
 
 /* 
- * File:   Number.h
+ * File:   Set.h
  * Author: Javier Marrero
  *
- * Created on December 2, 2022, 2:21 PM
+ * Created on December 7, 2022, 3:25 PM
  */
 
-#ifndef NUMBER_H
-#define NUMBER_H
+#ifndef SET_H
+#define SET_H
 
 // API
-#include <Axf/Core/Object.h>
+#include <Axf/Collections/Collection.h>
 
 namespace axf
 {
-namespace core
+namespace collections
 {
 
 /**
- * The <code>Number</code> class is the base for all numeric types wrapper
- * objects.
+ * The set object embodies the mathematical concept of a set: a set is a
+ * collection of objects that does not contains duplicates and is considered
+ * an object on its own right.
  * <p>
+ * The set objects provides the common mathematical set operations, such as
+ * union (<code>addAll</code>), intersection (<code>retainAll</code>) and
+ * asymmetric difference (<code>removeAll</code>).
+ *
+ * @author J. Marrero
  */
-class Number : public Object
+template <typename E>
+class Set : public Collection<E>
 {
-    AXF_CLASS_TYPE(axf::core::Number, AXF_TYPE(axf::core::Object))
+    AXF_CLASS_TYPE(axf::collections::Set<E>,
+                   AXF_TYPE(axf::collections::Collection<E>))
 
 public:
+
 
 } ;
 
 }
 }
 
-#endif /* NUMBER_H */
+#endif /* SET_H */
 

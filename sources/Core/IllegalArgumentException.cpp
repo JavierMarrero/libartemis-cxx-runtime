@@ -18,38 +18,37 @@
  */
 
 /* 
- * File:   Number.h
+ * File:   IllegalArgumentException.cpp
  * Author: Javier Marrero
- *
- * Created on December 2, 2022, 2:21 PM
+ * 
+ * Created on December 10, 2022, 10:46 AM
  */
 
-#ifndef NUMBER_H
-#define NUMBER_H
+#include <Axf/Core/IllegalArgumentException.h>
 
-// API
-#include <Axf/Core/Object.h>
+// C++
+#include <cstdarg>
+#include <cstdio>
 
-namespace axf
+using namespace axf;
+using namespace axf::core;
+
+IllegalArgumentException::IllegalArgumentException(const char* fmt, ...)
+:
+Exception("function called with illegal arguments...")
 {
-namespace core
-{
+    std::va_list va;
+    va_start(va, fmt);
 
-/**
- * The <code>Number</code> class is the base for all numeric types wrapper
- * objects.
- * <p>
- */
-class Number : public Object
-{
-    AXF_CLASS_TYPE(axf::core::Number, AXF_TYPE(axf::core::Object))
+    // print the message on the buffer
+    std::vsprintf(m_message, fmt, va);
 
-public:
-
-} ;
-
-}
+    va_end(va);
 }
 
-#endif /* NUMBER_H */
+IllegalArgumentException::~IllegalArgumentException()
+{
+}
+
+
 

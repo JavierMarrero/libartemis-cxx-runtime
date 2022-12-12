@@ -18,17 +18,20 @@
  */
 
 /* 
- * File:   Number.h
+ * File:   OutOfMemoryError.h
  * Author: Javier Marrero
  *
- * Created on December 2, 2022, 2:21 PM
+ * Created on December 4, 2022, 12:20 PM
  */
 
-#ifndef NUMBER_H
-#define NUMBER_H
+#ifndef OUTOFMEMORYERROR_H
+#define OUTOFMEMORYERROR_H
 
 // API
-#include <Axf/Core/Object.h>
+#include <Axf/Core/Exception.h>
+
+// C
+#include <climits>
 
 namespace axf
 {
@@ -36,20 +39,41 @@ namespace core
 {
 
 /**
- * The <code>Number</code> class is the base for all numeric types wrapper
- * objects.
+ * Signals the runtime system that allocation requests are no longer available
+ * due to a shortage in system's available memory.
  * <p>
+ * 
+ *
+ * @return
  */
-class Number : public Object
+class OutOfMemoryError : public Exception
 {
-    AXF_CLASS_TYPE(axf::core::Number, AXF_TYPE(axf::core::Object))
+    AXF_EXCEPTION_TYPE(axf::core::OutOfMemoryError, axf::core::Exception)
 
 public:
 
+    OutOfMemoryError();
+    OutOfMemoryError(const char* message, std::size_t requested = 0);
+    ~OutOfMemoryError();
+
+    /**
+     * Returns how many bytes were requested upon allocation that caused the
+     * memory shortage.
+     *
+     * @return
+     */
+    inline std::size_t getRequested() const
+    {
+        return m_requested;
+    }
+
+private:
+
+    std::size_t m_requested;
 } ;
 
 }
 }
 
-#endif /* NUMBER_H */
+#endif /* OUTOFMEMORYERROR_H */
 

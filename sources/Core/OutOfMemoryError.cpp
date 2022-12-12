@@ -18,38 +18,34 @@
  */
 
 /* 
- * File:   Number.h
+ * File:   OutOfMemoryError.cpp
  * Author: Javier Marrero
- *
- * Created on December 2, 2022, 2:21 PM
+ * 
+ * Created on December 4, 2022, 12:20 PM
  */
 
-#ifndef NUMBER_H
-#define NUMBER_H
+#include <Axf/Core/OutOfMemoryError.h>
 
-// API
-#include <Axf/Core/Object.h>
+using namespace axf;
+using namespace axf::core;
 
-namespace axf
+OutOfMemoryError::OutOfMemoryError()
+:
+Exception("the system has ran out of usable memory!"),
+m_requested(0)
 {
-namespace core
-{
-
-/**
- * The <code>Number</code> class is the base for all numeric types wrapper
- * objects.
- * <p>
- */
-class Number : public Object
-{
-    AXF_CLASS_TYPE(axf::core::Number, AXF_TYPE(axf::core::Object))
-
-public:
-
-} ;
-
-}
 }
 
-#endif /* NUMBER_H */
+OutOfMemoryError::OutOfMemoryError(const char* message, std::size_t requested)
+:
+Exception(message),
+m_requested(requested)
+{
+}
+
+OutOfMemoryError::~OutOfMemoryError()
+{
+}
+
+
 

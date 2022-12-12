@@ -18,38 +18,50 @@
  */
 
 /* 
- * File:   Number.h
+ * File:   BasicMath.h
  * Author: Javier Marrero
  *
- * Created on December 2, 2022, 2:21 PM
+ * Created on December 9, 2022, 3:10 PM
  */
 
-#ifndef NUMBER_H
-#define NUMBER_H
-
-// API
-#include <Axf/Core/Object.h>
+#ifndef BASICMATH_H
+#define BASICMATH_H
 
 namespace axf
 {
-namespace core
+namespace math
 {
 
 /**
- * The <code>Number</code> class is the base for all numeric types wrapper
- * objects.
- * <p>
+ * Returns the maximum between two elements. The elements must be comparable
+ * using operator <code>></code>.
+ *
+ * @param a
+ * @param b
+ * @return a or b, the greater
  */
-class Number : public Object
+template <typename T>
+T max(const T a, const T b)
 {
-    AXF_CLASS_TYPE(axf::core::Number, AXF_TYPE(axf::core::Object))
+    return (a > b) ? a : b;
+}
 
-public:
-
-} ;
+/**
+ * Returns the minimum between two elements. The elements must be comparable
+ * using operator <code>></code>
+ *
+ * @param a
+ * @param b
+ * @return a or b, the lesser
+ */
+template <typename T>
+T min(const T a, const T b)
+{
+    return (a > b) ? b : a;
+}
 
 }
 }
 
-#endif /* NUMBER_H */
+#endif /* BASICMATH_H */
 

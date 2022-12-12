@@ -58,7 +58,7 @@ namespace core
  * types goes next in a comma separated list. One must use the macro
  * <code>AXF_TYPE</code> to pass the super types.
  */
-#define AXF_OBJECT(_Type, ...) \
+#define AXF_CLASS_TYPE(_Type, ...) \
     public: \
     \
     static const axf::core::Class<_Type >& getCompileTimeClass() \
@@ -110,7 +110,8 @@ public:
      * custom comparison behavior. If this is the actual case, then, the
      * overriding implementation must guarantee these axioms:
      * <ul>
-     *  <li>It must be reflexive: <code>x == y</code> must be equals to <code>y == x</code></li>
+     *  <li>It must be reflexive: <code>x == x</code></li>
+     *  <li>It must be symmetric: <code>x == y</code> must be equals to <code>y == x</code></li>
      *  <li>It must be transitive: if <code>x == y</code> and <code>y == z</code>
      *      then <code>x == z</code></li>
      * </ul>

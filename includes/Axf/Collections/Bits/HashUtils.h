@@ -18,38 +18,48 @@
  */
 
 /* 
- * File:   Number.h
+ * File:   HashUtils.h
  * Author: Javier Marrero
  *
- * Created on December 2, 2022, 2:21 PM
+ * Created on December 7, 2022, 5:20 PM
  */
 
-#ifndef NUMBER_H
-#define NUMBER_H
-
-// API
-#include <Axf/Core/Object.h>
+#ifndef HASHUTILS_H
+#define HASHUTILS_H
 
 namespace axf
 {
-namespace core
+namespace collections
+{
+namespace __
 {
 
 /**
- * The <code>Number</code> class is the base for all numeric types wrapper
- * objects.
- * <p>
+ * This structure represents a default hash functor. The hash used is a variant
+ * of the sbdm algorithm that produces a 32bit hash.
  */
-class Number : public Object
+template <typename T>
+struct default_hash
 {
-    AXF_CLASS_TYPE(axf::core::Number, AXF_TYPE(axf::core::Object))
 
-public:
+    unsigned int operator()(const T& element) const
+    {
+        const char* memory = reinterpret_cast<const char*> (&element);
+        unsigned int hash = 0;
 
+        for (unsigned i = 0; i < sizeof (T); ++i)
+        {
+            char c = memory[i];
+            hash = c + (hash << 6) + (hash << 16) - hash;
+        }
+
+        return hash;
+    }
 } ;
 
 }
 }
+}
 
-#endif /* NUMBER_H */
+#endif /* HASHUTILS_H */
 

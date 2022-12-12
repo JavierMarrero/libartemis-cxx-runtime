@@ -18,38 +18,41 @@
  */
 
 /* 
- * File:   Number.h
+ * File:   eh_test.cpp
  * Author: Javier Marrero
  *
- * Created on December 2, 2022, 2:21 PM
+ * Created on December 11, 2022, 8:19 PM
  */
 
-#ifndef NUMBER_H
-#define NUMBER_H
+#include <stdlib.h>
+#include <iostream>
 
-// API
-#include <Axf/Core/Object.h>
+#include <Axf.h>
 
-namespace axf
+using namespace axf;
+using namespace axf::core;
+
+int main(int argc, char** argv)
 {
-namespace core
-{
+    // Caught exception
+    try
+    {
+        throw IllegalStateException("this exception must be caught, don't be a jerk.");
+    }
+    catch (Exception& ex)
+    {
+        std::cout << "caught exception: " << ex.getClassName() << ": " << ex.getMessage() << std::endl;
+    }
 
-/**
- * The <code>Number</code> class is the base for all numeric types wrapper
- * objects.
- * <p>
- */
-class Number : public Object
-{
-    AXF_CLASS_TYPE(axf::core::Number, AXF_TYPE(axf::core::Object))
-
-public:
-
-} ;
-
+    // Uncaught exception
+    try
+    {
+        throw IllegalStateException("bogus...");
+    }
+    catch (Exception& ex)
+    {
+        throw IllegalStateException("uncaught exception thrown on purpose!");
+    }
+    return (EXIT_SUCCESS);
 }
-}
-
-#endif /* NUMBER_H */
 
