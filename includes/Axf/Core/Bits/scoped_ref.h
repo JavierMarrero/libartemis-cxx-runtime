@@ -70,7 +70,7 @@ public:
      * 
      * @param pointer
      */
-    scoped_ref(T* pointer = NULL) : bits::abstract_ref<T>(pointer) { }
+    scoped_ref(T* pointer = NULL) : bits::abstract_ref<T, deleter_functor>(pointer) { }
 
     /**
      * Destroys this object, invoking the destructor of the pointed object.

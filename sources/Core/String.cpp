@@ -359,7 +359,7 @@ void string::rebuildWideString()
     iconv_t iv = _iconv::open("wchar_t//TRANSLIT", "UTF-8");
 
     std::size_t expectedLength = (m_length + 1) * 2;
-    scoped_ref<wchar_t> memory = new wchar_t[expectedLength];
+    scoped_ref<wchar_t, ws_deleter> memory = new wchar_t[expectedLength];
 
     _iconv::convert(iv, m_buffer, reinterpret_cast<char*> (memory.get()), m_size, expectedLength);
 
@@ -432,7 +432,7 @@ void string::setUtf8FromWString(const wchar_t* wstr)
     m_size = std::strlen(reinterpret_cast<const char*> (m_buffer));
 
     // rebuild the wide char string
-    scoped_ref<wchar_t> memory = new wchar_t[expectedLength + (1 * sizeof (wchar_t))];
+    scoped_ref<wchar_t, ws_deleter> memory = new wchar_t[expectedLength + (1 * sizeof (wchar_t))];
     m_wide = memory;
     std::memcpy(m_wide.get(), wstr, expectedLength * sizeof (wchar_t));
 }

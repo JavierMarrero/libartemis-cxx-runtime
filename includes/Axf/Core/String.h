@@ -77,6 +77,27 @@ class Object;
  */
 class string : protected ReferenceCounted
 {
+private:
+
+    /**
+     * Deletes a wide character buffer in the form of a wide character array.
+     *
+     * @param pointer
+     */
+    struct ws_deleter
+    {
+
+        /**
+         * Overload of the () operator to make this look as a functor.
+         * 
+         * @param pointer
+         */
+        inline void operator ()(wchar_t* pointer)
+        {
+            delete[] pointer;
+        }
+    } ;
+
 public:
 
     /**
@@ -321,7 +342,7 @@ private:
     size_t              m_size;         /// The actual size of the string in bytes
     mutable watermark_t m_watermark;    /// The watermark serve to track the last read position
 
-    scoped_ref<wchar_t> m_wide; /// The wide char* representation of this string
+    scoped_ref<wchar_t, ws_deleter> m_wide; /// The wide char* representation of this string
 
     /**
      * Copies the contents of this string's buffer to the newly specified array.
