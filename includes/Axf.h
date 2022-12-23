@@ -35,10 +35,6 @@
 #include <Axf/API/Platform.h>
 #include <Axf/API/Version.h>
 
-#include <Axf/Core/Lang-C++/keywords.h>
-#include <Axf/Core/Lang-C++/reference-wrapper.h>
-#include <Axf/Core/Lang-C++/traits.h>
-
 #include <Axf/Collections/Algorithms.h>
 #include <Axf/Collections/Allocator.h>
 #include <Axf/Collections/ArrayList.h>
@@ -52,13 +48,22 @@
 #include <Axf/Collections/LinkedList.h>
 #include <Axf/Collections/List.h>
 #include <Axf/Collections/Map.h>
+#include <Axf/Collections/NoSuchElementException.h>
 #include <Axf/Collections/Queue.h>
 #include <Axf/Collections/Set.h>
 #include <Axf/Collections/Stack.h>
 
+#include <Axf/Core/Lang-C++/keywords.h>
+#include <Axf/Core/Lang-C++/move.h>
+#include <Axf/Core/Lang-C++/reference-wrapper.h>
+#include <Axf/Core/Lang-C++/traits.h>
+#include <Axf/Core/Lang-C++/varargs.h>
+
 #include <Axf/Core/Array.h>
+#include <Axf/Core/Character.h>
 #include <Axf/Core/Class.h>
 #include <Axf/Core/ClassCastException.h>
+#include <Axf/Core/Comparator.h>
 #include <Axf/Core/Exception.h>
 #include <Axf/Core/IllegalArgumentException.h>
 #include <Axf/Core/IllegalOperationException.h>
@@ -73,9 +78,14 @@
 #include <Axf/Core/Runtime.h>
 #include <Axf/Core/String.h>
 
+#include <Axf/IO/Charset.h>
+#include <Axf/IO/OutputStream.h>
+
 #include <Axf/Logging/Logger.h>
 
 #include <Axf/Math/BasicMath.h>
+
+#include <Axf/Threading/Thread.h>
 
 #include <Axf/Utils/Pair.h>
 

@@ -18,29 +18,24 @@
  */
 
 /* 
- * File:   IllegalOperationException.cpp
+ * File:   NoSuchElementException.cpp
  * Author: Javier Marrero
  * 
- * Created on December 5, 2022, 11:29 PM
+ * Created on December 12, 2022, 1:44 PM
  */
 
-#include <Axf/Core/IllegalOperationException.h>
-
-// C
-#include <cstring>
+#include <Axf/Collections/NoSuchElementException.h>
 
 using namespace axf;
-using namespace axf::core;
+using namespace axf::collections;
 
-IllegalOperationException::IllegalOperationException(const char* message, const char* method)
+NoSuchElementException::NoSuchElementException(const char* message)
 :
-Exception(message)
+core::IllegalStateException(message)
 {
-    std::memset(m_method, 0, 256);
-    std::strncpy(m_method, method, 255);
 }
 
-IllegalOperationException::~IllegalOperationException()
+NoSuchElementException::~NoSuchElementException()
 {
 }
 

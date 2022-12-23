@@ -26,6 +26,9 @@
 
 #include <Axf/Core/Object.h>
 
+// C
+#include <cstring>
+
 using namespace axf;
 using namespace axf::core;
 
@@ -78,5 +81,8 @@ int Object::hashCode() const
 
 string Object::toString() const
 {
-    return string("<");
+    char repr[127] = {0};
+    std::sprintf(repr, "%s@%p", getClass<Object>().getName(), this);
+
+    return string(repr);
 }

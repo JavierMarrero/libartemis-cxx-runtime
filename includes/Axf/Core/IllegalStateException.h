@@ -52,12 +52,12 @@ namespace core
  */
 class IllegalStateException : public Exception
 {
-    AXF_EXCEPTION_TYPE(IllegalStateException, Exception)
+    AXF_EXCEPTION_TYPE(axf::core::IllegalStateException, Exception)
 
 public:
 
     IllegalStateException(const char* message);     /// Default constructor
-    ~IllegalStateException();                       /// Default destructor
+    virtual ~IllegalStateException();               /// Default destructor
 
 } ;
 

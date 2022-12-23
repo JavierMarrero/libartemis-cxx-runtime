@@ -65,6 +65,11 @@ public:
         return m_key;
     }
 
+    inline V& getValue()
+    {
+        return m_value;
+    }
+
     inline const V& getValue() const
     {
         return m_value;
@@ -88,8 +93,8 @@ public:
 
 protected:
 
-    K               m_key;      // The key of the entry
-    V               m_value;    // The value of the entry
+    K   m_key;      // The key of the entry
+    V   m_value;    // The value of the entry
 
 } ;
 
@@ -111,6 +116,39 @@ public:
     virtual ~Map() { }
 
     /**
+     * Returns a boolean indicating whether the provided key is contained
+     * inside the map.
+     *
+     * @param key
+     * @return
+     */
+    virtual inline bool containsKey(const K& key) const
+    {
+        return keySet().contains(key);
+    }
+
+    /**
+     * Returns a boolean indicating whether the provided value is contained
+     * within the map.
+     *
+     * @param value
+     * @return
+     */
+    virtual inline bool containsValue(const V& value) const
+    {
+        return values().contains(value);
+    }
+
+    virtual V& get(const K& key) = 0;
+
+    /**
+     * Returns a set of the keys contained within this map.
+     *
+     * @return
+     */
+    virtual const Set<core::reference_wrapper<const K> >& keySet() const = 0;
+
+    /**
      * Puts an key-value pair into the hash map. If the key already exists,
      * replaces the value at the key value pair.
      *
@@ -121,18 +159,19 @@ public:
     virtual bool put(const K& key, const V& value) = 0;
 
     /**
-     * Returns a set of the keys contained within this map.
+     * Removes the pair of elements that contains the key "key".
      *
+     * @param key
      * @return
      */
-    virtual const Set<core::reference_wrapper<const K> >& keySet() = 0;
+    virtual bool remove(const K& key) = 0;
 
     /**
      * Returns a set that iterates over all the values of the map.
      *
      * @return
      */
-    virtual const Set<core::reference_wrapper<const V> >& valueSet() = 0;
+    virtual const Collection<core::reference_wrapper<const V> >& values() const = 0;
 
 } ;
 

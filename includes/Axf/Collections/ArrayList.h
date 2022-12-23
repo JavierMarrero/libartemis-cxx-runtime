@@ -109,7 +109,7 @@ public:
 
         if (index != m_size)
         {
-            std::memmove(m_array + index + 1, m_array + index, (m_size - index) * sizeof (E));
+            std::memmove(reinterpret_cast<void*> (m_array + index + 1), reinterpret_cast<const void*> (m_array + index), (m_size - index) * sizeof (E));
         }
         m_array[index] = data;
         m_size++;
@@ -219,7 +219,7 @@ public:
 
         if (index != --m_size)
         {
-            std::memmove(m_array + index, m_array + index + 1, (m_size - index) * sizeof (E));
+            std::memmove(reinterpret_cast<void*> (m_array + index), reinterpret_cast<const void*> (m_array + index + 1), (m_size - index) * sizeof (E));
         }
         return true;
     }

@@ -117,6 +117,8 @@ int main(int argc, char** argv)
         {
             std::cerr << "\n" << ex.getClassName() << ": " << ex.getMessage() << std::endl;
         }
+
+        std::cout << "aMultipleInherited: " << aMultipleInherited.toString() << std::endl;
     }
     catch (Exception& ex)
     {

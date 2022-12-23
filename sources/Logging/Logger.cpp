@@ -28,7 +28,9 @@ const core::string& Logger::getLevelString(const LogLevel level)
     static const core::string levels[] = {
                                           "trace",
                                           "debug",
-                                          "info"
+                                          "info",
+                                          "warning",
+                                          "error"
     };
 
     if (level > ALL && level < OFF)

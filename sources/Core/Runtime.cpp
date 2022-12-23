@@ -58,7 +58,7 @@ static void terminate()
     {
         char formattedExceptionMessage[0x1000] = {0};
         std::sprintf(formattedExceptionMessage,
-                     " The runtime system has detected an uncaught exception and\n"
+                     "The runtime system has detected an uncaught exception and\n"
                      "as a result, the program has been forcefully terminated.\n"
                      "\n"
                      "%s: %s.",
@@ -103,9 +103,14 @@ static void terminate()
 // DO NOT MESS WITH WHAT IS ABOVE
 //
 
-static void sigsegv_handler(int signum)
+static void signals_handler(int signum)
 {
-    throw axf::core::NullPointerException("the program has incurred into a segment violation.");
+    switch (signum)
+    {
+        case SIGSEGV:
+            throw axf::core::NullPointerException("the program has incurred into a segment violation.");
+            break;
+    }
 }
 
 using namespace axf;
@@ -114,7 +119,7 @@ using namespace axf::core;
 Runtime::StaticRuntimeInitializer::StaticRuntimeInitializer()
 {
     std::set_terminate(terminate);
-    std::signal(SIGSEGV, sigsegv_handler);
+    std::signal(SIGSEGV, signals_handler);
 }
 
 Runtime::StaticRuntimeInitializer::~StaticRuntimeInitializer()
@@ -132,4 +137,35 @@ const Runtime::SystemType Runtime::getCurrentPlatform()
 #endif
 }
 
+const Runtime::Endianness Runtime::getSystemEndianness()
+{
+    Runtime::Endianness result;
+
+    short int word = 0x0001;
+    char* b = (char*) &word;
+
+    switch (b[0])
+    {
+        case 0:
+            result = BIG_ENDIAN;
+            break;
+        case 1:
+            result = LITTLE_ENDIAN;
+            break;
+    }
+    return result;
+}
+
+unsigned short Runtime::swapEndianness(unsigned short value)
+{
+    return (value >> 8) | (value << 8);
+}
+
+unsigned int Runtime::swapEndianness(unsigned int value)
+{
+    return ((value >> 24) & 0xff)
+            | ((value << 8) & 0xff0000)
+            | ((value >> 8) & 0xff00)
+            | ((value << 24) & 0xff000000);
+}
 

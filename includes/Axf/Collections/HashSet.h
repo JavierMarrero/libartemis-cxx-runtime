@@ -143,7 +143,7 @@ public:
 
 private:
 
-    entry_t* * const*    m_buckets;
+    entry_t* * const*   m_buckets;
     std::size_t         m_capacity;
     mutable std::size_t m_count;
     mutable entry_t*    m_current;

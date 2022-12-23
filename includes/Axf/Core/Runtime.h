@@ -144,7 +144,42 @@ public:
         UNKNOWN_OS
     } SystemType;
 
+    typedef enum _Endianness
+    {
+        LITTLE_ENDIAN,
+        BIG_ENDIAN
+    } Endianness;
+
+    /**
+     * Returns the enumerated identifier for this machine's operating system.
+     *
+     * @return
+     */
     static const SystemType getCurrentPlatform();
+
+    /**
+     * Returns the system endianness as an enumerated type.
+     *
+     * @return
+     */
+    static const Endianness getSystemEndianness();
+
+    /**
+     * Performs a byte swap of a 16-bit number, this effectively modifies
+     * endianness.
+     *
+     * @param value
+     * @return
+     */
+    static unsigned short swapEndianness(unsigned short value);
+
+    /**
+     * Swaps the endianness of a 32-bit integer number.
+     *
+     * @param value
+     * @return
+     */
+    static unsigned int swapEndianness(unsigned int value);
 
 private:
 

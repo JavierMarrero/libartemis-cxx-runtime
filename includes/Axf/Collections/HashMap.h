@@ -30,11 +30,15 @@
 // API
 #include <Axf/Collections/Bits/HashUtils.h>
 #include <Axf/Collections/Map.h>
+#include <Axf/Collections/ArrayList.h>
 #include <Axf/Collections/HashSet.h>
+#include <Axf/Collections/NoSuchElementException.h>
 #include <Axf/Core/Lang-C++/reference-wrapper.h>
+#include <Axf/Core/IllegalStateException.h>
 
 // C++
 #include <cstring>
+#include <cstdio>
 
 namespace axf
 {
@@ -79,6 +83,111 @@ private:
     HashMapEntry<K, V>* m_next;
 } ;
 
+template <typename K, typename V>
+class HashMapIterator : public BasicIterator<Entry<K, V> >
+{
+    AXF_CLASS_TYPE(AXF_TEMPLATE_CLASS(axf::collections::__::HashMapIterator<K, V>),
+                   AXF_TYPE(AXF_TEMPLATE_CLASS(BasicIterator<Entry<K, V> >)))
+
+    typedef HashMapEntry<K, V> entry_t;
+
+public:
+
+    static const std::size_t NPOS = static_cast<std::size_t> (-1);
+
+    HashMapIterator(entry_t* * const* buckets, const std::size_t capacity, std::size_t count)
+    :
+    m_buckets(buckets), m_capacity(capacity), m_current(NULL), m_count(count), m_index(0)
+    {
+        if (count != NPOS)
+        {
+            for (; m_index < m_capacity && (m_current == NULL); ++m_index)
+            {
+                if (bucketAt(m_index) != NULL)
+                {
+                    m_current = bucketAt(m_index);
+                    m_count--;
+                }
+            }
+        }
+    }
+
+    virtual Entry<K, V>& current()
+    {
+        return *m_current;
+    }
+
+    virtual const Entry<K, V>& current() const
+    {
+        return *m_current;
+    }
+
+    virtual bool equals(const core::Object& object) const
+    {
+        const HashMapIterator<K, V>& rhs = static_cast<const HashMapIterator<K, V>&> (object);
+
+        return m_count == rhs.m_count;
+    }
+
+    virtual Entry<K, V>& next()
+    {
+        Entry<K, V>& result = current();
+        forward();
+        return result;
+    }
+
+    virtual const Entry<K, V>& next() const
+    {
+        const Entry<K, V>& result = current();
+        forward();
+        return result;
+    }
+
+private:
+
+    entry_t* * const*   m_buckets;
+    const std::size_t   m_capacity;
+    mutable entry_t*    m_current;
+    mutable std::size_t m_count;
+    mutable std::size_t m_index;
+
+    inline void forward() const
+    {
+        if (m_count == NPOS)
+            throw core::IllegalStateException("attempted to advance an end-of-range iterator.");
+
+        if (m_current->getNext() != NULL)
+        {
+            m_current = m_current->getNext();
+        }
+        else
+        {
+            m_current = NULL;
+            for (; m_index < m_capacity && (m_current == NULL); ++m_index)
+            {
+                if (bucketAt(m_index) != NULL)
+                {
+                    m_current = bucketAt(m_index);
+                }
+            }
+        }
+
+        if (m_count == 0)
+        {
+            m_count = NPOS;
+        }
+        else
+        {
+            m_count--;
+        }
+    }
+
+    inline entry_t* bucketAt(std::size_t index) const
+    {
+        return (*m_buckets)[index];
+    }
+} ;
+
 }
 
 /**
@@ -111,14 +220,26 @@ typename entry_allocator_t = axf::collections::DefaultAllocator<__::HashMapEntry
 >
 class HashMap : public Map<K, V>
 {
+
     AXF_CLASS_TYPE(AXF_TEMPLATE_CLASS(axf::collections::HashMap<K, V, hash_functor_t, array_allocator_t, entry_allocator_t>),
                    AXF_TYPE(AXF_TEMPLATE_CLASS(Map<K, V>)))
 
 private:
 
+    struct keyset_hasher_t
+    {
+        __::default_hash<K> m_hasher;
+
+        unsigned int operator()(const core::reference_wrapper<const K>& wrappah) const
+        {
+            return m_hasher(wrappah.get());
+        }
+    } ;
+
     typedef __::HashMapEntry<K, V> entry_t;
-    typedef HashSet<core::reference_wrapper<const K> > keyset_t;
-    typedef HashSet<core::reference_wrapper<const V> > valset_t;
+    typedef __::HashMapIterator<K, V> iterator_t;
+    typedef HashSet<core::reference_wrapper<const K>, keyset_hasher_t>  keyset_t;
+    typedef ArrayList<core::reference_wrapper<const V> >                valset_t;
 
 public:
 
@@ -134,7 +255,7 @@ public:
     m_modCount(0),
     m_size(0),
     m_threshold((std::size_t) (initialSize * loadFactor)),
-    m_valueSet(initialSize, loadFactor)
+    m_valueSet(initialSize)
     {
         // Allocate the new array
         m_buckets = m_bucketAllocator.newArray(initialSize);
@@ -170,12 +291,12 @@ public:
 
     virtual iterator<Entry<K, V> > begin()
     {
-        return NULL;
+        return new iterator_t(&m_buckets, m_capacity, m_size);
     }
 
     virtual const iterator<Entry<K, V> > begin() const
     {
-        return NULL;
+        return new iterator_t(&m_buckets, m_capacity, m_size);
     }
 
     virtual bool contains(const Entry<K, V>& element) const
@@ -195,12 +316,34 @@ public:
 
     virtual iterator<Entry<K, V> > end()
     {
-        return NULL;
+        return new iterator_t(&m_buckets, m_capacity, iterator_t::NPOS);
     }
 
     virtual const iterator<Entry<K, V> > end() const
     {
-        return NULL;
+        return new iterator_t(&m_buckets, m_capacity, iterator_t::NPOS);
+    }
+
+    virtual V& get(const K& key)
+    {
+        std::size_t index = calculateHash(key);
+        if (m_buckets[index] != NULL)
+        {
+            entry_t* current = m_buckets[index];
+            while (current != NULL)
+            {
+                if (current->getKey() == key)
+                {
+                    return current->getValue();
+                }
+                current = current->getNext();
+            }
+        }
+
+        char msgBuffer[128] = {0};
+        std::sprintf(msgBuffer, "no element with index %lu is present on the map.", (unsigned long) index);
+
+        throw NoSuchElementException(msgBuffer);
     }
 
     inline virtual bool isEmpty() const
@@ -208,7 +351,7 @@ public:
         return m_size == 0;
     }
 
-    virtual keyset_t& keySet()
+    virtual inline const keyset_t& keySet() const
     {
         return m_keySet;
     }
@@ -218,12 +361,55 @@ public:
         return add(Entry<K, V>(key, value));
     }
 
+    virtual bool remove(const K& key)
+    {
+        bool result = false;
+        std::size_t index = calculateHash(key, m_capacity);
+
+        if (m_buckets[index] != NULL)
+        {
+            entry_t* current = m_buckets[index];
+            if (current->getKey() == key)
+            {
+                m_buckets[index] = current->getNext();
+                deleteEntry(current);
+                result = true;
+            }
+            else
+            {
+                entry_t* prev = m_buckets[index];
+                current = prev->getNext();
+
+                while (current != NULL && result == false)
+                {
+                    if (current->getKey() == key)
+                    {
+                        m_valueSet.remove(current->getValue());
+
+                        prev->setNext(current->getNext());
+                        deleteEntry(current);
+                        result = true;
+                    }
+                }
+            }
+        }
+
+        if (result)
+        {
+            m_size--;
+
+            // Delete the key reference reference
+            m_keySet.remove(key);
+        }
+        return result;
+    }
+
     inline virtual size_t size() const
     {
         return m_size;
     }
 
-    virtual valset_t& valueSet()
+    virtual inline const valset_t& values() const
     {
         return m_valueSet;
     }
@@ -265,7 +451,8 @@ protected:
                 m_size++;
 
                 // Add to the key and value sets
-
+                m_keySet.add(core::const_ref(entry->getKey()));
+                m_valueSet.add(core::const_ref(entry->getValue()));
 
                 // Mod-count
                 m_modCount++;
@@ -281,7 +468,7 @@ protected:
 
     virtual bool remove(const Entry<K, V>& element)
     {
-        return false;
+        return remove(element.getKey());
     }
 
 private:

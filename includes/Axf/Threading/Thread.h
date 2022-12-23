@@ -18,31 +18,41 @@
  */
 
 /* 
- * File:   IllegalOperationException.cpp
+ * File:   Thread.h
  * Author: Javier Marrero
- * 
- * Created on December 5, 2022, 11:29 PM
+ *
+ * Created on December 12, 2022, 10:28 PM
  */
 
-#include <Axf/Core/IllegalOperationException.h>
+#ifndef THREAD_H
+#define THREAD_H
 
-// C
-#include <cstring>
+// API
+#include <Axf/Core/Object.h>
 
-using namespace axf;
-using namespace axf::core;
-
-IllegalOperationException::IllegalOperationException(const char* message, const char* method)
-:
-Exception(message)
+namespace axf
 {
-    std::memset(m_method, 0, 256);
-    std::strncpy(m_method, method, 255);
+namespace threading
+{
+
+/**
+ * This class represents a thread: an independent control flow unit that can
+ * be executed in parallel.
+ * <p>
+ *
+ * @author J. Marrero
+ */
+class Thread : public core::Object
+{
+    AXF_CLASS_TYPE(axf::threading::Thread,
+                   AXF_TYPE(axf::core::Object))
+public:
+
+    
+} ;
+
+}
 }
 
-IllegalOperationException::~IllegalOperationException()
-{
-}
-
-
+#endif /* THREAD_H */
 

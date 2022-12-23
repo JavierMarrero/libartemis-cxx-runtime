@@ -58,12 +58,23 @@ int main(int argc, char** argv)
     }
 
     // Print the state of the map
-    //    printMap(hashMap);
+    printMap(hashMap);
 
     // Remove
+    std::cout << "removing 7?: " << hashMap.remove(7) << std::endl;
+
+    // Get
+    std::cout << "retrieving 0: " << hashMap.get(0) << std::endl;
+    std::cout << "retrieving 8: " << hashMap.get(8) << std::endl;
 
     // Print the state of the map
-    //    printMap(hashMap);
+    printMap(hashMap);
+
+    // Contains
+    std::cout << "map contains a 3 as key?: " << hashMap.containsKey(3) << std::endl;
+    std::cout << "map contains 'e' as value?: " << hashMap.containsValue('e') << std::endl;
+    std::cout << "map contains a -1 as key?: " << hashMap.containsKey(-1) << std::endl;
+    std::cout << "map contains a 'z' as value?: " << hashMap.containsValue('z') << std::endl;
 
     std::cout << "done..." << std::endl;
     std::getchar();

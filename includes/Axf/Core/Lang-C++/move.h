@@ -18,31 +18,44 @@
  */
 
 /* 
- * File:   IllegalOperationException.cpp
+ * File:   move.h
  * Author: Javier Marrero
- * 
- * Created on December 5, 2022, 11:29 PM
+ *
+ * Created on December 18, 2022, 8:29 PM
  */
 
-#include <Axf/Core/IllegalOperationException.h>
+#ifndef MOVE_H
+#define MOVE_H
 
-// C
-#include <cstring>
+// API
+#include <Axf/API/Compiler.h>
 
-using namespace axf;
-using namespace axf::core;
-
-IllegalOperationException::IllegalOperationException(const char* message, const char* method)
-:
-Exception(message)
+namespace axf
 {
-    std::memset(m_method, 0, 256);
-    std::strncpy(m_method, method, 255);
+namespace core
+{
+
+#if !ARTEMIS_CXX11_SUPPORTED
+
+/**
+ * This structure emulates rvalue references in C++98 compilers.
+ */
+template <class T>
+struct rvalue : public T
+{
+private:
+
+    rvalue();
+    ~rvalue() throw();
+    rvalue(const rvalue&);
+
+    void operator=(rvalue const&);
+} ;
+
+#endif
+
+}
 }
 
-IllegalOperationException::~IllegalOperationException()
-{
-}
-
-
+#endif /* MOVE_H */
 

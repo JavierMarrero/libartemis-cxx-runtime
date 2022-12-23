@@ -18,31 +18,13 @@
  */
 
 /* 
- * File:   IllegalOperationException.cpp
+ * File:   Thread.cpp
  * Author: Javier Marrero
  * 
- * Created on December 5, 2022, 11:29 PM
+ * Created on December 12, 2022, 10:28 PM
  */
 
-#include <Axf/Core/IllegalOperationException.h>
-
-// C
-#include <cstring>
-
-using namespace axf;
-using namespace axf::core;
-
-IllegalOperationException::IllegalOperationException(const char* message, const char* method)
-:
-Exception(message)
-{
-    std::memset(m_method, 0, 256);
-    std::strncpy(m_method, method, 255);
-}
-
-IllegalOperationException::~IllegalOperationException()
-{
-}
+#include <Axf/Threading/Thread.h>
 
 
 

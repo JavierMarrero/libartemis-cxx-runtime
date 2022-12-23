@@ -18,29 +18,21 @@
  */
 
 /* 
- * File:   IllegalOperationException.cpp
+ * File:   Charset.cpp
  * Author: Javier Marrero
  * 
- * Created on December 5, 2022, 11:29 PM
+ * Created on December 15, 2022, 9:40 AM
  */
 
-#include <Axf/Core/IllegalOperationException.h>
-
-// C
-#include <cstring>
+#include <Axf/IO/Charset.h>
 
 using namespace axf;
-using namespace axf::core;
+using namespace axf::io;
+using namespace axf::io::charset;
 
-IllegalOperationException::IllegalOperationException(const char* message, const char* method)
+Charset::Charset(const char* identifier)
 :
-Exception(message)
-{
-    std::memset(m_method, 0, 256);
-    std::strncpy(m_method, method, 255);
-}
-
-IllegalOperationException::~IllegalOperationException()
+m_identifier(identifier)
 {
 }
 

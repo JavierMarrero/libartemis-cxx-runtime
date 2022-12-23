@@ -96,7 +96,7 @@ const ExceptionTypeDescriptor& Exception::getCompileTimeClass()
 
 Exception::Exception(const char* message)
 {
-    std::strncpy(m_message, message, 1024);
+    std::strncpy(m_message, message, 1023);
 
     // Push an new exception handling frame
     pushExceptionHandlingFrame(this);

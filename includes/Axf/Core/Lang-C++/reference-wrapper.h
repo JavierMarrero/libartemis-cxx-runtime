@@ -60,6 +60,8 @@ public:
 
     typedef T type; /// The type of this wrapper
 
+    reference_wrapper() : m_wrapped(NULL) { }
+
     /**
      * Constructs a new reference wrapper object from a reference.
      *
@@ -83,6 +85,7 @@ public:
     reference_wrapper& operator=(const reference_wrapper<T>& rhs)
     {
         m_wrapped = rhs.m_wrapped;
+        return *this;
     }
 
     // Access

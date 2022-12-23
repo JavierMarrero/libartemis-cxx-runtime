@@ -17,32 +17,8 @@
  * MA 02110-1301  USA
  */
 
-/* 
- * File:   IllegalOperationException.cpp
- * Author: Javier Marrero
- * 
- * Created on December 5, 2022, 11:29 PM
- */
-
-#include <Axf/Core/IllegalOperationException.h>
-
-// C
-#include <cstring>
+#include <Axf/Core/Runtime.h>
 
 using namespace axf;
 using namespace axf::core;
-
-IllegalOperationException::IllegalOperationException(const char* message, const char* method)
-:
-Exception(message)
-{
-    std::memset(m_method, 0, 256);
-    std::strncpy(m_method, method, 255);
-}
-
-IllegalOperationException::~IllegalOperationException()
-{
-}
-
-
 
