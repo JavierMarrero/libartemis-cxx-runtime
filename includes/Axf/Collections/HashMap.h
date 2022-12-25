@@ -60,7 +60,7 @@ class HashMapEntry : public Entry<K, V>
                    AXF_TYPE(AXF_TEMPLATE_CLASS(Entry<K, V>)))
 public:
 
-    HashMapEntry(const K& key, const K& value)
+    HashMapEntry(const K& key, const V& value)
     : Entry<K, V>(key, value), m_next(NULL) { }
 
     ~HashMapEntry()
@@ -239,7 +239,7 @@ private:
     typedef __::HashMapEntry<K, V> entry_t;
     typedef __::HashMapIterator<K, V> iterator_t;
     typedef HashSet<core::reference_wrapper<const K>, keyset_hasher_t>  keyset_t;
-    typedef ArrayList<core::reference_wrapper<const V> >                valset_t;
+    typedef ArrayList<core::reference_wrapper<V> >                      valset_t;
 
 public:
 
@@ -291,12 +291,44 @@ public:
 
     virtual iterator<Entry<K, V> > begin()
     {
+        if (isEmpty()) return end();
+
         return new iterator_t(&m_buckets, m_capacity, m_size);
     }
 
     virtual const iterator<Entry<K, V> > begin() const
     {
+        if (isEmpty()) return end();
+
         return new iterator_t(&m_buckets, m_capacity, m_size);
+    }
+
+    virtual void clear()
+    {
+        // Iterate and delete all the buckets
+        for (std::size_t i = 0; i < m_capacity; ++i)
+        {
+            entry_t* current = m_buckets[i];
+            while (current != NULL)
+            {
+                // Store the old entry
+                entry_t* next = current->getNext();
+
+                this->deleteEntry(current);
+
+                // Jump
+                current = next;
+            }
+
+            m_buckets[i] = NULL;
+        }
+
+        // Clear both sets
+        m_keySet.clear();
+        m_valueSet.clear();
+
+        // Parameters
+        m_size = 0;
     }
 
     virtual bool contains(const Entry<K, V>& element) const
@@ -324,7 +356,7 @@ public:
         return new iterator_t(&m_buckets, m_capacity, iterator_t::NPOS);
     }
 
-    virtual V& get(const K& key)
+    virtual V& get(const K& key) const
     {
         std::size_t index = calculateHash(key);
         if (m_buckets[index] != NULL)
@@ -451,8 +483,8 @@ protected:
                 m_size++;
 
                 // Add to the key and value sets
-                m_keySet.add(core::const_ref(entry->getKey()));
-                m_valueSet.add(core::const_ref(entry->getValue()));
+                m_keySet.add(core::ref(entry->getKey()));
+                m_valueSet.add(core::ref(entry->getValue()));
 
                 // Mod-count
                 m_modCount++;

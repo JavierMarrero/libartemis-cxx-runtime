@@ -18,31 +18,46 @@
  */
 
 /* 
- * File:   IndexOutOfBoundsException.cpp
+ * File:   EpsilonMatcher.h
  * Author: Javier Marrero
- * 
- * Created on November 28, 2022, 7:58 PM
+ *
+ * Created on December 23, 2022, 1:42 PM
  */
 
-#include <Axf/Core/IndexOutOfBoundsException.h>
+#ifndef EPSILONMATCHER_H
+#define EPSILONMATCHER_H
 
-// C++
-#include <stdio.h>
+// API
+#include <Axf/Core/Object.h>
+#include <Axf/Text/Regex/Matcher.h>
 
-using namespace axf;
-using namespace axf::core;
-
-IndexOutOfBoundsException::IndexOutOfBoundsException(const char* message, long long index)
-:
-Exception(message),
-m_index(index)
+namespace axf
 {
-    snprintf(m_message, 1024, "%s (faulty index: %lld)", message, index);
+namespace text
+{
+namespace regex
+{
+
+/**
+ * Empty matcher.
+ */
+class EpsilonMatcher : public Matcher
+{
+    AXF_CLASS_TYPE(axf::text::regex::EpsilonMatcher,
+                   AXF_TYPE(axf::text::regex::Matcher))
+public:
+
+    EpsilonMatcher();
+    ~EpsilonMatcher();
+
+    virtual bool isEpsilon() const;
+    virtual bool matches(const void* input) const;
+
+} ;
+
+}
+}
 }
 
-IndexOutOfBoundsException::~IndexOutOfBoundsException()
-{
-}
-
-
+#endif /* EPSILONMATCHER_H */
 

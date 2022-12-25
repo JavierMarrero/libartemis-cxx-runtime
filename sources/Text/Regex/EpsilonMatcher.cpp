@@ -18,31 +18,33 @@
  */
 
 /* 
- * File:   IndexOutOfBoundsException.cpp
+ * File:   EpsilonMatcher.cpp
  * Author: Javier Marrero
  * 
- * Created on November 28, 2022, 7:58 PM
+ * Created on December 23, 2022, 1:42 PM
  */
 
-#include <Axf/Core/IndexOutOfBoundsException.h>
+#include <Axf/Text/Regex/EpsilonMatcher.h>
 
-// C++
-#include <stdio.h>
+using namespace axf::text::regex;
 
-using namespace axf;
-using namespace axf::core;
-
-IndexOutOfBoundsException::IndexOutOfBoundsException(const char* message, long long index)
+EpsilonMatcher::EpsilonMatcher()
 :
-Exception(message),
-m_index(index)
-{
-    snprintf(m_message, 1024, "%s (faulty index: %lld)", message, index);
-}
-
-IndexOutOfBoundsException::~IndexOutOfBoundsException()
+Matcher("e")
 {
 }
 
+EpsilonMatcher::~EpsilonMatcher()
+{
+}
 
+bool EpsilonMatcher::isEpsilon() const
+{
+    return true;
+}
+
+bool EpsilonMatcher::matches(const void* input) const
+{
+    return true;
+}
 

@@ -18,29 +18,34 @@
  */
 
 /* 
- * File:   IndexOutOfBoundsException.cpp
+ * File:   AbstractSyntaxTree.cpp
  * Author: Javier Marrero
  * 
- * Created on November 28, 2022, 7:58 PM
+ * Created on December 24, 2022, 7:08 PM
  */
 
-#include <Axf/Core/IndexOutOfBoundsException.h>
-
-// C++
-#include <stdio.h>
+#include <Axf/Text/Regex/AbstractSyntaxTree.h>
 
 using namespace axf;
 using namespace axf::core;
+using namespace axf::text;
+using namespace axf::text::regex;
+using namespace axf::text::regex::ast;
 
-IndexOutOfBoundsException::IndexOutOfBoundsException(const char* message, long long index)
+AstNode::AstNode(Type type)
 :
-Exception(message),
-m_index(index)
+m_type(type)
 {
-    snprintf(m_message, 1024, "%s (faulty index: %lld)", message, index);
 }
 
-IndexOutOfBoundsException::~IndexOutOfBoundsException()
+AstNode::~AstNode()
+{
+}
+
+AtomicPattern::AtomicPattern(const core::uchar& c)
+:
+AstNode(AstNode::ATOMIC_PATTERN),
+m_character(c)
 {
 }
 

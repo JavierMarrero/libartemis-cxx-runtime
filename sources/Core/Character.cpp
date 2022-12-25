@@ -61,6 +61,12 @@ m_character(encode(data, charset, length))
 {
 }
 
+uchar::uchar(const uchar& rhs)
+:
+m_character(rhs.m_character)
+{
+}
+
 uchar::uchar(const char c)
 :
 m_character(encode(&c, "char", sizeof (char)))

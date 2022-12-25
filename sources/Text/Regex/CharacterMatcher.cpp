@@ -18,31 +18,40 @@
  */
 
 /* 
- * File:   IndexOutOfBoundsException.cpp
+ * File:   CharacterMatcher.cpp
  * Author: Javier Marrero
  * 
- * Created on November 28, 2022, 7:58 PM
+ * Created on December 23, 2022, 1:27 PM
  */
 
-#include <Axf/Core/IndexOutOfBoundsException.h>
-
-// C++
-#include <stdio.h>
+#include <Axf/Text/Regex/CharacterMatcher.h>
 
 using namespace axf;
-using namespace axf::core;
+using namespace axf::text;
+using namespace axf::text::regex;
 
-IndexOutOfBoundsException::IndexOutOfBoundsException(const char* message, long long index)
+CharacterMatcher::CharacterMatcher(const core::uchar& c)
 :
-Exception(message),
-m_index(index)
+Matcher(c),
+m_character(c)
 {
-    snprintf(m_message, 1024, "%s (faulty index: %lld)", message, index);
 }
 
-IndexOutOfBoundsException::~IndexOutOfBoundsException()
+CharacterMatcher::~CharacterMatcher()
 {
 }
+
+bool CharacterMatcher::isEpsilon() const
+{
+    return false;
+}
+
+bool CharacterMatcher::matches(const void* input) const
+{
+    const core::uchar& c = *((core::uchar*) input);
+    return this->m_character == c;
+}
+
 
 
 

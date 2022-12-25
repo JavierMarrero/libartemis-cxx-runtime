@@ -83,7 +83,7 @@ public:
      * @param element
      * @return
      */
-    virtual E& poll() = 0;
+    virtual E poll() = 0;
 } ;
 
 }

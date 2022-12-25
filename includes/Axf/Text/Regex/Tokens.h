@@ -18,31 +18,44 @@
  */
 
 /* 
- * File:   IndexOutOfBoundsException.cpp
+ * File:   Tokens.h
  * Author: Javier Marrero
- * 
- * Created on November 28, 2022, 7:58 PM
+ *
+ * Created on December 23, 2022, 9:42 PM
  */
 
-#include <Axf/Core/IndexOutOfBoundsException.h>
+#ifndef REGEX_TOKENS_H
+#define REGEX_TOKENS_H
 
-// C++
-#include <stdio.h>
-
-using namespace axf;
-using namespace axf::core;
-
-IndexOutOfBoundsException::IndexOutOfBoundsException(const char* message, long long index)
-:
-Exception(message),
-m_index(index)
+namespace axf
 {
-    snprintf(m_message, 1024, "%s (faulty index: %lld)", message, index);
+namespace text
+{
+namespace regex
+{
+
+/**
+ * A enumeration of all the possible token categories. Please, keep this list
+ * sorted alphabetically.
+ *
+ * @author J. Marrero
+ */
+enum RegexToken
+{
+    ASTERISK,
+    DOT,
+    EXCLAMATION_MARK,
+    INTERROGATION_MARK,
+    LPAR,
+    PLUS,
+    RPAR,
+    UNICODE_CHARACTER,
+    VBAR,
+} ;
+
+}
+}
 }
 
-IndexOutOfBoundsException::~IndexOutOfBoundsException()
-{
-}
-
-
+#endif /* TOKENS_H */
 

@@ -18,31 +18,40 @@
  */
 
 /* 
- * File:   IndexOutOfBoundsException.cpp
+ * File:   Regex.cpp
  * Author: Javier Marrero
  * 
- * Created on November 28, 2022, 7:58 PM
+ * Created on December 23, 2022, 10:51 PM
  */
 
-#include <Axf/Core/IndexOutOfBoundsException.h>
-
-// C++
-#include <stdio.h>
+#include <Axf/Text/Regex/Regex.h>
+#include <Axf/Text/Regex/Compiler.h>
+#include <Axf/Core/NullPointerException.h>
 
 using namespace axf;
-using namespace axf::core;
+using namespace axf::text;
+using namespace axf::text::regex;
 
-IndexOutOfBoundsException::IndexOutOfBoundsException(const char* message, long long index)
+Regex::Regex(const core::string& pattern)
 :
-Exception(message),
-m_index(index)
+m_pattern(pattern)
 {
-    snprintf(m_message, 1024, "%s (faulty index: %lld)", message, index);
+    // 1. Create a compiler object and compile the pattern into a NFA
+    Compiler compiler(m_pattern);
+
+    // 2. Create the NFA instance
+    m_nfa = compiler.compile();
 }
 
-IndexOutOfBoundsException::~IndexOutOfBoundsException()
+Regex::~Regex()
 {
 }
 
+bool Regex::matches(const core::string& input) const
+{
+    if (m_nfa.isNull())
+        throw core::NullPointerException("NFA for regex is null.");
 
+    return m_nfa->matches(input);
+}
 

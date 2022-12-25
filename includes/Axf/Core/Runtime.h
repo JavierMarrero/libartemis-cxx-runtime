@@ -92,7 +92,7 @@ std::size_t arrayCopy(T* destination, std::size_t offset, const T* source, std::
 template <typename T>
 T* memset(T* memory, int value, std::size_t size)
 {
-    return static_cast<T*> (std::memset(memory, value, size * sizeof (T)));
+    return static_cast<T*> (std::memset(reinterpret_cast<void*> (memory), value, size * sizeof (T)));
 }
 
 /**

@@ -18,31 +18,26 @@
  */
 
 /* 
- * File:   IndexOutOfBoundsException.cpp
+ * File:   PatternSyntaxException.cpp
  * Author: Javier Marrero
  * 
- * Created on November 28, 2022, 7:58 PM
+ * Created on December 24, 2022, 12:14 PM
  */
 
-#include <Axf/Core/IndexOutOfBoundsException.h>
-
-// C++
-#include <stdio.h>
+#include <Axf/Text/Regex/PatternSyntaxException.h>
 
 using namespace axf;
-using namespace axf::core;
+using namespace axf::text;
+using namespace axf::text::regex;
 
-IndexOutOfBoundsException::IndexOutOfBoundsException(const char* message, long long index)
+PatternSyntaxException::PatternSyntaxException(const char* message)
 :
-Exception(message),
-m_index(index)
-{
-    snprintf(m_message, 1024, "%s (faulty index: %lld)", message, index);
-}
-
-IndexOutOfBoundsException::~IndexOutOfBoundsException()
+Exception(message)
 {
 }
 
+PatternSyntaxException::~PatternSyntaxException()
+{
+}
 
 

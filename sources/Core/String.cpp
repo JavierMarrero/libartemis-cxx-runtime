@@ -64,7 +64,8 @@ m_watermark(rhs.m_watermark),
 m_wide(NULL)
 {
     // Copy the contents of the temporary buffer
-    std::memcpy(m_buffer, rhs.m_buffer, rhs.m_capacity);
+    std::memcpy(m_buffer, rhs.m_buffer, rhs.m_length);
+    *(m_buffer + m_length) = '\0';
 
     // Create the wide character
     rebuildWideString();
@@ -92,6 +93,18 @@ m_size(0),
 m_watermark(0, 0)
 {
     setUtf8FromWString(wstr);
+}
+
+string::string(const uchar& c)
+:
+m_buffer(NULL),
+m_capacity(0),
+m_hash(0),
+m_length(0),
+m_size(0),
+m_watermark(0, 0)
+{
+    setUtf8FromWString(c.toWideCharacter());
 }
 
 string::~string()
@@ -152,6 +165,9 @@ string::utf8_char* string::arrayCopy(int startIndex, int endIndex, utf8_char* ne
 
 uchar string::at(std::size_t index) const
 {
+    if (index == m_length)
+        return uchar('\0');
+
     /* Check for index validity */
     checkIndexExclusive(index);
 

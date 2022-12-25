@@ -4,6 +4,7 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
+      <itemPath>includes/Axf/Text/Regex/AbstractSyntaxTree.h</itemPath>
       <itemPath>includes/Axf/Collections/Algorithms.h</itemPath>
       <itemPath>includes/Axf/Collections/Allocator.h</itemPath>
       <itemPath>includes/Axf/Core/Array.h</itemPath>
@@ -11,14 +12,17 @@
       <itemPath>includes/Axf.h</itemPath>
       <itemPath>includes/Axf/Math/BasicMath.h</itemPath>
       <itemPath>includes/Axf/Core/Character.h</itemPath>
+      <itemPath>includes/Axf/Text/Regex/CharacterMatcher.h</itemPath>
       <itemPath>includes/Axf/IO/Charset.h</itemPath>
       <itemPath>includes/Axf/Core/Class.h</itemPath>
       <itemPath>includes/Axf/Core/ClassCastException.h</itemPath>
       <itemPath>includes/Axf/Collections/Collection.h</itemPath>
       <itemPath>includes/Axf/Core/Comparator.h</itemPath>
       <itemPath>includes/Axf/API/Compiler.h</itemPath>
+      <itemPath>includes/Axf/Text/Regex/Compiler.h</itemPath>
       <itemPath>includes/Axf/Collections/ConcurrentModificationException.h</itemPath>
       <itemPath>includes/Axf/Collections/DefaultAllocator.h</itemPath>
+      <itemPath>includes/Axf/Text/Regex/EpsilonMatcher.h</itemPath>
       <itemPath>includes/Axf/Core/Exception.h</itemPath>
       <itemPath>includes/Axf/Collections/HashMap.h</itemPath>
       <itemPath>includes/Axf/Collections/HashSet.h</itemPath>
@@ -33,6 +37,7 @@
       <itemPath>includes/Axf/Collections/List.h</itemPath>
       <itemPath>includes/Axf/Logging/Logger.h</itemPath>
       <itemPath>includes/Axf/Collections/Map.h</itemPath>
+      <itemPath>includes/Axf/Text/Regex/Matcher.h</itemPath>
       <itemPath>includes/Axf/Core/Memory.h</itemPath>
       <itemPath>includes/Axf/Collections/NoSuchElementException.h</itemPath>
       <itemPath>includes/Axf/Core/NullPointerException.h</itemPath>
@@ -41,14 +46,19 @@
       <itemPath>includes/Axf/Core/OutOfMemoryError.h</itemPath>
       <itemPath>includes/Axf/IO/OutputStream.h</itemPath>
       <itemPath>includes/Axf/Utils/Pair.h</itemPath>
+      <itemPath>includes/Axf/Text/Regex/Pattern.h</itemPath>
+      <itemPath>includes/Axf/Text/Regex/PatternSyntaxException.h</itemPath>
       <itemPath>includes/Axf/API/Platform.h</itemPath>
       <itemPath>includes/Axf/Collections/Queue.h</itemPath>
       <itemPath>includes/Axf/Core/ReferenceCounted.h</itemPath>
+      <itemPath>includes/Axf/Text/Regex/Regex.h</itemPath>
       <itemPath>includes/Axf/Core/Runtime.h</itemPath>
       <itemPath>includes/Axf/Collections/Set.h</itemPath>
       <itemPath>includes/Axf/Collections/Stack.h</itemPath>
+      <itemPath>includes/Axf/Text/Regex/State.h</itemPath>
       <itemPath>includes/Axf/Core/String.h</itemPath>
       <itemPath>includes/Axf/Threading/Thread.h</itemPath>
+      <itemPath>includes/Axf/Text/Regex/Tokens.h</itemPath>
       <itemPath>includes/Axf/API/Version.h</itemPath>
       <itemPath>includes/Axf/Core/Bits/abstract_ref.h</itemPath>
       <itemPath>includes/Axf/Collections/Algorithms/default-predicates.h</itemPath>
@@ -61,6 +71,7 @@
       <itemPath>includes/Axf/Core/Lang-C++/keywords.h</itemPath>
       <itemPath>includes/Axf/Core/Bits/memory-dtors.h</itemPath>
       <itemPath>includes/Axf/Core/Lang-C++/move.h</itemPath>
+      <itemPath>includes/Axf/Core/Lang-C++/pointers.h</itemPath>
       <itemPath>includes/Axf/Core/Lang-C++/reference-wrapper.h</itemPath>
       <itemPath>includes/Axf/Core/Traits/remove_cv.hpp</itemPath>
       <itemPath>includes/Axf/Core/Bits/scoped_ref.h</itemPath>
@@ -76,12 +87,16 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
+      <itemPath>sources/Text/Regex/AbstractSyntaxTree.cpp</itemPath>
       <itemPath>sources/Core/Character.cpp</itemPath>
+      <itemPath>sources/Text/Regex/CharacterMatcher.cpp</itemPath>
       <itemPath>sources/IO/Charset.cpp</itemPath>
       <itemPath>sources/Core/Class.cpp</itemPath>
       <itemPath>sources/Core/ClassCastException.cpp</itemPath>
+      <itemPath>sources/Text/Regex/Compiler.cpp</itemPath>
       <itemPath>sources/Collections/ConcurrentModificationException.cpp</itemPath>
       <itemPath>sources/Arch/Windows/DllMain.cpp</itemPath>
+      <itemPath>sources/Text/Regex/EpsilonMatcher.cpp</itemPath>
       <itemPath>sources/Core/Exception.cpp</itemPath>
       <itemPath>sources/Core/IllegalArgumentException.cpp</itemPath>
       <itemPath>sources/Core/IllegalOperationException.cpp</itemPath>
@@ -95,9 +110,13 @@
       <itemPath>sources/Core/Number.cpp</itemPath>
       <itemPath>sources/Core/Object.cpp</itemPath>
       <itemPath>sources/Core/OutOfMemoryError.cpp</itemPath>
+      <itemPath>sources/Text/Regex/Pattern.cpp</itemPath>
+      <itemPath>sources/Text/Regex/PatternSyntaxException.cpp</itemPath>
       <itemPath>sources/Core/ReferenceCounted.cpp</itemPath>
+      <itemPath>sources/Text/Regex/Regex.cpp</itemPath>
       <itemPath>sources/Core/Runtime.cpp</itemPath>
       <itemPath>sources/Core/RuntimeMisc.cpp</itemPath>
+      <itemPath>sources/Text/Regex/State.cpp</itemPath>
       <itemPath>sources/Core/String.cpp</itemPath>
       <itemPath>sources/Threading/Thread.cpp</itemPath>
       <itemPath>sources/Core/VarargsSafe.cpp</itemPath>
@@ -147,6 +166,12 @@
                      projectFiles="true"
                      kind="TEST">
         <itemPath>tests/linkedlist_test.cpp</itemPath>
+      </logicalFolder>
+      <logicalFolder name="f12"
+                     displayName="Regex Engine Test"
+                     projectFiles="true"
+                     kind="TEST">
+        <itemPath>tests/regex_test.cpp</itemPath>
       </logicalFolder>
       <logicalFolder name="f3"
                      displayName="RTTI Test"
@@ -254,6 +279,21 @@
           <output>${TESTDIR}/TestFiles/f11</output>
         </linkerTool>
       </folder>
+      <folder path="TestFiles/f12">
+        <cTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </cTool>
+        <ccTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f12</output>
+        </linkerTool>
+      </folder>
       <folder path="TestFiles/f2">
         <cTool>
           <incDir>
@@ -525,6 +565,11 @@
       </item>
       <item path="includes/Axf/Core/Lang-C++/move.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="includes/Axf/Core/Lang-C++/pointers.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="includes/Axf/Core/Lang-C++/reference-wrapper.h"
             ex="false"
             tool="3"
@@ -603,6 +648,38 @@
       </item>
       <item path="includes/Axf/Math/BasicMath.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="includes/Axf/Text/Regex/AbstractSyntaxTree.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="includes/Axf/Text/Regex/CharacterMatcher.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="includes/Axf/Text/Regex/Compiler.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="includes/Axf/Text/Regex/EpsilonMatcher.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="includes/Axf/Text/Regex/Matcher.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="includes/Axf/Text/Regex/Pattern.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="includes/Axf/Text/Regex/PatternSyntaxException.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="includes/Axf/Text/Regex/Regex.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="includes/Axf/Text/Regex/State.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="includes/Axf/Text/Regex/Tokens.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="includes/Axf/Threading/Thread.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="includes/Axf/Utils/Pair.h" ex="false" tool="3" flavor2="0">
@@ -679,6 +756,34 @@
       </item>
       <item path="sources/Logging/Logger.cpp" ex="false" tool="1" flavor2="0">
       </item>
+      <item path="sources/Text/Regex/AbstractSyntaxTree.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="sources/Text/Regex/CharacterMatcher.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="sources/Text/Regex/Compiler.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="sources/Text/Regex/EpsilonMatcher.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="sources/Text/Regex/Pattern.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="sources/Text/Regex/PatternSyntaxException.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="sources/Text/Regex/Regex.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="sources/Text/Regex/State.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="sources/Threading/Thread.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="tests/arraylist_test.cpp" ex="false" tool="1" flavor2="0">
@@ -699,6 +804,8 @@
       <item path="tests/hashset_test.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="tests/linkedlist_test.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="tests/regex_test.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="tests/rtti_test.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -787,6 +894,21 @@
           <output>${TESTDIR}/TestFiles/f11</output>
         </linkerTool>
       </folder>
+      <folder path="TestFiles/f12">
+        <cTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </cTool>
+        <ccTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f12</output>
+        </linkerTool>
+      </folder>
       <folder path="TestFiles/f2">
         <cTool>
           <incDir>
@@ -1058,6 +1180,11 @@
       </item>
       <item path="includes/Axf/Core/Lang-C++/move.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="includes/Axf/Core/Lang-C++/pointers.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="includes/Axf/Core/Lang-C++/reference-wrapper.h"
             ex="false"
             tool="3"
@@ -1136,6 +1263,38 @@
       </item>
       <item path="includes/Axf/Math/BasicMath.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="includes/Axf/Text/Regex/AbstractSyntaxTree.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="includes/Axf/Text/Regex/CharacterMatcher.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="includes/Axf/Text/Regex/Compiler.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="includes/Axf/Text/Regex/EpsilonMatcher.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="includes/Axf/Text/Regex/Matcher.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="includes/Axf/Text/Regex/Pattern.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="includes/Axf/Text/Regex/PatternSyntaxException.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="includes/Axf/Text/Regex/Regex.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="includes/Axf/Text/Regex/State.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="includes/Axf/Text/Regex/Tokens.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="includes/Axf/Threading/Thread.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="includes/Axf/Utils/Pair.h" ex="false" tool="3" flavor2="0">
@@ -1212,6 +1371,34 @@
       </item>
       <item path="sources/Logging/Logger.cpp" ex="false" tool="1" flavor2="0">
       </item>
+      <item path="sources/Text/Regex/AbstractSyntaxTree.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="sources/Text/Regex/CharacterMatcher.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="sources/Text/Regex/Compiler.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="sources/Text/Regex/EpsilonMatcher.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="sources/Text/Regex/Pattern.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="sources/Text/Regex/PatternSyntaxException.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="sources/Text/Regex/Regex.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="sources/Text/Regex/State.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="sources/Threading/Thread.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="tests/arraylist_test.cpp" ex="false" tool="1" flavor2="0">
@@ -1232,6 +1419,8 @@
       <item path="tests/hashset_test.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="tests/linkedlist_test.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="tests/regex_test.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="tests/rtti_test.cpp" ex="false" tool="1" flavor2="0">
       </item>

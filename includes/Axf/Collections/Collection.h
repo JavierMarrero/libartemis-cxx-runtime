@@ -64,6 +64,15 @@ public:
     virtual bool add(const E& element) = 0;
 
     /**
+     * Clears the contents of this collection. The collection should end with
+     * zero size. Depending on the particular implementation it can actually
+     * release memory or not.
+     *
+     * @return
+     */
+    virtual void clear() = 0;
+
+    /**
      * Returns true if this collection contains the specified value.
      *
      * @param element

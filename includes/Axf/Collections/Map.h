@@ -139,7 +139,7 @@ public:
         return values().contains(value);
     }
 
-    virtual V& get(const K& key) = 0;
+    virtual V& get(const K& key) const = 0;
 
     /**
      * Returns a set of the keys contained within this map.
@@ -167,11 +167,11 @@ public:
     virtual bool remove(const K& key) = 0;
 
     /**
-     * Returns a set that iterates over all the values of the map.
+     * Returns a collection that iterates over all the values of the map.
      *
      * @return
      */
-    virtual const Collection<core::reference_wrapper<const V> >& values() const = 0;
+    virtual const Collection<core::reference_wrapper<V> >& values() const = 0;
 
 } ;
 

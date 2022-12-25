@@ -330,6 +330,30 @@ public:
         return new iterator_t(&m_buckets, m_capacity, m_size);
     }
 
+    virtual void clear()
+    {
+        // Deallocate all the entries
+        for (std::size_t i = 0; i < m_capacity; i++)
+        {
+            entry_t* current = m_buckets[i];
+            while (current != NULL)
+            {
+                entry_t* next = current->m_next;
+
+                // Delete the entry
+                deleteEntry(current);
+
+                current = next;
+            }
+
+            m_buckets[i] = NULL;
+        }
+
+        // Set the parameters
+        m_size = 0;
+        m_modCount = 0;
+    }
+
     virtual bool contains(const E& element) const
     {
         std::size_t index = calculateHash(element, m_capacity);

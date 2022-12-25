@@ -27,11 +27,15 @@
 #ifndef KEYWORDS_H
 #define KEYWORDS_H
 
+// C++
+#include <cstddef>
+
 #include <Axf/API/Compiler.h>
 #include <Axf/API/Platform.h>
 
 #if ARTEMIS_CXX11_SUPPORTED == 0
-#   define noexcept throw()
+#   define noexcept throw()         /// Functions that have no-throw guarantee should use this qualifier
+#   define nullptr  NULL            /// Null pointer constant
 #endif
 
 #endif /* KEYWORDS_H */

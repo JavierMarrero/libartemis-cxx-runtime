@@ -137,7 +137,7 @@ public:
      * 
      * @return
      */
-    inline operator bool()
+    inline operator bool() const
     {
         return m_pointer != NULL;
     }

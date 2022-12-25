@@ -18,31 +18,36 @@
  */
 
 /* 
- * File:   IndexOutOfBoundsException.cpp
+ * File:   pointers.h
  * Author: Javier Marrero
- * 
- * Created on November 28, 2022, 7:58 PM
+ *
+ * Created on December 23, 2022, 12:15 PM
  */
 
-#include <Axf/Core/IndexOutOfBoundsException.h>
+#ifndef ARTEMIS_POINTERS_H
+#define ARTEMIS_POINTERS_H
 
-// C++
-#include <stdio.h>
-
-using namespace axf;
-using namespace axf::core;
-
-IndexOutOfBoundsException::IndexOutOfBoundsException(const char* message, long long index)
-:
-Exception(message),
-m_index(index)
+namespace axf
 {
-    snprintf(m_message, 1024, "%s (faulty index: %lld)", message, index);
+namespace core
+{
+
+/**
+ * Defines an aliasing relationship between two pointers without breaking
+ * strict aliasing rule. The member 'alias' becomes an alias to the pointer
+ * 'aliased'. Both are accessible through the union.
+ *
+ * @author J. Marrero
+ */
+template <typename T1, typename T2>
+union pointer_alias
+{
+    T1* m_alias;
+    T2* m_aliased;
+} ;
+
+}
 }
 
-IndexOutOfBoundsException::~IndexOutOfBoundsException()
-{
-}
-
-
+#endif /* POINTERS_H */
 

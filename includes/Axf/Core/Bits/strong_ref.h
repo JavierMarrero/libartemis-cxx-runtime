@@ -263,6 +263,28 @@ public:
         return this->m_pointer->queryStrongReferences();
     }
 
+    /**
+     * Assignment operator overload.
+     *
+     * @param rhs
+     * @return
+     */
+    strong_ref<T, bits::default_delete<T> >& operator=(const strong_ref<T, bits::default_delete<T> >& rhs)
+    {
+        if (this != &rhs)
+        {
+            if (rhs.m_pointer != this->m_pointer)
+            {
+                release();
+            }
+
+            this->m_pointer = rhs.m_pointer;
+
+            grab();
+        }
+        return *this;
+    }
+
 private:
 
     /**

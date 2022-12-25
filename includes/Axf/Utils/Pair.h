@@ -106,12 +106,28 @@ public:
         return m_second;
     }
 
+    inline bool operator==(const Pair<K, V>& rhs) const
+    {
+        return m_first == rhs.m_first && m_second == rhs.m_second;
+    }
+
+    inline bool operator!=(const Pair<K, V>& rhs) const
+    {
+        return m_first != rhs.m_first || m_second != rhs.m_second;
+    }
+
 private:
 
     K   m_first;    /// The first element
     V   m_second;   /// The second element
 
 } ;
+
+template <typename K, typename V>
+Pair<K, V> makePair(const K& first, const V& second)
+{
+    return Pair<K, V>(first, second);
+}
 
 }
 }

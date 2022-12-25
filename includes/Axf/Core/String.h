@@ -113,6 +113,7 @@ public:
 
     string(const char* cstr, const char* charset = axf::io::charset::UTF8_CHARSET); /// Constructs a string via a pointer to a c string and a charset
     string(const wchar_t* wstr);                                                    /// Constructs a string via a wide character array
+    string(const uchar& c);
 
     /**
      * Appends a character to the string.
@@ -287,6 +288,8 @@ public:
      */
     inline bool operator==(const string& rhs) const
     {
+        if (rhs.m_buffer == NULL)
+            return false;
         return std::strcmp(reinterpret_cast<const char*> (m_buffer), reinterpret_cast<const char*> (rhs.m_buffer)) == 0;
     }
 

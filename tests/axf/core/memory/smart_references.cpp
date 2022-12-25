@@ -52,13 +52,27 @@ public:
     DummyIntrusive()
     {
         std::cout << "creating new intrusive reference counted dummy at " << this << std::endl;
+
+        m_guard = 0;
     }
 
     virtual ~DummyIntrusive()
     {
         std::cout << "deleting intrusive dummy at " << this << std::endl;
+
+        m_guard = -1;
     }
 
+    void cry()
+    {
+        std::cout << "wah wah!" << std::endl;
+
+        m_guard = 1;
+    }
+
+private:
+
+    int m_guard;
 } ;
 
 void test_scoped_ptr()
@@ -146,6 +160,13 @@ void test_weak_ptr()
     std::cout << "dropping all references" << std::endl;
 }
 
+axf::core::strong_ref<DummyIntrusive> returnValueTest()
+{
+    axf::core::strong_ref<DummyIntrusive> sp1 = new DummyIntrusive();
+    sp1->cry();
+    return sp1;
+}
+
 int main(int argc, char** argv)
 {
     std::printf("\ntesting unique pointers...\n");
@@ -157,6 +178,10 @@ int main(int argc, char** argv)
     std::printf("\ntesting shared weak pointers...\n");
     test_weak_ptr();
 
+    {
+        std::printf("\ntesting return value of shared pointers...\n");
+        axf::core::strong_ref<DummyIntrusive> sr1 = returnValueTest();
+    }
     std::getchar();
     return (EXIT_SUCCESS);
 }

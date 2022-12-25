@@ -67,7 +67,7 @@ public:
      *
      * @param wrapped
      */
-    reference_wrapper(const T& wrapped) : m_wrapped(&wrapped) { }
+    reference_wrapper(const T& wrapped) : m_wrapped((T*) &wrapped) { }
 
     /**
      * Creates a new reference wrapper from a previous reference wrapper.
@@ -106,6 +106,28 @@ public:
         checkDereferencingCapability();
         return *m_wrapped;
     };
+
+    /**
+     * Checks if two wrappers point to the same reference.
+     *
+     * @param rhs
+     * @return
+     */
+    inline bool operator==(const reference_wrapper<T>& rhs) const
+    {
+        return *m_wrapped == *rhs.m_wrapped;
+    }
+
+    /**
+     * Checks if two wrapper points to different references.
+     *
+     * @param rhs
+     * @return
+     */
+    inline bool operator!=(const reference_wrapper<T>& rhs) const
+    {
+        return *m_wrapped != *rhs.m_wrapped;
+    }
 
 private:
 

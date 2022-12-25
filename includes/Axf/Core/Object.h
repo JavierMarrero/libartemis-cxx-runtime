@@ -28,6 +28,7 @@
 #define OBJECT_H
 
 // API
+#include <Axf/Core/Lang-C++/keywords.h>
 #include <Axf/Core/Class.h>
 #include <Axf/Core/ReferenceCounted.h>
 #include <Axf/Core/String.h>

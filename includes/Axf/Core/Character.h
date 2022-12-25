@@ -113,6 +113,11 @@ class uchar : public ReferenceCounted
             bytes[2] = 0;
         }
 
+        /**
+         * General implicit conversion to a wide character string.
+         *
+         * @return
+         */
         inline operator const wchar_t*() const
         {
             return bytes;
@@ -125,6 +130,8 @@ class uchar : public ReferenceCounted
 public:
 
     uchar(const void* data, std::size_t length, const char* charset);
+    uchar(const uchar& rhs);
+
     explicit uchar(const char c);
     explicit uchar(const wchar_t wc);
 
@@ -134,6 +141,19 @@ public:
     bool isAscii() const;       /// Returns true if the character is an ASCII char
     bool isWhitespace() const;  /// Returns true if the character is a white-space
 
+    // INLINE METHOD
+
+    /**
+     * Returns this character as a Unicode escape code: a four digit number
+     * representing the Unicode code point this character represents.
+     *
+     * @return
+     */
+    inline unsigned int asUnicodeEscape() const
+    {
+        return static_cast<unsigned int> (m_character);
+    }
+
     /**
      * Converts this Unicode code point to a sequence of wide characters with
      * correct endianness and encoding. The returned structure is implicitly
@@ -142,6 +162,18 @@ public:
      * @return
      */
     mb_char_t toWideCharacter() const;
+
+    // COMPARISON OPERATORS
+
+    inline bool operator==(const uchar& rhs) const
+    {
+        return m_character == rhs.m_character;
+    }
+
+    inline bool operator!=(const uchar& rhs) const
+    {
+        return m_character != rhs.m_character;
+    }
 
     // CONVERSION OPERATORS
 

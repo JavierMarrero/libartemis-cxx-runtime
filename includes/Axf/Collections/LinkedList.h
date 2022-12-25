@@ -31,14 +31,16 @@
 #include <Axf/Collections/List.h>
 #include <Axf/Collections/DefaultAllocator.h>
 #include <Axf/Collections/Iterator.h>
+#include <Axf/Collections/Stack.h>
+#include <Axf/Collections/Queue.h>
 #include <Axf/Core/IndexOutOfBoundsException.h>
 #include <Axf/Core/Memory.h>
+
 namespace axf
 {
 namespace collections
 {
-
-namespace
+namespace bits
 {
 
 /**
@@ -138,15 +140,17 @@ private:
  * 
  * @author J. Marrero
  */
-template <typename E, class allocator = axf::collections::DefaultAllocator<Node<E> > >
-class LinkedList : public List<E>
+template <typename E, class allocator = axf::collections::DefaultAllocator<bits::Node<E> > >
+class LinkedList : public List<E>, public Stack<E>, public Queue<E>
 {
     AXF_CLASS_TYPE(AXF_TEMPLATE_CLASS(axf::collections::LinkedList<E, allocator>),
-                   AXF_TYPE(axf::collections::List<E>))
+                   AXF_TYPE(axf::collections::List<E>),
+                   AXF_TYPE(axf::collections::Stack<E>),
+                   AXF_TYPE(axf::collections::Queue<E>))
 
     // Friend
     template <typename>
-    friend class LinkedListIterator;
+    friend class bits::LinkedListIterator;
 
 public:
 
@@ -160,13 +164,7 @@ public:
      */
     virtual ~LinkedList()
     {
-        while (m_head != NULL)
-        {
-            Node<E>* deletable = m_head;
-            m_head = m_head->m_next;
-
-            m_allocator.deleteObject(deletable);
-        }
+        clear();
     }
 
     /**
@@ -178,7 +176,7 @@ public:
     virtual bool add(const E& element)
     {
         // Create the node
-        Node<E>* node = allocateNode(element);
+        bits::Node<E>* node = allocateNode(element);
         if (node)
         {
             // Add the node to the end
@@ -201,13 +199,13 @@ public:
      */
     virtual bool add(std::size_t index, const E& data)
     {
-        checkIndexOutOfBounds(index);
+        checkIndexInclusive(index);
 
         // Node pointer
-        Node<E>* node = allocateNode(data);
+        bits::Node<E>* node = allocateNode(data);
         if (node)
         {
-            Node<E>* current = m_head;
+            bits::Node<E>* current = m_head;
 
             size_t i = 0;
             while (i++ < index)
@@ -229,18 +227,40 @@ public:
      */
     virtual iterator<E> begin()
     {
-        return new LinkedListIterator<E>(m_head);
+        if (isEmpty())
+            return end();
+
+        return new bits::LinkedListIterator<E>(m_head);
     }
 
     virtual const iterator<E> begin() const
     {
-        return new LinkedListIterator<E>(m_head);
+        if (isEmpty())
+            return end();
+
+        return new bits::LinkedListIterator<E>(m_head);
+    }
+
+    virtual void clear()
+    {
+        while (m_head != NULL)
+        {
+            bits::Node<E>* deletable = m_head;
+            m_head = m_head->m_next;
+
+            m_allocator.deleteObject(deletable);
+        }
+
+        // Set the rest of fields
+        m_head = nullptr;
+        m_size = 0;
+        m_tail = nullptr;
     }
 
     virtual bool contains(const E& element) const
     {
         bool result = false;
-        Node<E>* current = m_head;
+        const bits::Node<E>* current = m_head;
         while (current != NULL && result == false)
         {
             if (current->m_data == element)
@@ -257,12 +277,12 @@ public:
      */
     virtual iterator<E> end()
     {
-        return new LinkedListIterator<E>();
+        return new bits::LinkedListIterator<E>();
     }
 
     virtual const iterator<E> end() const
     {
-        return new LinkedListIterator<E>();
+        return new bits::LinkedListIterator<E>();
     }
 
     virtual const E& get(std::size_t index) const
@@ -285,6 +305,47 @@ public:
         return m_size == 0;
     }
 
+    virtual bool offer(const E& element)
+    {
+        return add(0, element);
+    }
+
+    virtual E& peek() const
+    {
+        if (isEmpty())
+            throw core::IllegalStateException("attempted to peek on empty stack.");
+
+        return const_cast<E&> (get(0));
+    }
+
+    virtual E poll()
+    {
+        if (isEmpty())
+            throw core::IllegalStateException("attempted to pool on empty queue.");
+
+        const E& result = m_tail->m_data;
+        removeNode(m_tail);
+        m_size--;
+
+        return result;
+    }
+
+    virtual E pop()
+    {
+        if (isEmpty())
+            throw core::IllegalStateException("attempted to pop on empty stack.");
+
+        E result = const_cast<E&> (get(0));
+        this->removeAt(0);
+
+        return result;
+    }
+
+    virtual bool push(const E& element)
+    {
+        return add(0, element);
+    }
+
     /**
      * @see axf::collections::Collection::remove
      *
@@ -296,7 +357,7 @@ public:
         bool result = false;
 
         // Find the element
-        Node<E>* current = m_head;
+        bits::Node<E>* current = m_head;
         while (current != NULL && !result)
         {
             if (current->m_data == element)
@@ -304,7 +365,7 @@ public:
                 result = true;
 
                 // Store
-                Node<E>* nextCurrent = current->m_next;
+                bits::Node<E>* nextCurrent = current->m_next;
 
                 // Remove
                 removeNode(current);
@@ -326,7 +387,7 @@ public:
             return false;
 
         /* Walk and remove */
-        Node<E>* node = walk(index);
+        bits::Node<E>* node = walk(index);
         removeNode(node);
 
         m_size--;
@@ -345,10 +406,10 @@ public:
 
 private:
 
-    allocator   m_allocator;    /// The default allocator for linked lists
-    Node<E>*    m_head;         /// The head of the list
-    size_t      m_size;         /// The size of the list
-    Node<E>*    m_tail;         /// The tail of the list
+    allocator       m_allocator;    /// The default allocator for linked lists
+    bits::Node<E>*  m_head;         /// The head of the list
+    size_t          m_size;         /// The size of the list
+    bits::Node<E>*  m_tail;         /// The tail of the list
 
     /**
      * Allocates a new node using the default template provided allocator.
@@ -356,21 +417,44 @@ private:
      * @param data
      * @return
      */
-    inline Node<E>* allocateNode(const E& data)
+    inline bits::Node<E>* allocateNode(const E& data)
     {
         return m_allocator.newObject(data);
+    }
+
+    /**
+     * Checks if the index is in the range of possible elements.
+     *
+     * @param index
+     */
+    inline void checkIndexInclusive(std::size_t index) const
+    {
+        if (index > m_size)
+        {
+            raiseBoundsError(index);
+        }
     }
 
     /**
      * Checks that the provided index is lesser than the size of the collection.
      * If the check fails throws an index out of bounds exception.
      */
-    inline void checkIndexOutOfBounds(std::size_t index) const
+    inline void checkIndexExclusive(std::size_t index) const
     {
         if (index >= m_size)
         {
-            throw core::IndexOutOfBoundsException("attempted to get an element from the list with an invalid index.", index);
+            raiseBoundsError(index);
         }
+    }
+
+    /**
+     * Raises an <code>IndexOutOfBoundsExceptions</code>.
+     *
+     * @param index
+     */
+    inline void raiseBoundsError(std::size_t index) const
+    {
+        throw core::IndexOutOfBoundsException("performed operation over linked list with illegal index", index);
     }
 
     /**
@@ -379,20 +463,27 @@ private:
      * @param node
      * @param newNode
      */
-    inline void insertAfter(Node<E>* node, Node<E>* newNode)
+    inline void insertAfter(bits::Node<E>* node, bits::Node<E>* newNode)
     {
-        newNode->m_previous = node;
-        if (node->m_next == NULL)
+        if (node == NULL)
         {
-            newNode->m_next = NULL;
-            m_tail = newNode;
+            insertBeginning(newNode);
         }
         else
         {
-            newNode->m_next = node->m_next;
-            node->m_next->m_previous = newNode;
+            newNode->m_previous = node;
+            if (node->m_next == NULL)
+            {
+                newNode->m_next = NULL;
+                m_tail = newNode;
+            }
+            else
+            {
+                newNode->m_next = node->m_next;
+                node->m_next->m_previous = newNode;
+            }
+            node->m_next = newNode;
         }
-        node->m_next = newNode;
     }
 
     /**
@@ -401,20 +492,27 @@ private:
      * @param node
      * @param newNode
      */
-    inline void insertBefore(Node<E>* node, Node<E>* newNode)
+    inline void insertBefore(bits::Node<E>* node, bits::Node<E>* newNode)
     {
-        newNode->m_next = node;
-        if (node->m_previous == NULL)
+        if (node == NULL)
         {
-            newNode->m_previous = NULL;
-            m_head = newNode;
+            insertEnd(newNode);
         }
         else
         {
-            newNode->m_previous = node->m_previous;
-            node->m_previous->m_next = newNode;
+            newNode->m_next = node;
+            if (node->m_previous == NULL)
+            {
+                newNode->m_previous = NULL;
+                m_head = newNode;
+            }
+            else
+            {
+                newNode->m_previous = node->m_previous;
+                node->m_previous->m_next = newNode;
+            }
+            node->m_previous = newNode;
         }
-        node->m_previous = newNode;
     }
 
     /**
@@ -422,7 +520,7 @@ private:
      *
      * @param newNode
      */
-    inline void insertBeginning(Node<E>* newNode)
+    inline void insertBeginning(bits::Node<E>* newNode)
     {
         if (m_head == NULL)
         {
@@ -440,7 +538,7 @@ private:
      *
      * @param newNode
      */
-    inline void insertEnd(Node<E>* newNode)
+    inline void insertEnd(bits::Node<E>* newNode)
     {
         if (m_tail == NULL)
         {
@@ -452,7 +550,7 @@ private:
         }
     }
 
-    inline void removeNode(Node<E>* node)
+    inline void removeNode(bits::Node<E>* node)
     {
         if (node->m_previous == NULL)
         {
@@ -483,11 +581,11 @@ private:
      * @param index
      * @return
      */
-    inline Node<E>* walk(std::size_t index) const
+    inline bits::Node<E>* walk(std::size_t index) const
     {
-        checkIndexOutOfBounds(index);
+        checkIndexExclusive(index);
 
-        Node<E>* current = const_cast<Node<E>* > (m_head);
+        bits::Node<E>* current = const_cast<bits::Node<E>* > (m_head);
 
         ///TODO: Optimize and make the algorithm O(n/2) instead of O(n)
         if (index > 0)

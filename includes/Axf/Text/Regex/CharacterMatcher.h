@@ -18,31 +18,50 @@
  */
 
 /* 
- * File:   IndexOutOfBoundsException.cpp
+ * File:   CharacterMatcher.h
  * Author: Javier Marrero
- * 
- * Created on November 28, 2022, 7:58 PM
+ *
+ * Created on December 23, 2022, 1:27 PM
  */
 
-#include <Axf/Core/IndexOutOfBoundsException.h>
+#ifndef CHARACTERMATCHER_H
+#define CHARACTERMATCHER_H
 
-// C++
-#include <stdio.h>
+// API
+#include <Axf/Core/Object.h>
+#include <Axf/Text/Regex/Matcher.h>
 
-using namespace axf;
-using namespace axf::core;
-
-IndexOutOfBoundsException::IndexOutOfBoundsException(const char* message, long long index)
-:
-Exception(message),
-m_index(index)
+namespace axf
 {
-    snprintf(m_message, 1024, "%s (faulty index: %lld)", message, index);
+namespace text
+{
+namespace regex
+{
+
+/**
+ * A matcher that handles Unicode character input.
+ */
+class CharacterMatcher : public Matcher
+{
+    AXF_CLASS_TYPE(axf::text::regex::CharacterMatcher,
+                   AXF_TYPE(axf::text::regex::Matcher))
+
+public:
+
+    CharacterMatcher(const core::uchar& c);
+    ~CharacterMatcher();
+
+    virtual bool isEpsilon() const;
+    virtual bool matches(const void* input) const;
+
+private:
+
+    core::uchar m_character;
+} ;
+
+}
+}
 }
 
-IndexOutOfBoundsException::~IndexOutOfBoundsException()
-{
-}
-
-
+#endif /* CHARACTERMATCHER_H */
 

@@ -18,31 +18,45 @@
  */
 
 /* 
- * File:   IndexOutOfBoundsException.cpp
+ * File:   PatternSyntaxException.h
  * Author: Javier Marrero
- * 
- * Created on November 28, 2022, 7:58 PM
+ *
+ * Created on December 24, 2022, 12:14 PM
  */
 
-#include <Axf/Core/IndexOutOfBoundsException.h>
+#ifndef PATTERNSYNTAXEXCEPTION_H
+#define PATTERNSYNTAXEXCEPTION_H
 
-// C++
-#include <stdio.h>
+// API
+#include <Axf/Core/Exception.h>
 
-using namespace axf;
-using namespace axf::core;
-
-IndexOutOfBoundsException::IndexOutOfBoundsException(const char* message, long long index)
-:
-Exception(message),
-m_index(index)
+namespace axf
 {
-    snprintf(m_message, 1024, "%s (faulty index: %lld)", message, index);
+namespace text
+{
+namespace regex
+{
+
+/**
+ * This class of exceptions describes problems when parsing exceptions.
+ *
+ * @author J. Marrero
+ */
+class PatternSyntaxException : public core::Exception
+{
+    AXF_EXCEPTION_TYPE(axf::text::regex::PatternSyntaxException,
+                       axf::core::Exception)
+
+public:
+
+    PatternSyntaxException(const char* message);
+    ~PatternSyntaxException();
+
+} ;
+
+}
+}
 }
 
-IndexOutOfBoundsException::~IndexOutOfBoundsException()
-{
-}
-
-
+#endif /* PATTERNSYNTAXEXCEPTION_H */
 

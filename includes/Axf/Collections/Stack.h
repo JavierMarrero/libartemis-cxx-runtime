@@ -77,7 +77,7 @@ public:
      *
      * @return
      */
-    virtual E& pop() = 0;
+    virtual E pop() = 0;
 } ;
 
 }

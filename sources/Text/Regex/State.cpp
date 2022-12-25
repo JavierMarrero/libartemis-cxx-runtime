@@ -18,31 +18,41 @@
  */
 
 /* 
- * File:   IndexOutOfBoundsException.cpp
+ * File:   State.cpp
  * Author: Javier Marrero
  * 
- * Created on November 28, 2022, 7:58 PM
+ * Created on December 23, 2022, 1:11 PM
  */
 
-#include <Axf/Core/IndexOutOfBoundsException.h>
-
-// C++
-#include <stdio.h>
+#include <Axf/Text/Regex/State.h>
 
 using namespace axf;
-using namespace axf::core;
+using namespace axf::text;
+using namespace axf::text::regex;
 
-IndexOutOfBoundsException::IndexOutOfBoundsException(const char* message, long long index)
+State::State(const core::string& name)
 :
-Exception(message),
-m_index(index)
-{
-    snprintf(m_message, 1024, "%s (faulty index: %lld)", message, index);
-}
-
-IndexOutOfBoundsException::~IndexOutOfBoundsException()
+m_name(name)
 {
 }
 
+State::~State()
+{
+    for (collections::iterator<Transition> it = m_transitions.begin(),
+         end = m_transitions.end(); it != end; it->next())
+    {
+        delete it->current().first();
+    }
+}
+
+void State::addTransition(State* to, Matcher* matcher)
+{
+    m_transitions.add(utils::makePair(matcher, to));
+}
+
+void State::unshiftTransition(State* to, Matcher* matcher)
+{
+    m_transitions.add(0, utils::makePair(matcher, to));
+}
 
 

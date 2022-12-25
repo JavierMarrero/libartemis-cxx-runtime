@@ -42,7 +42,7 @@ template <typename T>
 struct default_hash
 {
 
-    unsigned int operator()(const T& element) const
+    inline unsigned int operator()(const T& element) const
     {
         const char* memory = reinterpret_cast<const char*> (&element);
         unsigned int hash = 0;
