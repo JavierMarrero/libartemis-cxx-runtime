@@ -11,22 +11,30 @@
       <itemPath>includes/Axf/Collections/ArrayList.h</itemPath>
       <itemPath>includes/Axf.h</itemPath>
       <itemPath>includes/Axf/Math/BasicMath.h</itemPath>
+      <itemPath>includes/Axf/IO/BufferedOutputStream.h</itemPath>
       <itemPath>includes/Axf/Core/Character.h</itemPath>
       <itemPath>includes/Axf/Text/Regex/CharacterMatcher.h</itemPath>
       <itemPath>includes/Axf/IO/Charset.h</itemPath>
       <itemPath>includes/Axf/Core/Class.h</itemPath>
       <itemPath>includes/Axf/Core/ClassCastException.h</itemPath>
+      <itemPath>includes/Axf/IO/Closeable.h</itemPath>
       <itemPath>includes/Axf/Collections/Collection.h</itemPath>
       <itemPath>includes/Axf/Core/Comparator.h</itemPath>
       <itemPath>includes/Axf/API/Compiler.h</itemPath>
       <itemPath>includes/Axf/Text/Regex/Compiler.h</itemPath>
       <itemPath>includes/Axf/Collections/ConcurrentModificationException.h</itemPath>
       <itemPath>includes/Axf/Collections/DefaultAllocator.h</itemPath>
+      <itemPath>includes/Axf/Core/DynamicArray.h</itemPath>
       <itemPath>includes/Axf/Text/Regex/EpsilonMatcher.h</itemPath>
       <itemPath>includes/Axf/Core/Exception.h</itemPath>
+      <itemPath>includes/Axf/IO/File.h</itemPath>
+      <itemPath>includes/Axf/IO/FileNotFoundException.h</itemPath>
+      <itemPath>includes/Axf/IO/FileOutputStream.h</itemPath>
       <itemPath>includes/Axf/Collections/HashMap.h</itemPath>
       <itemPath>includes/Axf/Collections/HashSet.h</itemPath>
       <itemPath>includes/Axf/Collections/Bits/HashUtils.h</itemPath>
+      <itemPath>includes/Axf/IO/IOException.h</itemPath>
+      <itemPath>includes/Axf/IO/IOStream.h</itemPath>
       <itemPath>includes/Axf/Core/IllegalArgumentException.h</itemPath>
       <itemPath>includes/Axf/Core/IllegalOperationException.h</itemPath>
       <itemPath>includes/Axf/Core/IllegalStateException.h</itemPath>
@@ -88,6 +96,7 @@
                    displayName="Source Files"
                    projectFiles="true">
       <itemPath>sources/Text/Regex/AbstractSyntaxTree.cpp</itemPath>
+      <itemPath>sources/IO/BufferedOutputStream.cpp</itemPath>
       <itemPath>sources/Core/Character.cpp</itemPath>
       <itemPath>sources/Text/Regex/CharacterMatcher.cpp</itemPath>
       <itemPath>sources/IO/Charset.cpp</itemPath>
@@ -98,6 +107,10 @@
       <itemPath>sources/Arch/Windows/DllMain.cpp</itemPath>
       <itemPath>sources/Text/Regex/EpsilonMatcher.cpp</itemPath>
       <itemPath>sources/Core/Exception.cpp</itemPath>
+      <itemPath>sources/IO/File.cpp</itemPath>
+      <itemPath>sources/IO/FileNotFoundException.cpp</itemPath>
+      <itemPath>sources/IO/FileOutputStream.cpp</itemPath>
+      <itemPath>sources/IO/IOException.cpp</itemPath>
       <itemPath>sources/Core/IllegalArgumentException.cpp</itemPath>
       <itemPath>sources/Core/IllegalOperationException.cpp</itemPath>
       <itemPath>sources/Core/IllegalStateException.cpp</itemPath>
@@ -148,6 +161,12 @@
                      projectFiles="true"
                      kind="TEST">
         <itemPath>tests/eh_test.cpp</itemPath>
+      </logicalFolder>
+      <logicalFolder name="f13"
+                     displayName="File IO Test"
+                     projectFiles="true"
+                     kind="TEST">
+        <itemPath>tests/file_test.cpp</itemPath>
       </logicalFolder>
       <logicalFolder name="f5"
                      displayName="Hash Map Test"
@@ -294,6 +313,21 @@
           <output>${TESTDIR}/TestFiles/f12</output>
         </linkerTool>
       </folder>
+      <folder path="TestFiles/f13">
+        <cTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </cTool>
+        <ccTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f13</output>
+        </linkerTool>
+      </folder>
       <folder path="TestFiles/f2">
         <cTool>
           <incDir>
@@ -536,6 +570,8 @@
       </item>
       <item path="includes/Axf/Core/Comparator.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="includes/Axf/Core/DynamicArray.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="includes/Axf/Core/Exception.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="includes/Axf/Core/IllegalArgumentException.h"
@@ -640,7 +676,27 @@
             tool="3"
             flavor2="0">
       </item>
+      <item path="includes/Axf/IO/BufferedOutputStream.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="includes/Axf/IO/Charset.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="includes/Axf/IO/Closeable.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="includes/Axf/IO/File.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="includes/Axf/IO/FileNotFoundException.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="includes/Axf/IO/FileOutputStream.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="includes/Axf/IO/IOException.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="includes/Axf/IO/IOStream.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="includes/Axf/IO/OutputStream.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -752,7 +808,23 @@
       </item>
       <item path="sources/Core/VarargsSafe.cpp" ex="false" tool="1" flavor2="0">
       </item>
+      <item path="sources/IO/BufferedOutputStream.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
       <item path="sources/IO/Charset.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="sources/IO/File.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="sources/IO/FileNotFoundException.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="sources/IO/FileOutputStream.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="sources/IO/IOException.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="sources/Logging/Logger.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -798,6 +870,8 @@
       <item path="tests/default_alloc_test.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="tests/eh_test.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="tests/file_test.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="tests/hashmap_test.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -909,6 +983,21 @@
           <output>${TESTDIR}/TestFiles/f12</output>
         </linkerTool>
       </folder>
+      <folder path="TestFiles/f13">
+        <cTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </cTool>
+        <ccTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f13</output>
+        </linkerTool>
+      </folder>
       <folder path="TestFiles/f2">
         <cTool>
           <incDir>
@@ -1151,6 +1240,8 @@
       </item>
       <item path="includes/Axf/Core/Comparator.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="includes/Axf/Core/DynamicArray.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="includes/Axf/Core/Exception.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="includes/Axf/Core/IllegalArgumentException.h"
@@ -1255,7 +1346,27 @@
             tool="3"
             flavor2="0">
       </item>
+      <item path="includes/Axf/IO/BufferedOutputStream.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="includes/Axf/IO/Charset.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="includes/Axf/IO/Closeable.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="includes/Axf/IO/File.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="includes/Axf/IO/FileNotFoundException.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="includes/Axf/IO/FileOutputStream.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="includes/Axf/IO/IOException.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="includes/Axf/IO/IOStream.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="includes/Axf/IO/OutputStream.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -1367,7 +1478,23 @@
       </item>
       <item path="sources/Core/VarargsSafe.cpp" ex="false" tool="1" flavor2="0">
       </item>
+      <item path="sources/IO/BufferedOutputStream.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
       <item path="sources/IO/Charset.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="sources/IO/File.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="sources/IO/FileNotFoundException.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="sources/IO/FileOutputStream.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="sources/IO/IOException.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="sources/Logging/Logger.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -1413,6 +1540,8 @@
       <item path="tests/default_alloc_test.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="tests/eh_test.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="tests/file_test.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="tests/hashmap_test.cpp" ex="false" tool="1" flavor2="0">
       </item>

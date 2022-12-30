@@ -79,7 +79,14 @@
 #include <Axf/Core/Runtime.h>
 #include <Axf/Core/String.h>
 
+#include <Axf/IO/BufferedOutputStream.h>
 #include <Axf/IO/Charset.h>
+#include <Axf/IO/Closeable.h>
+#include <Axf/IO/File.h>
+#include <Axf/IO/FileNotFoundException.h>
+#include <Axf/IO/FileOutputStream.h>
+#include <Axf/IO/IOException.h>
+#include <Axf/IO/IOStream.h>
 #include <Axf/IO/OutputStream.h>
 
 #include <Axf/Logging/Logger.h>

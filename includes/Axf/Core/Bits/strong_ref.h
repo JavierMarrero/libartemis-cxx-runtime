@@ -312,6 +312,12 @@ private:
     }
 } ;
 
+template <typename T>
+inline strong_ref<T> make_shared(T* arg)
+{
+    return strong_ref<T>(arg);
+}
+
 }
 }
 

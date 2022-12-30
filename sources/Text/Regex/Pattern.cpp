@@ -39,17 +39,13 @@ m_initialState(nullptr)
 
 Pattern::~Pattern()
 {
-    if (m_states.isEmpty() == false)
-    {
-        for (const iterator<Entry<core::string, State*> > it = m_states.begin(),
-             end = m_states.end(); it != end; it->next())
-        {
-            delete it->current().getValue();
-        }
-    }
-
     // Other parameters
     m_initialState = nullptr;
+}
+
+void Pattern::addFinalState(const State* state)
+{
+    m_finalStates.add(const_cast<State*> (state));
 }
 
 void Pattern::addState(const core::string& name)
@@ -62,6 +58,44 @@ void Pattern::addTransition(State* from, State* to, Matcher* matcher)
     from->addTransition(to, matcher);
 }
 
+Pattern& Pattern::appendPattern(Pattern& otherNfa, core::strong_ref<State> unionState)
+{
+    // 1. Copy the states from one NFA to the other
+    // 2. Combine the two states (one gets eliminated)
+    for (iterator<core::reference_wrapper<const core::string> > it = otherNfa.m_states.keySet().begin(),
+         end = otherNfa.m_states.keySet().end(); it != end; it->next())
+    {
+        core::strong_ref<State> currentState = otherNfa.m_states.get(it->current());
+        if (currentState != otherNfa.m_initialState)
+        {
+            m_states.put(it->current(), currentState);
+        }
+    }
+
+    // 3. All the outward transitions now belong to union state
+    for (iterator<State::Transition> it = otherNfa.m_initialState->transitions().begin(),
+         end = otherNfa.m_initialState->transitions().end(); it != end; it->next())
+    {
+        core::strong_ref<Matcher> matcher = (*it).first();
+        core::strong_ref<State> toTransition = (*it).second();
+
+        addTransition(unionState.get(), toTransition.get(), matcher.get());
+    }
+
+    // 4. If the unionState is an end state, then the end states of the appended NFA
+    //      are also end states of the fusion
+    if (m_finalStates.contains(unionState.get()))
+    {
+        for (iterator<State*> it = otherNfa.m_finalStates.begin(),
+             end = otherNfa.m_finalStates.end(); it != end; it->next())
+        {
+            addFinalState(*it);
+        }
+    }
+
+    return *this;
+}
+
 void Pattern::declareStates(const core::varargs<core::string> names)
 {
     for (std::size_t n = 0; n < names.length(); ++n)
@@ -72,7 +106,16 @@ void Pattern::declareStates(const core::varargs<core::string> names)
 
 State* Pattern::getState(const core::string& name) const
 {
-    return const_cast<State*> (m_states.get(name));
+    return const_cast<State*> (m_states.get(name).get());
+}
+
+void Pattern::makeSuperset(Pattern& pattern)
+{
+    for (iterator<Entry<core::string, core::strong_ref<State> > > it = pattern.m_states.begin(),
+         end = pattern.m_states.end(); it != end; it->next())
+    {
+        m_states.put((*it).getKey(), (*it).getValue());
+    }
 }
 
 bool Pattern::matches(const core::string& pattern) const
@@ -109,8 +152,8 @@ bool Pattern::matches(const core::string& pattern) const
              c >= 0; --c)
         {
             State::Transition& currentTransition = currentState->transitions().get(c);
-            Matcher* matcher = currentTransition.first();
-            State* toState = currentTransition.second();
+            Matcher* matcher = currentTransition.first().get();
+            State* toState = currentTransition.second().get();
 
             if (matcher->matches(static_cast<void*> (&input)))
             {

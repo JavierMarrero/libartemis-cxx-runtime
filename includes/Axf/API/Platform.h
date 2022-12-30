@@ -28,7 +28,7 @@
 #define PLATFORM_H
 
 #if defined(_WIN32) || defined (__WIN32) || defined(__WIN32__) || defined(WINDOWS)
-#   define ARTEMIS_PLATFORM_W32
+#   define ARTEMIS_PLATFORM_W32 1
 #endif
 
 #endif /* PLATFORM_H */

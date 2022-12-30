@@ -215,10 +215,10 @@ public:
             }
 
             insertAfter(current, node);
-        }
 
-        // Augment the size
-        m_size++;
+            // Augment the size
+            m_size++;
+        }
         return node != NULL;
     }
 
@@ -307,7 +307,15 @@ public:
 
     virtual bool offer(const E& element)
     {
-        return add(0, element);
+        bits::Node<E>* node = allocateNode(element);
+        if (node != NULL)
+        {
+            insertBeginning(node);
+
+            // Increase the size
+            m_size++;
+        }
+        return node != NULL;
     }
 
     virtual E& peek() const
@@ -323,7 +331,7 @@ public:
         if (isEmpty())
             throw core::IllegalStateException("attempted to pool on empty queue.");
 
-        const E& result = m_tail->m_data;
+        E result = m_tail->m_data;
         removeNode(m_tail);
         m_size--;
 

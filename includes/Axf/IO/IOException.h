@@ -18,44 +18,36 @@
  */
 
 /* 
- * File:   Tokens.h
+ * File:   IOException.h
  * Author: Javier Marrero
  *
- * Created on December 23, 2022, 9:42 PM
+ * Created on December 27, 2022, 6:43 PM
  */
 
-#ifndef REGEX_TOKENS_H
-#define REGEX_TOKENS_H
+#ifndef IOEXCEPTION_H
+#define IOEXCEPTION_H
+
+// API
+#include <Axf/Core/Exception.h>
+#include <Axf/Core/String.h>
 
 namespace axf
 {
-namespace text
-{
-namespace regex
+namespace io
 {
 
-/**
- * A enumeration of all the possible token categories. Please, keep this list
- * sorted alphabetically.
- *
- * @author J. Marrero
- */
-enum RegexToken
+class IOException : public core::Exception
 {
-    ASTERISK = 0,
-    CHARACTER,
-    DOT,
-    EXCLAMATION_MARK,
-    INTERROGATION_MARK,
-    LEFT_PARENTHESIS,
-    PLUS,
-    RIGHT_PARENTHESIS,
-    ALTERNATIVE_BAR,
+    AXF_EXCEPTION_TYPE(axf::io::IOException, axf::core::Exception)
+public:
+
+    IOException(const core::string& message = "I/O exception"); /// Constructor
+    virtual ~IOException();                                     /// Destructor
+
 } ;
 
 }
 }
-}
 
-#endif /* TOKENS_H */
+#endif /* IOEXCEPTION_H */
 

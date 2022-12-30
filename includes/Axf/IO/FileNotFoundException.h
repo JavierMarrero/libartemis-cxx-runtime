@@ -18,44 +18,40 @@
  */
 
 /* 
- * File:   Tokens.h
+ * File:   FileNotFoundException.h
  * Author: Javier Marrero
  *
- * Created on December 23, 2022, 9:42 PM
+ * Created on December 27, 2022, 6:47 PM
  */
 
-#ifndef REGEX_TOKENS_H
-#define REGEX_TOKENS_H
+#ifndef FILENOTFOUNDEXCEPTION_H
+#define FILENOTFOUNDEXCEPTION_H
+
+// API
+#include <Axf/IO/IOException.h>
+#include <Axf/IO/File.h>
 
 namespace axf
 {
-namespace text
-{
-namespace regex
+namespace io
 {
 
-/**
- * A enumeration of all the possible token categories. Please, keep this list
- * sorted alphabetically.
- *
- * @author J. Marrero
- */
-enum RegexToken
+class FileNotFoundException : public IOException
 {
-    ASTERISK = 0,
-    CHARACTER,
-    DOT,
-    EXCLAMATION_MARK,
-    INTERROGATION_MARK,
-    LEFT_PARENTHESIS,
-    PLUS,
-    RIGHT_PARENTHESIS,
-    ALTERNATIVE_BAR,
+    AXF_EXCEPTION_TYPE(axf::io::IOException, axf::io::IOException)
+public:
+
+    FileNotFoundException(const core::string& file, const core::string& message);
+    FileNotFoundException(const File& file, const core::string& message);
+    virtual ~FileNotFoundException();
+
+private:
+
+    File    m_expectedFile;
 } ;
 
 }
 }
-}
 
-#endif /* TOKENS_H */
+#endif /* FILENOTFOUNDEXCEPTION_H */
 

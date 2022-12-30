@@ -18,44 +18,32 @@
  */
 
 /* 
- * File:   Tokens.h
+ * File:   FileNotFoundException.cpp
  * Author: Javier Marrero
- *
- * Created on December 23, 2022, 9:42 PM
+ * 
+ * Created on December 27, 2022, 6:47 PM
  */
 
-#ifndef REGEX_TOKENS_H
-#define REGEX_TOKENS_H
+#include <Axf/IO/FileNotFoundException.h>
 
-namespace axf
-{
-namespace text
-{
-namespace regex
-{
+using namespace axf;
+using namespace axf::io;
 
-/**
- * A enumeration of all the possible token categories. Please, keep this list
- * sorted alphabetically.
- *
- * @author J. Marrero
- */
-enum RegexToken
+FileNotFoundException::FileNotFoundException(const core::string& file, const core::string& message)
+:
+IOException(message),
+m_expectedFile(File(file))
 {
-    ASTERISK = 0,
-    CHARACTER,
-    DOT,
-    EXCLAMATION_MARK,
-    INTERROGATION_MARK,
-    LEFT_PARENTHESIS,
-    PLUS,
-    RIGHT_PARENTHESIS,
-    ALTERNATIVE_BAR,
-} ;
-
-}
-}
 }
 
-#endif /* TOKENS_H */
+FileNotFoundException::FileNotFoundException(const File& file, const core::string& message)
+:
+IOException(message),
+m_expectedFile(file)
+{
+}
+
+FileNotFoundException::~FileNotFoundException()
+{
+}
 

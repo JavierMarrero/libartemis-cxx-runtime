@@ -105,7 +105,7 @@ public:
      * normally the return value of methods that need to find or return an index
      * and the index returned is not valid somehow.
      */
-    static const int NPOS = -1;
+    static const std::size_t NPOS = -1;
 
     string();                       /// Default constructor
     string(const string& rhs);      /// Default copy constructor
@@ -209,6 +209,29 @@ public:
     unsigned int hash() const;
 
     /**
+     * Returns the first index of the provided character in the string. It
+     * performs linear search. If the character is not on the string then
+     * <code>NPOS</code> is returned.
+     *
+     * @see lastIndexOf
+     * @param c
+     * @return
+     */
+    std::size_t indexOf(const uchar c) const;
+
+    /**
+     * Returns the last index of a character in the string. It performs a
+     * reversed linear search so the complexity is <code>O<sub>(n)</sub></code>.
+     * <p>
+     * If the character is not found on the string, then <code>NPOS</code> is
+     * returned (the equivalent <code>std::size_t</code> of the -1 value).
+     * 
+     * @param c
+     * @return
+     */
+    std::size_t lastIndexOf(const uchar c) const;
+
+    /**
      * Returns the length of this string in characters, not counting the
      * terminating null.
      * 
@@ -240,6 +263,26 @@ public:
     {
         return m_size;
     }
+
+    /**
+     * Returns a <b>new</b> <code>string</code> object that is an exact
+     * substring of this, with <code>start</code> and <code>end</code>
+     * as limit indexes.
+     * <p>
+     * As assertions of this function, it is required that <code>end is either</code>
+     * <code>NPOS</code> or a positive integer greater than <code>start</code>,
+     * and <code>start</code> can't be greater than <code>end</code>.
+     * <p>
+     * If <code>NPOS</code> is provided as the <code>end</code> parameter,
+     * the end of the string is assumed.
+     * <p>
+     * <b>Note</b>: If invalid limits are provided, exceptions will be thrown.
+     *
+     * @param start
+     * @param end
+     * @return
+     */
+    string substring(std::size_t start = 0, std::size_t end = NPOS) const;
 
     /**
      * This class is implicitly usable where a const char pointer is requested.
@@ -345,7 +388,7 @@ private:
     size_t              m_size;         /// The actual size of the string in bytes
     mutable watermark_t m_watermark;    /// The watermark serve to track the last read position
 
-    scoped_ref<wchar_t, ws_deleter> m_wide; /// The wide char* representation of this string
+    mutable scoped_ref<wchar_t, ws_deleter> m_wide; /// The wide char* representation of this string
 
     /**
      * Copies the contents of this string's buffer to the newly specified array.
@@ -388,7 +431,7 @@ private:
      * Constructs (if not constructed yet) and rebuilds the wide character
      * string representation of this string. This is mostly used for 
      */
-    void rebuildWideString();
+    void rebuildWideString() const;
 
     /**
      * Sets the content of this string from a C string.

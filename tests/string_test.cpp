@@ -103,6 +103,11 @@ int main(int argc, char** argv)
                     std::cout << "all correct..." << std::endl;
                 }
             }
+
+            TEST("'substring' operation");
+            {
+                std::cout << "substring s1: " << s1.substring(4, 9) << std::endl;
+            }
         }
     }
     std::cout << "done... press any key to continue..." << std::endl;

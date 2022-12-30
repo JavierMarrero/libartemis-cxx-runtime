@@ -118,6 +118,20 @@ const char* Exception::getClassName() const
     return "axf::core::Exception";
 }
 
+const char* Exception::getShortClassName() const
+{
+    const char* className = getClassName();
+    std::size_t length = std::strlen(className);
+
+    const char* shortName = static_cast<const char*> (className + length);
+    while (*shortName != ':' && shortName >= className)
+    {
+        shortName--;
+    }
+
+    return ++shortName;
+}
+
 // ************************************************************************** //
 //
 // This is private exception handling code

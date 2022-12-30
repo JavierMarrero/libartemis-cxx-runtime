@@ -32,6 +32,18 @@ using namespace axf::text;
 using namespace axf::text::regex;
 using namespace axf::text::regex::ast;
 
+core::string AstNode::pad(int level)
+{
+    core::string result;
+    result.reserve(level * 2);
+
+    while (level-- > 0)
+    {
+        result.append("  ");
+    }
+    return result;
+}
+
 AstNode::AstNode(Type type)
 :
 m_type(type)
@@ -42,12 +54,101 @@ AstNode::~AstNode()
 {
 }
 
-AtomicPattern::AtomicPattern(const core::uchar& c)
+Atom::Atom()
 :
-AstNode(AstNode::ATOMIC_PATTERN),
+AstNode(ATOM)
+{
+}
+
+Atom::~Atom()
+{
+}
+
+Expression::Expression()
+:
+AstNode(AstNode::EXPRESSION)
+{
+}
+
+Expression::~Expression()
+{
+}
+
+Factor::Factor()
+:
+AstNode(AstNode::FACTOR),
+m_metacharacter(UNDEFINED_META)
+{
+}
+
+Factor::~Factor()
+{
+}
+
+Term::Term()
+:
+AstNode(AstNode::TERM)
+{
+}
+
+Term::~Term()
+{
+}
+
+Character::Character(const core::uchar& c)
+:
+AstNode(CHARACTER),
 m_character(c)
 {
 }
 
+Character::~Character()
+{
+}
 
+void Character::writeString(int ident, core::string& buffer) const
+{
+    buffer.append(pad(ident)).append("<char>\n");
+}
+
+void Atom::writeString(int ident, core::string& buffer) const
+{
+    buffer.append(pad(ident)).append("<atom>\n");
+
+    m_internal->writeString(++ident, buffer);
+}
+
+void Factor::writeString(int ident, core::string& buffer) const
+{
+    buffer.append(pad(ident)).append("<factor>\n");
+
+    m_atom->writeString(ident + 1, buffer);
+    if (hasMetacharacter())
+    {
+        buffer.append(pad(ident + 1)).append("<'meta'>\n");
+    }
+}
+
+void Term::writeString(int ident, core::string& buffer) const
+{
+    buffer.append(pad(ident)).append("<term>\n");
+    m_factor->writeString(ident + 1, buffer);
+
+    if (hasNext())
+    {
+        m_term->writeString(ident, buffer);
+    }
+}
+
+void Expression::writeString(int ident, core::string& buffer) const
+{
+    buffer.append(pad(ident)).append("<expression>\n");
+    m_lhs->writeString(ident + 1, buffer);
+
+    if (hasAlternative())
+    {
+        buffer.append(pad(ident + 1)).append("| ");
+        m_rhs->writeString(0, buffer);
+    }
+}
 

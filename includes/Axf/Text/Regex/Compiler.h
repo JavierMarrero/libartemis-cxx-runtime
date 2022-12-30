@@ -61,15 +61,15 @@ private:
     struct Token
     {
         RegexToken      m_token;
-        core::string    m_value;
+        core::uchar     m_value;
 
         // -- Constructors and destructor --
         // ----------------------------------
 
-        Token(RegexToken type, const core::string& value)
+        Token(RegexToken type, const core::uchar& value)
         : m_token(type), m_value(value) { }
 
-        Token(RegexToken type) : m_token(type) { }
+        Token(RegexToken type) : m_token(type), m_value('\0') { }
 
         ~Token() { }
 
@@ -78,7 +78,7 @@ private:
 
         inline bool operator==(const Token& rhs) const
         {
-            return m_token == rhs.m_token && m_value.equals(rhs.m_value);
+            return m_token == rhs.m_token && m_value == rhs.m_value;
         }
 
         inline bool operator!=(const Token& rhs) const
@@ -98,8 +98,10 @@ public:
 
 private:
 
+    static core::strong_ref<Matcher> EPSILON_MATCHER;
+
     core::strong_ref<ast::AstNode>  m_ast;          /// Abstract syntax tree
-    int                             m_generated;    /// Generation Id for states
+    mutable int                     m_generated;    /// Generation Id for states
     const core::string&             m_input;        /// The input string (the regular expression)
     Token*                          m_symbol;       /// The current symbol
     TokenQueue                      m_tokens;       /// The queue of tokens
@@ -110,11 +112,6 @@ private:
      * @param symbol
      */
     bool accept(RegexToken symbol);
-
-    /**
-     * Builds an abstract syntax tree of this expression.
-     */
-    void buildAbstractSyntaxTree();
 
     /**
      * Expects the occurrence of a given symbol in the input.
@@ -129,17 +126,34 @@ private:
      *
      * @return
      */
-    core::string generateStateName();
+    core::string generateStateName() const;
+
+    /**
+     * Returns if the input has more or less tokens.
+     *
+     * @return
+     */
+    bool hasMoreTokens() const;
+
+    /**
+     * Peeks the current symbol for exhamination.
+     *
+     * @return
+     */
+    inline const Token* peek() const
+    {
+        return m_symbol;
+    }
 
     /**
      * Reads the next input token.
      */
-    void popToken();
+    Token* popToken();
 
     /**
      * Pushes a token on the token queue.
      */
-    inline bool pushToken(RegexToken type, const core::string& value)
+    inline bool pushToken(RegexToken type, const core::uchar& value)
     {
         return m_tokens.offer(new Token(type, value));
     }
@@ -179,7 +193,28 @@ private:
      * 
      * ===================================================================== **/
 
-    void parseExpression();
+    ast::AstNode*   parseExpression();
+    ast::AstNode*   parseTerm();
+    ast::AstNode*   parseFactor();
+    ast::AstNode*   parseAtom();
+
+    /** ============================ NFA BUILDER ==============================
+     *
+     * INFO: The following methods are part of the infrastructure that builds
+     * Nondeterministic Finite State Automata from regular expression parse
+     * trees.
+     *
+     * ===================================================================== **/
+
+    core::strong_ref<Pattern> concatenateNfa(Pattern* lhs, Pattern* rhs) const;
+    core::strong_ref<Pattern> kleeneClosure(Pattern* arg) const;
+    core::strong_ref<Pattern> unionizeNfa(Pattern* lhs, Pattern* rhs) const;
+
+    core::strong_ref<Pattern> generateNfaOneStep(Matcher* matcher) const;
+    core::strong_ref<Pattern> generateNfaForExpression(ast::Expression* expression) const;
+    core::strong_ref<Pattern> generateNfaForTerm(ast::Term* term) const;
+    core::strong_ref<Pattern> generateNfaForFactor(ast::Factor* factor) const;
+    core::strong_ref<Pattern> generateNfaForAtom(ast::Atom* atom) const;
 } ;
 
 }

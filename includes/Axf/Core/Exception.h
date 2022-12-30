@@ -200,6 +200,14 @@ public:
     virtual const char* getClassName() const;
 
     /**
+     * Returns the unqualified name of the class that describes this exception
+     * type.
+     *
+     * @return
+     */
+    const char* getShortClassName() const;
+
+    /**
      * Returns the message of this exception.
      * 
      * @return 

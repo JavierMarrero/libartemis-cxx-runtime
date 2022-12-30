@@ -56,7 +56,7 @@ class State : public core::Object
                    AXF_TYPE(axf::core::Object))
 public:
 
-    typedef utils::Pair<Matcher*, State*> Transition;
+    typedef utils::Pair<core::strong_ref<Matcher>, core::strong_ref<State> > Transition;
     typedef collections::LinkedList<Transition> TransitionList;
 
     State(const core::string& name);

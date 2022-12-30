@@ -61,8 +61,8 @@ static void terminate()
                      "The runtime system has detected an uncaught exception and\n"
                      "as a result, the program has been forcefully terminated.\n"
                      "\n"
-                     "%s: %s.",
-                     uncaught->getClassName(), uncaught->getMessage());
+                     "%s: %s",
+                     uncaught->getShortClassName(), uncaught->getMessage());
 
 #ifdef ARTEMIS_PLATFORM_W32
         MessageBoxA(NULL, formattedExceptionMessage, uncaught->getClass().getClassName(), MB_ICONERROR);

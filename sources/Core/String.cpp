@@ -26,8 +26,10 @@
 
 #include <Axf/Core/String.h>
 #include <Axf/Core/IndexOutOfBoundsException.h>
+#include <Axf/Core/IllegalArgumentException.h>
 #include <Axf/Core/IllegalStateException.h>
 #include <Axf/Core/Object.h>
+#include <Axf/Core/Runtime.h>
 #include <Axf/Math/BasicMath.h>
 
 // C++
@@ -116,6 +118,7 @@ string& string::append(const char c)
 {
     ensureCapacity(m_size + 2);
     m_buffer[m_size++] = static_cast<const utf8_char> (c);
+    m_buffer[m_size] = '\0';
 
     return *this;
 }
@@ -127,6 +130,7 @@ string& string::append(const string& str)
 
     m_size += str.m_size;
     m_length += str.m_length;
+    m_buffer[m_size] = '\0';
 
     return *this;
 }
@@ -320,6 +324,49 @@ unsigned int string::hash() const
     return m_hash;
 }
 
+std::size_t string::indexOf(const uchar c) const
+{
+    for (std::size_t idx = 0; idx < m_length; ++idx)
+    {
+        if (at(idx) == c)
+            return idx;
+    }
+    return NPOS;
+}
+
+std::size_t string::lastIndexOf(const uchar c) const
+{
+    std::size_t count = m_length;
+    while (count-- > 0)
+    {
+        uchar uc = at(count - 1);
+        if (uc == c)
+        {
+            return count - 1;
+        }
+    }
+    return NPOS;
+}
+
+string string::substring(std::size_t start, std::size_t end) const
+{
+    // Bounds check
+    if (start >= m_length || (end >= m_length && end != NPOS) || (start >= end))
+        throw IllegalArgumentException("illegal substring operation [%z:%z]", start, end);
+
+    at(start);  // Move the watermark
+    std::size_t byteOffsetStart = m_watermark.m_position;
+    std::size_t byteOffsetEnd = (end == NPOS) ? m_size : (at(end), m_watermark.m_position);
+    std::size_t length = byteOffsetEnd - byteOffsetStart;
+
+    scoped_ref<char> buffer = new char[length + 1];
+    buffer.get()[length] = '\0';
+
+    const char* bytes = this->bytes();
+    std::memcpy(buffer.get(), bytes + byteOffsetStart, length);
+
+    return string(buffer.get());
+}
 
 // ICONV FUNCTIONS
 
@@ -370,12 +417,13 @@ static inline void convert(iconv_t& iv, const void* in, char* out, const std::si
 }
 // ICONV -*-*-*-*-
 
-void string::rebuildWideString()
+void string::rebuildWideString() const
 {
     iconv_t iv = _iconv::open("wchar_t//TRANSLIT", "UTF-8");
 
-    std::size_t expectedLength = (m_length + 1) * 2;
-    scoped_ref<wchar_t, ws_deleter> memory = new wchar_t[expectedLength];
+    std::size_t expectedLength = m_length * sizeof (wchar_t);
+    scoped_ref<wchar_t, ws_deleter> memory = new wchar_t[m_length + 1];
+    core::fill(memory.get(), L'\0', m_length + 1);
 
     _iconv::convert(iv, m_buffer, reinterpret_cast<char*> (memory.get()), m_size, expectedLength);
 
@@ -448,7 +496,9 @@ void string::setUtf8FromWString(const wchar_t* wstr)
     m_size = std::strlen(reinterpret_cast<const char*> (m_buffer));
 
     // rebuild the wide char string
-    scoped_ref<wchar_t, ws_deleter> memory = new wchar_t[expectedLength + (1 * sizeof (wchar_t))];
+    scoped_ref<wchar_t, ws_deleter> memory = new wchar_t[(expectedLength + 1) * sizeof (wchar_t)];
+    memory.get()[m_length] = L'\0';
+
     m_wide = memory;
     std::memcpy(m_wide.get(), wstr, expectedLength * sizeof (wchar_t));
 }

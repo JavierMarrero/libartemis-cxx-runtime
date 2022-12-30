@@ -1,6 +1,9 @@
 # Created by https://www.toptal.com/developers/gitignore/api/c,c++,gcov,netbeans,eclipse,codeblocks,visualstudiocode,visualstudio
 # Edit at https://www.toptal.com/developers/gitignore?templates=c,c++,gcov,netbeans,eclipse,codeblocks,visualstudiocode,visualstudio
 
+### documentation ###
+docs
+
 ### C ###
 # Prerequisites
 *.d

@@ -151,7 +151,7 @@ public:
      */
     inline unsigned int asUnicodeEscape() const
     {
-        return static_cast<unsigned int> (m_character);
+        return static_cast<unsigned int> (decodeInternal());
     }
 
     /**

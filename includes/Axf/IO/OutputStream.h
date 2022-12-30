@@ -28,7 +28,7 @@
 #define OUTPUTSTREAM_H
 
 // API
-#include <Axf/Core/Object.h>
+#include <Axf/IO/IOStream.h>
 
 // C
 #include <cstddef>
@@ -53,12 +53,18 @@ namespace io
  *
  * @author J. Marrero
  */
-class OutputStream : public core::Object
+class OutputStream : public IOStream
 {
+
     AXF_CLASS_TYPE(axf::io::OutputStream,
-                   AXF_TYPE(core::Object))
+                   AXF_TYPE(axf::io::IOStream))
 
 public:
+
+    /**
+     * Default virtual destructor
+     */
+    virtual ~OutputStream() { }
 
     /**
      * Writes 'bytes' bytes into the destination buffer from the source buffer.
@@ -68,7 +74,7 @@ public:
      * @param bytes
      * @return
      */
-    virtual std::size_t write(void* destination, const void* source, std::size_t bytes) = 0;
+    virtual std::size_t write(const void* source, std::size_t bytes) = 0;
 
     /**
      * Writes a string to this output stream. This is a convenience method.
@@ -77,9 +83,9 @@ public:
      * @param str
      * @return
      */
-    inline std::size_t write(void* destination, const core::string& str)
+    inline std::size_t writeString(const core::string& str)
     {
-        return write(destination, str.bytes(), str.size());
+        return write(str.bytes(), str.size());
     }
 } ;
 

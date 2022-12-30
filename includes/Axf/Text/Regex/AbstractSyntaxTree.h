@@ -28,7 +28,10 @@
 #define ABSTRACTSYNTAXTREE_H
 
 // API
+#include <Axf/Collections/ArrayList.h>
 #include <Axf/Core/Object.h>
+#include <Axf/Core/Memory.h>
+#include <Axf/Text/Regex/Tokens.h>
 
 namespace axf
 {
@@ -53,8 +56,11 @@ namespace ast
  *
  * @author J. Marrero
  */
-class AstNode
+class AstNode : public core::Object
 {
+
+    AXF_CLASS_TYPE(axf::text::regex::ast::AstNode,
+                   AXF_TYPE(axf::core::Object))
 public:
 
     /**
@@ -62,10 +68,11 @@ public:
      */
     enum Type
     {
-        ATOMIC_PATTERN,
-        QUANTIFIER,
-        REGEX,
-        REGEX_ALTERNATIVE
+        ATOM,
+        CHARACTER,
+        EXPRESSION,
+        FACTOR,
+        TERM,
     } ;
 
     AstNode(Type type);
@@ -82,30 +89,198 @@ public:
         return m_type;
     }
 
+    virtual core::string toString() const
+    {
+        core::string s;
+        writeString(0, s);
+        return s;
+    }
+
+    virtual void writeString(int ident, core::string& buffer) const = 0;
+
 protected:
 
     Type    m_type;
+
+    static core::string pad(int level);
+
 } ;
 
-class AtomicPattern : public AstNode
+class Character : public AstNode
 {
 public:
 
-    AtomicPattern(const core::uchar& c);
+    Character(const core::uchar& c);
+    ~Character();
 
-    /**
-     * Returns the "atom" of this node.
-     *
-     * @return
-     */
-    inline core::uchar& getAtom() const
+    inline const core::uchar& getCharacter() const
     {
         return m_character;
     }
 
+    virtual void writeString(int ident, core::string& buffer) const;
+
 private:
 
     core::uchar m_character;
+
+} ;
+
+class Atom : public AstNode
+{
+public:
+
+    Atom();
+    ~Atom();
+
+    inline Type peekType() const
+    {
+        return m_internal->getType();
+    }
+
+    inline AstNode* get()
+    {
+        return m_internal.get();
+    }
+
+    inline void set(AstNode* node)
+    {
+        m_internal = node;
+    }
+
+    virtual void writeString(int ident, core::string& buffer) const;
+
+private:
+
+    core::strong_ref<AstNode> m_internal;
+
+} ;
+
+class Factor : public AstNode
+{
+public:
+
+    static const int UNDEFINED_META = -1;
+
+    Factor();
+    ~Factor();
+
+    inline bool hasMetacharacter() const
+    {
+        return m_metacharacter != UNDEFINED_META;
+    }
+
+    inline int getMetacharacter()
+    {
+        return m_metacharacter;
+    }
+
+    inline Atom* getAtom()
+    {
+        return m_atom.get();
+    }
+
+    inline void setAtom(Atom* atom)
+    {
+        m_atom = atom;
+    }
+
+    inline void setMetacharacter(int metacharacter)
+    {
+        m_metacharacter = metacharacter;
+    }
+
+    virtual void writeString(int ident, core::string& buffer) const;
+
+private:
+
+    core::strong_ref<Atom>  m_atom;
+    int                     m_metacharacter;
+} ;
+
+class Term : public AstNode
+{
+public:
+
+    Term();
+    ~Term();
+
+    inline void setFactor(Factor* factor)
+    {
+        m_factor = factor;
+    }
+
+    inline void addTerm(Term* next)
+    {
+        m_term = next;
+    }
+
+    inline bool hasNext() const
+    {
+        return m_term.isNull() == false;
+    }
+
+    inline Factor* getFactor()
+    {
+        return m_factor.get();
+    }
+
+    inline Term* getNextTerm()
+    {
+        return static_cast<Term*> (m_term.get());
+    }
+
+    virtual void writeString(int ident, core::string& buffer) const;
+
+private:
+
+    core::strong_ref<Factor>    m_factor;
+    core::strong_ref<AstNode>   m_term;
+
+} ;
+
+/**
+ * An expression is a term, or a term or an expression
+ */
+class Expression : public AstNode
+{
+public:
+
+    Expression();
+    ~Expression();
+
+    inline void setTerm(Term* term)
+    {
+        m_lhs = term;
+    }
+
+    inline void setRhsExpression(AstNode* expression)
+    {
+        m_rhs = expression;
+    }
+
+    inline Term* getLeftHandSideExpression()
+    {
+        return m_lhs.get();
+    }
+
+    inline bool hasAlternative() const
+    {
+        return m_rhs.isNull() == false;
+    }
+
+    inline Expression* getRightHandSideExpression()
+    {
+        return static_cast<Expression*> (m_rhs.get());
+    }
+    
+    virtual void writeString(int ident, core::string& buffer) const;
+
+private:
+
+    core::strong_ref<Term>          m_lhs;
+    core::strong_ref<AstNode>       m_rhs;
+
 } ;
 
 }

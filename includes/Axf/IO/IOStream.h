@@ -18,44 +18,49 @@
  */
 
 /* 
- * File:   Tokens.h
+ * File:   IOStream.h
  * Author: Javier Marrero
  *
- * Created on December 23, 2022, 9:42 PM
+ * Created on December 28, 2022, 12:05 PM
  */
 
-#ifndef REGEX_TOKENS_H
-#define REGEX_TOKENS_H
+#ifndef IOSTREAM_H
+#define IOSTREAM_H
+
+// API
+#include <Axf/Core/Object.h>
+#include <Axf/IO/Closeable.h>
 
 namespace axf
 {
-namespace text
-{
-namespace regex
+namespace io
 {
 
 /**
- * A enumeration of all the possible token categories. Please, keep this list
- * sorted alphabetically.
- *
+ * The <code>IOStream</code> interface groups all the common stream
+ * functionality.
+ * <p>
+ * The different output and input streams implements the functionality declared
+ * in this interface.
+ * 
  * @author J. Marrero
  */
-enum RegexToken
+class IOStream : public io::Closeable
 {
-    ASTERISK = 0,
-    CHARACTER,
-    DOT,
-    EXCLAMATION_MARK,
-    INTERROGATION_MARK,
-    LEFT_PARENTHESIS,
-    PLUS,
-    RIGHT_PARENTHESIS,
-    ALTERNATIVE_BAR,
+
+    AXF_CLASS_TYPE(axf::io::IOStream, AXF_TYPE(axf::io::Closeable))
+public:
+
+    /**
+     * Default destructor. Does nothing as <code>IOStream</code> is not
+     * prone to be instanced.
+     */
+    virtual ~IOStream() { }
+
 } ;
 
 }
 }
-}
 
-#endif /* TOKENS_H */
+#endif /* IOSTREAM_H */
 

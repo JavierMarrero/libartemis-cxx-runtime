@@ -38,21 +38,16 @@ m_name(name)
 
 State::~State()
 {
-    for (collections::iterator<Transition> it = m_transitions.begin(),
-         end = m_transitions.end(); it != end; it->next())
-    {
-        delete it->current().first();
-    }
 }
 
 void State::addTransition(State* to, Matcher* matcher)
 {
-    m_transitions.add(utils::makePair(matcher, to));
+    m_transitions.add(utils::makePair(core::make_shared(matcher), core::make_shared(to)));
 }
 
 void State::unshiftTransition(State* to, Matcher* matcher)
 {
-    m_transitions.add(0, utils::makePair(matcher, to));
+    m_transitions.add(0, utils::makePair(core::make_shared(matcher), core::make_shared(to)));
 }
 
 

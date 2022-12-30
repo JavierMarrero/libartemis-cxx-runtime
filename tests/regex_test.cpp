@@ -65,12 +65,25 @@ int main(int argc, char** argv)
 
         std::cout << pattern.matches("ab") << std::endl;
     }
+    std::cout << "NFA pattern concatenation test" << std::endl;
+    {
+        Regex r("abc");
+
+        std::cout << r.matches("d") << std::endl;
+        std::cout << r.matches("abc") << std::endl;
+        std::cout << r.matches(" a b c") << std::endl;
+    }
     std::cout << "Full regular expression test" << std::endl;
     {
         Regex r1("(a|b)+c");
-
         std::cout << r1.matches("abababababacccc") << std::endl;
+
+        Regex r2("(a|b)");
+        std::cout << r2.matches("a") << std::endl;
+        std::cout << r2.matches("b") << std::endl;
+        std::cout << r2.matches("d") << std::endl;
     }
+    std::cout << "DONE..." << std::endl;
     std::getchar();
     return (EXIT_SUCCESS);
 }
