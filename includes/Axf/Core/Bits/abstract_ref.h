@@ -205,6 +205,16 @@ public:
         return asReference();
     }
 
+    inline const T& operator[](std::size_t idx) const
+    {
+        return m_pointer[idx];
+    }
+
+    inline T& operator[](std::size_t idx)
+    {
+        return m_pointer[idx];
+    }
+
 protected:
 
     deleter_functor m_disposer;     /// Disposer functor

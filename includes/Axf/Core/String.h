@@ -33,6 +33,7 @@
 
 // API
 #include <Axf/API/Platform.h>
+#include <Axf/Core/Lang-C++/keywords.h>
 #include <Axf/Core/Memory.h>
 #include <Axf/Core/ReferenceCounted.h>
 #include <Axf/Core/Character.h>
@@ -72,6 +73,65 @@ class Object;
  * <p>
  * This class extends the <code>ReferenceCounted</code> class, so this class
  * is suitable for intrusive reference counting.
+ * </p>
+ * <h2>Observations on the memory model for strings in the Artemis Framework</h2>
+ * <p>
+ * Since the beginning of the design process of the <i>Artemis Framework</i>,
+ * great emphasis has been made into designing an efficient <code>string</code>
+ * type that be efficient both in time and space, as much as possible.
+ * <p>
+ * For understanding what is the main design challenge for achieving efficient
+ * C++ strings, one must understand that there are, fundamentally, two types of
+ * <code>string</code> type implementation:
+ * <ul>
+ *  <li>Mutable strings</li>
+ *  <li>Immutable strings</li>
+ * </ul>
+ * <p>
+ * <b>Mutable strings</b> provides great flexibility; since there's no need for
+ * returning a new object every time a <b><i>mutative operation</b></i> is
+ * performed on string objects. However, this implies that there can't be copies
+ * of the same string object across the code. Every time we do (or C++ does) a
+ * copy of the string, the copy must be deep: dynamic memory must be allocated
+ * (which is a slow operation), capacities must be updated (which may be an
+ * operation in the order of <i>O<sub>(2n)</sub></i>, etc...
+ * <p>
+ * <b>Immutable strings</b> provides less flexibility at the expense of some
+ * nifty benefits. Immutable string objects are thread safe, the memory consumption
+ * is minor (since one does not have to deep copy the string every time) and
+ * comparisons are sped up (since it is possible to do a pointer comparison which
+ * most of the time is <i>O<sub>(1)</sub></i>.
+ * <p>
+ * Since in <i>C++</i> it is possible to distinguish from <b>mutative</b> and
+ * <i>observer</i> methods, a model can be achieved that combines the advantages
+ * of both mutable and immutable strings. This can be achieved using reference
+ * counting and a smart use of the <b>const correctness</b> in the C++ language.
+ * </p>
+ * <h3>Implementation</h3>
+ * <p>
+ * For this particular implementation we will be using smart reference counting
+ * coupled with the fact that the class implementors know what are the mutative
+ * methods.
+ * <p>
+ * Basically, when a copy of a string object is created, the buffer is shared
+ * between the two objects. Nothing else is shared <i>per se</i>, just the
+ * buffer that contains the data; though the capacity, length and size will
+ * remain the same. The watermark can vary since the at operation can be safely
+ * performed on the same object as long as the waterfall is a different object,
+ * which is guaranteed by the copy constructor of the string object itself and
+ * the concept of object composition in C++.
+ * <p>
+ * The really nifty thing is when one performs a mutative operation on the
+ * string type. Then the <code>mutator</code> method is called, which actually
+ * performs a deep copy of the string buffer and its contents. Once a deep copy
+ * is performed, as long as the number of references to the buffer is equals to
+ * one, the string can be mutated safely without the need to call the
+ * <code>mutator</code> signaling method.
+ * <p>
+ * <h3>And what happens with wide strings?</h3>
+ * <p>
+ * Wide strings are not shared between string objects, and they are lazily
+ * generated.
  *
  * @author J. Marrero
  */
@@ -98,6 +158,20 @@ private:
         }
     } ;
 
+    typedef unsigned char utf8_char;
+
+    /**
+     * Used as a deleter of the <code>strong_ptr</code>.
+     */
+    struct utf8c_deleter
+    {
+
+        inline void operator()(utf8_char* pointer)
+        {
+            delete[] pointer;
+        }
+    } ;
+
 public:
 
     /**
@@ -106,6 +180,26 @@ public:
      * and the index returned is not valid somehow.
      */
     static const std::size_t NPOS = -1;
+
+    /**
+     * This method formats a string via the standard 'printf' format syntax and
+     * mechanism. The <code>format</code> operation takes a raw variable number
+     * of arguments roughly equivalent to their <code>printf</code> equivalents,
+     * therefore, this function is not considered <i>safe</i> since it doesn't
+     * account for the common errors that one may encounter when using 'printf'.
+     * <p>
+     * However, for the regular day, this function is just enough; and in a
+     * controlled environment it shouldn't pose any security threat.
+     * <p>
+     * For a more controlled and safe format utility (and perhaps, even more
+     * powerful, in dependence of your definition of powerful) use the
+     * <code>format</code> package utilities.
+     *
+     * @param fmt
+     * @param ...
+     * @return
+     */
+    static string format(const char* fmt, ...);
 
     string();                       /// Default constructor
     string(const string& rhs);      /// Default copy constructor
@@ -116,12 +210,13 @@ public:
     string(const uchar& c);
 
     /**
-     * Appends a character to the string.
-     * 
+     * Appends the given unicode character to the given string. This is a mutator
+     * method.
+     *
      * @param c
      * @return
      */
-    string& append(const char c);
+    string& append(const uchar& c);
 
     /**
      * Appends 'str' to this string. This is a mutator method and the reference
@@ -148,6 +243,10 @@ public:
      */
     inline const wchar_t* asWideString() const
     {
+        // Rebuilds the wide string, which is now a non mutative operation
+        // and allows lazy construction of the wide string
+        rebuildWideString();
+
         return m_wide.get();
     }
 
@@ -167,7 +266,7 @@ public:
      */
     inline const char* bytes() const
     {
-        return reinterpret_cast<const char*> (m_buffer);
+        return reinterpret_cast<const char*> (m_buffer.get());
     }
 
     /**
@@ -302,26 +401,7 @@ public:
      * @param rhs
      * @return
      */
-    inline string& operator=(const string& rhs)
-    {
-        if (rhs == *this)
-            return *this;
-
-        m_capacity = rhs.m_capacity;
-        m_length = rhs.m_length;
-        m_size = rhs.m_size;
-        m_watermark.m_index = rhs.m_watermark.m_index;
-        m_watermark.m_position = rhs.m_watermark.m_position;
-
-        // Allocate a new buffer and copy the contents
-        // delete the previous buffer
-        delete[] m_buffer;
-
-        m_buffer = new utf8_char[m_capacity];
-        std::memcpy(m_buffer, rhs.m_buffer, rhs.m_size);
-
-        return *this;
-    }
+    string& operator=(const string& rhs);
 
     /**
      * Compares two strings for equality.
@@ -331,9 +411,7 @@ public:
      */
     inline bool operator==(const string& rhs) const
     {
-        if (rhs.m_buffer == NULL)
-            return false;
-        return std::strcmp(reinterpret_cast<const char*> (m_buffer), reinterpret_cast<const char*> (rhs.m_buffer)) == 0;
+        return equals(rhs);
     }
 
     /**
@@ -344,7 +422,7 @@ public:
      */
     inline bool operator==(const char* cstr) const
     {
-        return std::strcmp(reinterpret_cast<const char*> (m_buffer), cstr) == 0;
+        return std::strcmp(reinterpret_cast<const char*> (m_buffer.get()), cstr) == 0;
     }
 
 private:
@@ -371,8 +449,6 @@ private:
 
     } watermark_t;
 
-    typedef unsigned char utf8_char;
-
     /**
      * Calculates the length of a sequence of UTF8 characters.
      *
@@ -381,12 +457,12 @@ private:
      */
     static std::size_t calculateLengthUtf8(const utf8_char* utf8_sequence);
 
-    utf8_char*          m_buffer;       /// The data-buffer itself
-    size_t              m_capacity;     /// The capacity of the buffer
-    mutable unsigned    m_hash;         /// The hash code of this string
-    size_t              m_length;       /// The length in characters of the buffer
-    size_t              m_size;         /// The actual size of the string in bytes
-    mutable watermark_t m_watermark;    /// The watermark serve to track the last read position
+    strong_ref<utf8_char, utf8c_deleter>    m_buffer;       /// The data-buffer itself
+    size_t                                  m_capacity;     /// The capacity of the buffer
+    mutable unsigned                        m_hash;         /// The hash code of this string
+    size_t                                  m_length;       /// The length in characters of the buffer
+    size_t                                  m_size;         /// The actual size of the string in bytes
+    mutable watermark_t                     m_watermark;    /// The watermark serve to track the last read position
 
     mutable scoped_ref<wchar_t, ws_deleter> m_wide; /// The wide char* representation of this string
 
@@ -428,6 +504,11 @@ private:
     void ensureCapacity(std::size_t newCapacity);
 
     /**
+     * Signals that a mutative operation will be performed.
+     */
+    void mutator() noexcept;
+
+    /**
      * Constructs (if not constructed yet) and rebuilds the wide character
      * string representation of this string. This is mostly used for 
      */
@@ -457,30 +538,6 @@ private:
  * @return
  */
 inline string operator+(const string& lhs, const string& rhs)
-{
-    return string(lhs).append(rhs);
-}
-
-/**
- * Adds two strings.
- *
- * @param lhs
- * @param rhs
- * @return
- */
-inline string operator+(const string& lhs, const char* rhs)
-{
-    return string(lhs).append(rhs);
-}
-
-/**
- * Adds a string to a char.
- *
- * @param lhs
- * @param rhs
- * @return
- */
-inline string operator+(const string& lhs, const char rhs)
 {
     return string(lhs).append(rhs);
 }

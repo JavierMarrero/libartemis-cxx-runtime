@@ -47,5 +47,9 @@
 #   define ARTEMIS_CXX11_SUPPORTED  0
 #endif
 
+#ifdef ARTEMIS_COMPILER_GCC_COMPATIBLE
+#   define ARTEMIS_POSIX
+#endif
+
 #endif /* COMPILER_H */
 

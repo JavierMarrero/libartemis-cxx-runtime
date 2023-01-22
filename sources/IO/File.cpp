@@ -27,6 +27,7 @@
 #include <Axf/IO/File.h>
 
 #include <Axf/API/Platform.h>
+#include <Axf/Collections/ArrayList.h>
 #include <Axf/IO/FileNotFoundException.h>
 
 // C++
@@ -38,7 +39,14 @@
 #    include <windows.h>
 #endif
 
+#ifdef ARTEMIS_POSIX
+#    include <unistd.h>
+#    include <dirent.h>
+#endif
+
 using namespace axf;
+using namespace axf::core;
+using namespace axf::collections;
 using namespace axf::io;
 
 #ifdef ARTEMIS_PLATFORM_W32
@@ -73,7 +81,18 @@ m_filePointer(0)
     {
         path = parent.getParentFile().m_name;
     }
-    m_name = path.append((char) PATH_SEPARATOR).append(name);
+    m_name = path.append(PATH_SEPARATOR).append(name);
+}
+
+File::File(const File& rhs)
+:
+m_filePointer(rhs.m_filePointer),
+m_name(rhs.m_name)
+{
+}
+
+File::~File()
+{
 }
 
 void File::create() const
@@ -110,8 +129,56 @@ File File::getParentFile() const
 bool File::isDirectory() const
 {
 #ifdef ARTEMIS_PLATFORM_W32
-    return ((GetFileAttributesW(m_name.asWideString())) == FILE_ATTRIBUTE_DIRECTORY);
+    DWORD attributes = GetFileAttributesW(m_name.asWideString());
+    if (attributes == INVALID_FILE_ATTRIBUTES)
+        return false;
+
+    return ((attributes & FILE_ATTRIBUTE_DIRECTORY) != 0);
 #endif
+}
+
+core::strong_ref<collections::List<File> > File::listAllFiles() const
+{
+    collections::ArrayList<File>* files = new collections::ArrayList<File>();
+
+#ifdef ARTEMIS_PLATFORM_W32
+    HANDLE dir;
+    WIN32_FIND_DATAW fileData;
+
+    if ((dir = FindFirstFileW((m_name + "/*").asWideString(), &fileData)) == INVALID_HANDLE_VALUE)
+        return files; /* No files found */
+
+    do
+    {
+        const string fileName = fileData.cFileName;
+        //        const string fullFileName = m_name + "/" + fileName;
+        //        const bool is_directory = (fileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) != 0;
+
+        if (fileName[0] == '.')
+            continue;
+
+        //        if (is_directory)
+        //            continue;
+
+        files->add(File(*this, fileName));
+    }
+    while (FindNextFileW(dir, &fileData));
+
+    FindClose(dir);
+#endif
+
+    return files;
+}
+
+bool File::mkdir() const
+{
+    if (exists() == false && isDirectory() == false)
+    {
+#ifdef ARTEMIS_PLATFORM_W32
+        return (CreateDirectoryW(m_name.asWideString(), NULL));
+#endif
+    }
+    return false;
 }
 
 bool File::remove() const noexcept
@@ -120,13 +187,33 @@ bool File::remove() const noexcept
 
     if (isDirectory())
     {
-        ///TODO: Not implemented yet
-        return false;
+        return removeDirectory();
     }
     else
     {
         return _wremove(m_name.asWideString()) == 0;
     }
+}
+
+bool File::removeDirectory() const
+{
+    // List all the directories
+    if (!isDirectory() || !exists())
+    {
+        return false;
+    }
+
+    strong_ref<List<File> > files = listAllFiles();
+    for (iterator<File> it = files->begin(), end = files->end();
+         it != end; it++)
+    {
+        (*it).remove();
+    }
+
+    // Finally, remove the directory
+#ifdef ARTEMIS_PLATFORM_W32
+    return (RemoveDirectoryW(m_name.asWideString()));
+#endif
 }
 
 std::size_t File::read(void* buffer, std::size_t length)

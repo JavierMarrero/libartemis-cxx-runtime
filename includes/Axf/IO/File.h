@@ -28,6 +28,7 @@
 #define FILE_H
 
 // API
+#include <Axf/Collections/List.h>
 #include <Axf/Core/Object.h>
 #include <Axf/Core/Memory.h>
 
@@ -93,6 +94,16 @@ public:
     File(const File& parent, const core::string& name);
 
     /**
+     * Default copy constructor.
+     */
+    File(const File& rhs);
+
+    /**
+     * Destructs the object.
+     */
+    virtual ~File();
+
+    /**
      * Creates a new file if this file does not exists. It does not have any
      * effect if the file already exists. If the file is a directory, it
      * creates a file with analogous name to the directory.
@@ -136,6 +147,27 @@ public:
     bool isDirectory() const;
 
     /**
+     * Enumerates all the files that belongs to this pathname (the pathname must
+     * be a valid directory) and returns a list of these file objects.
+     *
+     * @return
+     */
+    core::strong_ref<collections::List<File> > listAllFiles() const;
+
+    /**
+     * Creates the last immediate subdirectory that corresponds to this path.
+     * This function will return false if it fails to create the directory.
+     * This may happen under the following circumstances.
+     * <ul>
+     *  <li>Any of the intermediate subdirectories to reach this path does not exists.</li>
+     *  <li>There was a file system exception that prevented the creation of the directory.</li>
+     * </ul>
+     *
+     * @return a boolean indicating success or failure.
+     */
+    bool mkdir() const;
+
+    /**
      * Removes the pathname pointed by this <code>File</code> object. This
      * handles both file and directory removal.
      * <p>
@@ -159,6 +191,20 @@ private:
 
     std::size_t     m_filePointer;  /// The file pointer
     core::string    m_name;         /// The name that identifies this abstract pathname
+
+    /**
+     * Removes from the file system the directory described by this abstract path
+     * name. As this function is private, no invalid input data is assumed,
+     * therefore, no security checks are performed.
+     * <p>
+     * This function may also construct some new file objects recursively,
+     * however, these will be stack allocated and must not consume lots of
+     * computational resources.
+     * <p>
+     * By removing a directory, all the 
+     *
+     */
+    bool removeDirectory() const;
 
     /**
      * Reads a determinate number of bytes from a file and places them in the

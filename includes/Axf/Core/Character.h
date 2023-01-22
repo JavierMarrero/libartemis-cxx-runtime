@@ -138,6 +138,7 @@ public:
     ~uchar();
 
     // METHODS
+    void decode(const char* const encoding, void* memory, std::size_t length) const;  /// Decodes this character into some character set
     bool isAscii() const;       /// Returns true if the character is an ASCII char
     bool isWhitespace() const;  /// Returns true if the character is a white-space
 

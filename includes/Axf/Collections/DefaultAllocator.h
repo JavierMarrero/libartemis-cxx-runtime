@@ -80,7 +80,8 @@ public:
         unsigned long offset = 0;
         while (count-- > 0)
         {
-            static_cast<T*> (pointer + offset++)->~T();
+            T* object = (static_cast<T*> (pointer + offset++));
+            object->~T();
         }
     }
 

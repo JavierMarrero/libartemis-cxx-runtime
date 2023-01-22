@@ -31,6 +31,7 @@
 // C++
 #include <cstdio>
 #include <cwchar>
+#include <cerrno>
 
 using namespace axf;
 using namespace axf::io;
@@ -41,12 +42,15 @@ m_file(file),
 m_watermark(0)
 {
     if (!m_file.exists())
-        throw FileNotFoundException(m_file, "unable to open file in write mode.");
+        throw FileNotFoundException(m_file, core::string::format("'%s' does not exists.",
+                                                                 m_file.getAbsolutePath().bytes()));
 
     m_f = _wfopen(m_file.getAbsolutePath().asWideString(), L"r+b");
     if (m_f == nullptr)
     {
-        throw IOException("unable to open file for writing.");
+        throw IOException(core::string::format("unable to open '%s' for writing. (%s)",
+                                               m_file.getAbsolutePath().bytes(),
+                                               std::strerror(errno)));
     }
 }
 

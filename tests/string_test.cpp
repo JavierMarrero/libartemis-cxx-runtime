@@ -59,6 +59,16 @@ int main(int argc, char** argv)
             LINE("attempting to write it as UTF16 encoded wchar_t");
             std::wcout << L"áéíóú, äëïöü, -- ascii --\n";
             std::wcout << w1.asWideString() << L"\n";
+
+            LINE("copy constructor");
+            string s4 = s1;
+
+            LINE("before mutation");
+            std::cout << s4 << std::endl;
+
+            LINE("after mutation");
+            std::cout << "s4: " << s4.append("*fragment appended*") << std::endl;
+            std::cout << "s1: " << s1 << std::endl;
         }
         TEST("operations");
         {

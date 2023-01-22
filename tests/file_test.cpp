@@ -46,10 +46,12 @@ int main(int argc, char** argv)
     File f("example.txt");
     File g(f, "example2.txt");
     File k(f, "example-dir");
+    File root(".");
 
     filestats(f);
     filestats(g);
     filestats(k);
+    filestats(root);
 
     // Create
     std::cout << "creating the files..." << std::endl;
@@ -57,6 +59,8 @@ int main(int argc, char** argv)
         f.create();
     if (g.exists() == false)
         g.create();
+    if (k.exists() == false)
+        k.mkdir();
 
     std::cout << "testing writing..." << std::endl;
     {
@@ -68,6 +72,16 @@ int main(int argc, char** argv)
         stream.close();
     }
 
+    std::cout << "listing sub files..." << std::endl;
+    {
+        core::strong_ref<collections::List<File> > files = root.listAllFiles();
+        for (collections::iterator<File> it = files->begin(),
+             end = files->end(); it != end; it++)
+        {
+            std::cout << "  " << (*it).getAbsolutePath() << std::endl;
+        }
+    }
+
     std::cout << "DONE..." << std::endl;
     std::getchar();
 
@@ -77,6 +91,8 @@ int main(int argc, char** argv)
         f.remove();
     if (g.exists())
         g.remove();
+    if (k.exists())
+        k.remove();
 
     return (EXIT_SUCCESS);
 }

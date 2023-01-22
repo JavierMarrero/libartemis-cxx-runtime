@@ -153,6 +153,28 @@ public:
      */
     virtual string toString() const;
 
+    /**
+     * Overload of the equality operator.
+     * 
+     * @param rhs
+     * @return
+     */
+    inline bool operator==(const Object& rhs) const
+    {
+        return this->equals(rhs);
+    }
+
+    /**
+     * Overload of the inequality operator.
+     *
+     * @param rhs
+     * @return
+     */
+    inline bool operator!=(const Object& rhs) const
+    {
+        return this->equals(rhs) == false;
+    }
+
 private:
 
     /**

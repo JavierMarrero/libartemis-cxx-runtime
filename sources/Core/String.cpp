@@ -37,12 +37,27 @@
 #include <cstdlib>
 #include <cerrno>
 #include <cwchar>
+#include <cstdarg>
 
 // Libiconv
 #include <iconv.h>
 
 using namespace axf;
 using namespace axf::core;
+
+string string::format(const char* fmt, ...)
+{
+    std::size_t sz = std::strlen(fmt);
+    scoped_ref<char> b = new char[sz * 0xf];
+    fill(b.get(), '\0', sz * 0xf);
+
+    va_list va;
+    va_start(va, fmt);
+    std::vsprintf(b.get(), fmt, va);
+    va_end(va);
+
+    return string(b.get());
+}
 
 string::string()
 :
@@ -57,7 +72,7 @@ m_watermark(0, 0)
 
 string::string(const string& rhs)
 :
-m_buffer(reinterpret_cast<utf8_char*> (new char[rhs.m_capacity])),
+m_buffer(rhs.m_buffer),
 m_capacity(rhs.m_capacity),
 m_hash(rhs.m_hash),
 m_length(rhs.m_length),
@@ -65,12 +80,23 @@ m_size(rhs.m_size),
 m_watermark(rhs.m_watermark),
 m_wide(NULL)
 {
-    // Copy the contents of the temporary buffer
-    std::memcpy(m_buffer, rhs.m_buffer, rhs.m_length);
-    *(m_buffer + m_length) = '\0';
+}
 
-    // Create the wide character
-    rebuildWideString();
+string& string::operator =(const string& rhs)
+{
+    if (rhs == *this)
+        return *this;
+
+    m_buffer = (rhs.m_buffer);
+    m_capacity = (rhs.m_capacity);
+    m_hash = (rhs.m_hash);
+    m_length = (rhs.m_length);
+    m_size = (rhs.m_size);
+    m_watermark = rhs.m_watermark;
+
+    m_wide.reset();
+
+    return *this;
 }
 
 string::string(const char* cstr, const char* charset)
@@ -106,7 +132,10 @@ m_length(0),
 m_size(0),
 m_watermark(0, 0)
 {
-    setUtf8FromWString(c.toWideCharacter());
+    char decoded[5] = {0};
+    c.decode(io::charset::UTF8_CHARSET, decoded, 4ul);
+
+    setUtf8FromCString(decoded, io::charset::UTF8_CHARSET);
 }
 
 string::~string()
@@ -114,32 +143,37 @@ string::~string()
     clear();
 }
 
-string& string::append(const char c)
+string& string::append(const uchar& c)
 {
-    ensureCapacity(m_size + 2);
-    m_buffer[m_size++] = static_cast<const utf8_char> (c);
-    m_buffer[m_size] = '\0';
+    mutator();
 
-    return *this;
+    char utf8_encoded[5] = {0};
+    c.decode(axf::io::charset::UTF8_CHARSET, utf8_encoded, 4ul);
+
+    return append(utf8_encoded);
 }
 
 string& string::append(const string& str)
 {
+    mutator();
+
     ensureCapacity(m_size + str.m_size + 1);
-    std::strncat(reinterpret_cast<char*> (m_buffer), reinterpret_cast<const char*> (str.m_buffer), m_size + str.m_size);
+    std::strncat(reinterpret_cast<char*> (m_buffer.get()), reinterpret_cast<const char*> (str.m_buffer.get()), m_size + str.m_size);
 
     m_size += str.m_size;
     m_length += str.m_length;
-    m_buffer[m_size] = '\0';
+    m_buffer.get()[m_size] = '\0';
 
     return *this;
 }
 
 string& string::append(const char* str)
 {
+    mutator();
+
     const std::size_t len = std::strlen(str);
     ensureCapacity(m_size + len + 1);
-    std::strncat(reinterpret_cast<char*> (m_buffer), str, m_size + len);
+    std::strncat(reinterpret_cast<char*> (m_buffer.get()), str, m_size + len);
 
     m_size += len;
     m_length += len;
@@ -165,8 +199,6 @@ string::utf8_char* string::arrayCopy(int startIndex, int endIndex, utf8_char* ne
     return newArray;
 }
 
-#define is_continuation_byte(x) (x )
-
 uchar string::at(std::size_t index) const
 {
     if (index == m_length)
@@ -178,7 +210,7 @@ uchar string::at(std::size_t index) const
     /*
      * Store a byte pointer to the buffer
      */
-    char* data = reinterpret_cast<char*> (m_buffer);
+    const char* data = reinterpret_cast<const char*> (m_buffer.get());
 
     /* Find the place we're looking for:
      * 
@@ -268,17 +300,13 @@ void string::checkIndexExclusive(int index) const
 
 void string::clear()
 {
-    if (m_buffer != NULL)
-    {
-        delete[] m_buffer;
-        m_buffer = NULL;
-    }
+    mutator();
 
-    m_buffer = NULL;
+    m_buffer.reset();
     m_capacity = 0;
-    m_hash = 0;
     m_length = 0;
     m_size = 0;
+    m_wide.reset();
 }
 
 void string::ensureCapacity(std::size_t newCapacity)
@@ -294,7 +322,6 @@ void string::ensureCapacity(std::size_t newCapacity)
         arrayCopy(0, byteSize, allocated);
 
         // Deallocate and reassign
-        delete[] m_buffer;
         m_buffer = allocated;
     }
 }
@@ -306,14 +333,23 @@ bool string::equals(const axf::core::Object& rhs) const
 
 bool string::equals(const string& rhs) const
 {
-    return *this == rhs;
+    if (this == &rhs)
+        return true;
+
+    if (rhs.m_buffer == NULL)
+        return false;
+
+    if (m_buffer.get() == rhs.m_buffer.get())
+        return true;
+
+    return std::strcmp(reinterpret_cast<const char*> (m_buffer.get()), reinterpret_cast<const char*> (rhs.m_buffer.get())) == 0;
 }
 
 unsigned int string::hash() const
 {
     if (m_buffer && m_hash == 0)
     {
-        const char* data = reinterpret_cast<const char*> (m_buffer);
+        const char* data = reinterpret_cast<const char*> (m_buffer.get());
         int c;
 
         while ((c = *data++) != '\0')
@@ -346,6 +382,24 @@ std::size_t string::lastIndexOf(const uchar c) const
         }
     }
     return NPOS;
+}
+
+void string::mutator() noexcept
+{
+    /*
+     * The string only gets copied if there are more than one reference to the
+     * string.
+     */
+    if (m_buffer.users() > 1)
+    {
+        utf8_char* buffer = new utf8_char[m_capacity];
+        std::memcpy(buffer, m_buffer.get(), m_capacity);
+
+        m_buffer = buffer;
+
+        // Clear the wide character buffer
+        m_wide.reset();
+    }
 }
 
 string string::substring(std::size_t start, std::size_t end) const
@@ -419,16 +473,19 @@ static inline void convert(iconv_t& iv, const void* in, char* out, const std::si
 
 void string::rebuildWideString() const
 {
-    iconv_t iv = _iconv::open("wchar_t//TRANSLIT", "UTF-8");
+    if (m_wide.isNull())
+    {
+        iconv_t iv = _iconv::open("wchar_t//TRANSLIT", "UTF-8");
 
-    std::size_t expectedLength = m_length * sizeof (wchar_t);
-    scoped_ref<wchar_t, ws_deleter> memory = new wchar_t[m_length + 1];
-    core::fill(memory.get(), L'\0', m_length + 1);
+        std::size_t expectedLength = m_length * sizeof (wchar_t);
+        scoped_ref<wchar_t, ws_deleter> memory = new wchar_t[m_length + 1];
+        core::fill(memory.get(), L'\0', m_length + 1);
 
-    _iconv::convert(iv, m_buffer, reinterpret_cast<char*> (memory.get()), m_size, expectedLength);
+        _iconv::convert(iv, m_buffer.get(), reinterpret_cast<char*> (memory.get()), m_size, expectedLength);
 
-    // Assign it
-    m_wide = memory;
+        // Assign it
+        m_wide = memory;
+    }
 }
 
 void string::setUtf8FromCString(const char* cstr, const char* const encoding)
@@ -472,11 +529,11 @@ void string::setUtf8FromCString(const char* cstr, const char* const encoding)
     }
 
     iconv_t iv = _iconv::open("UTF-8//TRANSLIT", encoding);
-    _iconv::convert(iv, cstr, reinterpret_cast<char*> (m_buffer), memorySize, expectedSize);
+    _iconv::convert(iv, cstr, reinterpret_cast<char*> (m_buffer.get()), memorySize, expectedSize);
 
     // Basic properties
-    m_length = calculateLengthUtf8(m_buffer);
-    m_size = std::strlen(reinterpret_cast<const char*> (m_buffer));
+    m_length = calculateLengthUtf8(m_buffer.get());
+    m_size = std::strlen(reinterpret_cast<const char*> (m_buffer.get()));
 
     // Rebuild the w-char string
     rebuildWideString();
@@ -489,11 +546,11 @@ void string::setUtf8FromWString(const wchar_t* wstr)
     std::size_t expectedLength = std::wcslen(wstr);
     ensureCapacity(expectedLength + 1);
 
-    _iconv::convert(iv, wstr, reinterpret_cast<char*> (m_buffer), expectedLength * sizeof (wchar_t), expectedLength * 6);
+    _iconv::convert(iv, wstr, reinterpret_cast<char*> (m_buffer.get()), expectedLength * sizeof (wchar_t), expectedLength * 6);
 
     // Set some basic props
-    m_length = calculateLengthUtf8(m_buffer);
-    m_size = std::strlen(reinterpret_cast<const char*> (m_buffer));
+    m_length = calculateLengthUtf8(m_buffer.get());
+    m_size = std::strlen(reinterpret_cast<const char*> (m_buffer.get()));
 
     // rebuild the wide char string
     scoped_ref<wchar_t, ws_deleter> memory = new wchar_t[(expectedLength + 1) * sizeof (wchar_t)];

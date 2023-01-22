@@ -42,7 +42,7 @@ struct alloc_t
         std::cout << "creating test!" << std::endl;
     }
 
-    ~alloc_t()
+    virtual ~alloc_t()
     {
         std::cout << "deleting test!" << std::endl;
     }

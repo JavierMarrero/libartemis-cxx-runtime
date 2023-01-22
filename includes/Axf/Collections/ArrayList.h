@@ -43,6 +43,69 @@ namespace axf
 {
 namespace collections
 {
+namespace bits
+{
+
+/**
+ * An iterator that enables forward iteration through an array list.
+ *
+ * @return
+ */
+template <typename E>
+class ArrayListIterator : public BasicIterator<E>
+{
+
+    AXF_CLASS_TYPE(axf::collections::bits::ArrayListIterator<E>,
+                   AXF_TYPE(axf::collections::BasicIterator<E>))
+
+public:
+
+
+    ArrayListIterator(E* array, std::size_t index) :
+    m_array(array), m_index(index) { }
+
+    ~ArrayListIterator() { }
+
+    inline virtual const E& current() const
+    {
+        return m_array[m_index];
+    }
+
+    inline virtual E& current()
+    {
+        return m_array[m_index];
+    }
+
+    virtual E& next()
+    {
+        E& result = current();
+        m_index++;
+
+        return result;
+    }
+
+    virtual const E& next() const
+    {
+        const E& result = current();
+        m_index++;
+
+        return result;
+    }
+
+    inline virtual bool equals(const core::Object& object) const
+    {
+        const ArrayListIterator<E>& rhs = static_cast<const ArrayListIterator<E>&> (object);
+        return m_index == rhs.m_index;
+    }
+
+private:
+
+    E*                  m_array;
+    mutable std::size_t m_index;
+
+} ;
+
+}
 
 /**
  * Array lists are array backed implementations of the <code>List</code>
@@ -93,7 +156,7 @@ public:
         assert(m_array != NULL && "how come the array got to be null?");
 
         // Remove the array
-        m_allocator.deleteArray(m_array, m_capacity);
+        m_allocator.deleteArray(m_array, m_size);
 
         // Set the capacity and size to invalid values
         m_capacity = 0;
@@ -111,7 +174,7 @@ public:
         {
             std::memmove(reinterpret_cast<void*> (m_array + index + 1), reinterpret_cast<const void*> (m_array + index), (m_size - index) * sizeof (E));
         }
-        m_array[index] = data;
+        new (&m_array[index]) E(data);
         m_size++;
 
         return true;
@@ -119,21 +182,21 @@ public:
 
     virtual bool add(const E& element)
     {
-        if (m_size == m_capacity)
-            reserve(m_size + 1);
-
-        m_array[m_size++] = element;
-        return true;
+        return add(m_size, element);
     }
 
     virtual const iterator<E> begin() const
     {
-        return NULL;
+        if (m_size == 0)
+            return end();
+        return new bits::ArrayListIterator<E>(m_array, 0);
     }
 
     virtual iterator<E> begin()
     {
-        return NULL;
+        if (m_size == 0)
+            return end();
+        return new bits::ArrayListIterator<E>(m_array, 0);
     }
 
     inline void clear()
@@ -153,12 +216,12 @@ public:
 
     virtual const iterator<E> end() const
     {
-        return NULL;
+        return new bits::ArrayListIterator<E>(m_array, m_size);
     }
 
     virtual iterator<E> end()
     {
-        return NULL;
+        return new bits::ArrayListIterator<E>(m_array, m_size);
     }
 
     virtual E& get(std::size_t index)
@@ -241,7 +304,7 @@ public:
             E* newData = m_allocator.newArray(final);
             core::arrayCopy(newData, 0, m_array, 0, m_size);
 
-            m_allocator.deleteArray(m_array, current);
+            m_allocator.deleteArray(m_array, m_size);
             m_array = newData;
             m_capacity = final;
         }

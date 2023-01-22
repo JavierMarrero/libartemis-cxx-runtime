@@ -48,6 +48,9 @@ namespace collections
 template <typename E>
 class BasicIterator : public core::Object
 {
+    AXF_CLASS_TYPE(axf::collections::BasicIterator<E>,
+                   AXF_TYPE(axf::core::Object))
+
 public:
 
     /**

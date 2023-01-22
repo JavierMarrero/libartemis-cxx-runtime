@@ -83,6 +83,42 @@ uchar::~uchar()
 {
 }
 
+void uchar::decode(const char* const encoding, void* memory, std::size_t length) const
+{
+    iconv_t iv = iconv_open(encoding, INTERNAL_ENCODING);
+    if (iv == (iconv_t) (-1))
+    {
+        throw IllegalArgumentException("unsupported source charset '%s' for decoding character type.", encoding);
+    }
+
+    char* inbuf = reinterpret_cast<char*> ((unicode_t*) &m_character);
+    char* outbuf = static_cast<char*> (memory);
+
+    std::size_t inSize = 4ul;
+    std::size_t outSize = length;
+
+    std::size_t result = iconv(iv, &inbuf, &inSize, &outbuf, &outSize);
+    iconv_close(iv);
+
+    if (result == (std::size_t)(-1))
+    {
+        const char* exceptionMessage = "unknown exception on iconv conversion.";
+        switch (errno)
+        {
+            case EILSEQ:
+                exceptionMessage = "an invalid multi-byte sequence is encountered in the input.";
+                break;
+            case EINVAL:
+                exceptionMessage = "an incomplete multi-byte sequence is encountered in the input.";
+                break;
+            case E2BIG:
+                exceptionMessage = "the output buffer has no more room for the next converted character.";
+                break;
+        }
+        throw IllegalStateException(exceptionMessage);
+    }
+}
+
 uchar::unicode_t uchar::encode(const void* memory, const char* charsetId, std::size_t length /* = 1 */)
 {
     const char* bytes = static_cast<const char*> (memory);
